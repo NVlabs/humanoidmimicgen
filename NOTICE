@@ -1,0 +1,16 @@
+HumanoidMimicGen
+Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This project is licensed under the Apache License, Version 2.0. See
+LICENSE for the full license text.
+
+NVIDIA-authored source files may use SPDX short-form identifiers to
+refer to the Apache License, Version 2.0, for example:
+
+SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+SPDX-License-Identifier: Apache-2.0
+
+Third-party source code, dependencies, assets, and model files retain
+their own copyright, attribution, and license notices. See
+THIRD_PARTY_NOTICES.md for the third-party notice inventory for this
+repository.

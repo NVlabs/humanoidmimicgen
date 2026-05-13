@@ -1,154 +1,106 @@
-# __NVIDIA_OSS__ Standard Repo Template
+# HumanoidMimicGen
 
-This README file is from the NVIDIA_OSS standard repo template of [PLC-OSS-Template](https://github.com/NVIDIA-GitHub-Management/PLC-OSS-Template?tab=readme-ov-file). It provides a list of files in the PLC-OSS-Template and guidelines on how to use (clone and customize) them.
+HumanoidMimicGen contains RoboCasa-based humanoid loco-manipulation
+environment code prepared for an Apache License, Version 2.0 open source
+release.
 
-**Upon completing the customization for the project repo, the repo admin should replace this README template with the project specific README file.**
+## Release Compliance
 
-- Files (org-wide templates in the NVIDIA .github org repo; per-repo overrides allowed) in [PLC-OSS-Template](https://github.com/NVIDIA-GitHub-Management/PLC-OSS-Template?tab=readme-ov-file)
+The planned release payload is the HumanoidMimicGen loco-manipulation
+environment code under [robocasa/environments/locomanipulation](robocasa/environments/locomanipulation),
+plus the minimal RoboCasa support modules under [robocasa/models](robocasa/models)
+and [robocasa/utils](robocasa/utils) needed to import and register those
+environments. Large local RoboCasa assets are intentionally excluded from
+this repository snapshot. See:
 
-   - Root 
-     - README.md skeleton (CTA + Quickstart + Support/Security/Governance links) 
-     - LICENSE (Apache 2.0 by default)
-        - For other licenses, see the [Confluence page](https://confluence.nvidia.com/pages/viewpage.action?pageId=788418816) for other licenses
-        - CLA.md file (delete if not using MIT or BSD licenses)
-     - CODE_OF_CONDUCT.md 
-     - SECURITY.md (vuln reporting path) 
-     - CONTRIBUTING.md (base; repo can add specifics)
-     - SUPPORT.md (Support levels/channels)
-     - GOVERNANCE.md (baseline; repo may extend)
-     - CITATION.md (for projects that need citation)
-
-   - .github/ 
-     - ISSUE_TEMPLATE/ (<https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository>)
-       - bug.yml, feature.yml, task.yml, config.yml 
-     - PULL_REQUEST_TEMPLATE.md (<https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository>)
-     - workflows/
-     - Note: workflow-templates/ for starter workflows should live in the org-level .github repo, not per-repo
-
-   - Repo-specific (not org-template, maintained by the team)
-     - CODEOWNERS (place at .github/CODEOWNERS or repo root)
-     - CHANGELOG.md (or RELEASE.md) 
-     - ROADMAP.md 
-     - MAINTAINERS.md 
-     - NOTICE or THIRD_PARTY_NOTICES / THIRD_PARTY_LICENSES (dependency specific)
-     - Build/package files (CMake, pyproject, Dockerfile, etc.)
-
-   - Recommended structure and hygiene
-     - docs/
-     - examples/
-     - tests/
-     - scripts/
-     - Container/dev env: Dockerfile, docker/, .devcontainer/ (optional)
-     - Build/package (language-specific):
-       - Python: pyproject.toml, setup.cfg/setup.py, requirements.txt, environment.yml
-       - C++: CMakeLists.txt, cmake/, vcpkg.json
-     - Repo hygiene: .gitignore, .gitattributes, .editorconfig, .pre-commit-config.yaml, .clang-format
-
-
-## Usage of [PLC-OSS-Template](https://github.com/NVIDIA-GitHub-Management/PLC-OSS-Template?tab=readme-ov-file) for NEW NVIDIA OSS repos
-
-1. Clone the [PLC-OSS-Template](https://github.com/NVIDIA-GitHub-Management/PLC-OSS-Template?tab=readme-ov-file)
-2. Find/replace all in the clone of `___PROJECT___` and `__PROJECT_NAME__` with the name of the specific project.
-3. Inspect all files to make sure all replacements work and update text as needed
-
-
-**What you can reuse immediately**
-- CODE_OF_CONDUCT.md
-- SECURITY.md
-- CONTRIBUTING.md (base)
-- .github/ISSUE_TEMPLATE/.yml (bug/feature/task + config.yml)
-- .github/PULL_REQUEST_TEMPLATE.md
-- Reusable workflows 
-
-**What you must customize per repo**
-- README.md: copy the skeleton and fill in product-specific details (Quickstart, Requirements, Usage, Support level, links)
-- LICENSE: check file is correct, update year, consult Confluence for alternatives https://confluence.nvidia.com/pages/viewpage.action?pageId=788418816, add CLA.md only if your license/process requires it
-- CODEOWNERS: replace <TEAM> with your GitHub team handle(s). Place at .github/CODEOWNERS (or repo root)
-- MAINTAINERS.md: list maintainers names/roles, escalation path
-- CHANGELOG.md (or RELEASE.md): track releases/changes
-- SUPPORT.md: Update for your project
-- ROADMAP.md (optional): upcoming milestones
-- NOTICE / THIRD_PARTY_NOTICES (if you ship third‑party content)
-- Build/package files (CMake/pyproject/Dockerfile/etc.), tests/, docs/, examples/, scripts/ as appropriate
-- Workflows: Edit if you need custom behavior 
-
-
-4. Change git origin to point to new repo and push
-5. Remove the line break below and everything above it
-
-## Usage for existing NVIDIA OSS repos
-
-1. Follow the steps above, but add the files to your existing repo and merge
-
-<!-- REMOVE THE LINE BELOW AND EVERYTHING ABOVE -->
------------------------------------------
-# [Project Title]
-One-sentence value proposition for users. Who is it for, and why it matters. 
+- [LICENSE](LICENSE) for the Apache 2.0 license text.
+- [NOTICE](NOTICE) for NVIDIA project notices.
+- [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for third-party source and dependency notices.
+- [CONTRIBUTING.md](CONTRIBUTING.md) for DCO language and the ongoing IP review process.
+- [LICENSES/ROBOCASA-MIT.txt](LICENSES/ROBOCASA-MIT.txt) for the RoboCasa MIT license text.
+- [PAPER_ENVS.md](PAPER_ENVS.md) for the scan-script-derived environment inventory.
 
 # Overview
-What the project does? Why the project is useful?
-Provide a brief overview, highlighting key features or problem-solving capabilities.
+
+This repository packages humanoid manipulation environments built on top of
+RoboCasa and robosuite. The included code focuses on simulation environment
+definitions used by the HumanoidMimicGen paper scans and the small support
+surface needed for import and registration. Datasets, model weights,
+generated outputs, and large object/scene asset payloads are not included in
+this snapshot.
 
 # Getting Started
-Guide users on how they can get started with the project. This should include basic installation step, quick-start examples 
+
 ```bash
-# Option A: Package manager (pip/conda/npm/etc.)
-<copy-paste install>
-
-# Option B: Container
-docker run <image> <args>
-
-# Verify (hello world)
-<one-liner or ~10-line example>
+python -m pip install -e .
 ```
+
+RoboCasa-compatible assets are required to instantiate most environments.
+Before public distribution, confirm the asset distribution plan and update
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) with any asset licenses and
+attributions that will be shipped.
+
 # Requirements
-Include a list of pre-requisites. 
-- OS/Arch: <summary or link to full matrix>
-- Runtime/Compiler: <versions>
-- GPU/Drivers (if applicable): CUDA <ver>, driver <ver>, etc.
+
+- Python 3.10 or newer.
+- MuJoCo and robosuite versions compatible with
+  [pyproject.toml](pyproject.toml).
+- `robosuite-models` is required for the G1 robot names used by the paper
+  scan configurations.
+- Runtime dependencies declared in [pyproject.toml](pyproject.toml).
 
 # Usage
+
+Importing `robocasa` registers the included loco-manipulation environments
+with robosuite. Environment instantiation also requires compatible RoboCasa
+MJCF/object assets at `robocasa/models/assets` or an equivalent asset root.
+
+Trajectory datasets stored in robosuite / robomimic-style HDF5 files can be
+inspected with the playback script:
+
 ```bash
-# Minimal runnable snippet (≤20 lines)
-<code>
+python scripts/playback_trajectories.py /path/to/demo.hdf5 --mode state
 ```
-- More examples/tutorials: <link>
-- API reference: <link>
 
-# Performance (Optional)
-Summary of benchmarks; link to detailed results and hardware used.
+State playback is the default because it restores the recorded MuJoCo states
+directly. To replay open-loop actions and check for simulator drift:
 
-## Releases & Roadmap 
-- Releases/Changelog: <link>
-- (Optional) Next milestones or link to `ROADMAP.md`.
-  
+```bash
+python scripts/playback_trajectories.py /path/to/demo.hdf5 --mode action --check-drift
+```
+
+For headless video export, install the optional video extra and pass
+`--video-path`:
+
+```bash
+python -m pip install -e ".[video]"
+python scripts/playback_trajectories.py /path/to/demo.hdf5 --video-path playback.mp4 --no-render
+```
+
+Playback video export defaults to the `egoview` camera. Use `--camera` to
+choose a different render camera. For example, `--camera 3pv` aliases to a
+third-person `frontview` camera when the dataset XML uses standard RoboCasa
+camera names. MuJoCo site markers, including gripper / IK debug indicators,
+are hidden by default; pass `--show-sites` when those markers are useful for
+debugging.
+
+If the RoboCasa asset tree is outside this checkout, pass it explicitly:
+
+```bash
+python scripts/playback_trajectories.py /path/to/demo.hdf5 --assets-root /path/to/robocasa/models/assets
+```
+
 # Contribution Guidelines
-- Start here: `CONTRIBUTING.md`
-- Code of Conduct: `CODE_OF_CONDUCT.md`
-- Development quickstart (build/test):
-```bash
-<clone> && <deps> && <build/test>
-```
-## Governance & Maintainers
-- Governance: `GOVERNANCE.md`
-- Maintainers: <team/handles>
-- Labeling/triage policy: <link>
+
+Start with [CONTRIBUTING.md](CONTRIBUTING.md). Third-party contributions must
+include a Developer Certificate of Origin sign-off.
 
 ## Security
-- Vulnerability disclosure: `SECURITY.md`
-- Do not file public issues for security reports.
 
-## Support
-- Level: <Experimental | Maintained | Stable>
-- How to get help: Issues/Discussions/<channel link>
-- Response expectations (if any).
-
-# Community
-Provide the channel for community communications.
-
-# References
-Provide a list of related references
+See [SECURITY.md](SECURITY.md). Do not file public issues for security reports.
 
 # License
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-- License: <link>
+
+This project is licensed under the Apache License, Version 2.0. See
+[LICENSE](LICENSE) for details. Third-party components retain their own
+licenses as described in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
