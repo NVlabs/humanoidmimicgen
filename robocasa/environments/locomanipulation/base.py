@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 import mujoco
 import numpy as np
 import robosuite
-from robosuite.environments.base import EnvMeta
+from robosuite.environments.base import EnvMeta, REGISTERED_ENVS
 from robosuite.environments.manipulation.manipulation_env import ManipulationEnv
 from robosuite.models.arenas import Arena
 from robosuite.models.tasks import ManipulationTask
@@ -37,10 +37,24 @@ from robocasa.utils.dexmg_utils import DexMGConfigHelper
 from robocasa.utils.object_utils import check_obj_upright
 from robocasa.utils.visuals_utls import Gradient, randomize_materials_rgba
 
+RETAINED_LOCOMANIPULATION_ENV_NAMES = (
+    "LMDrillLiftBi",
+    "LMDrillPnP90Bi",
+    "LMDrillLiftObstacleBi",
+    "LMPickDrillFromHolderStandingEasyFar",
+    "LMPushButton",
+    "LMBoxLift",
+    "LMBoxLiftFloor",
+    "LMBoxTableToShelfStaticIndustrial",
+    "LMPushShelfForward",
+)
+
 REGISTERED_LOCOMANIPULATION_ENVS = {}
 
 
 def register_locomanipulation_env(target_class):
+    if target_class.__name__ not in RETAINED_LOCOMANIPULATION_ENV_NAMES:
+        return
     REGISTERED_LOCOMANIPULATION_ENVS[target_class.__name__] = target_class
 
 
@@ -49,6 +63,8 @@ class LocoManipulationEnvMeta(EnvMeta):
 
     def __new__(meta, name, bases, class_dict):
         cls = super().__new__(meta, name, bases, class_dict)
+        if name not in RETAINED_LOCOMANIPULATION_ENV_NAMES and REGISTERED_ENVS.get(name) is cls:
+            del REGISTERED_ENVS[name]
         register_locomanipulation_env(cls)
         return cls
 

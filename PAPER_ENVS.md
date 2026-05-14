@@ -6,24 +6,35 @@ based on the internal LMG scan scripts, with the strongest paper signal
 coming from:
 
 - `lmg_scan_feb_4.py`
+- `lmg_scan_dec_7.py`
 - `lmg_scan_apr_16_standingeasy_far_drillref.py`
 - `lmg_scan_apr_20_pickdrill_achieved.py`
-- `lmg_scan_mildnav_pickdrill.py`
 
 ## Primary Scan Environments
 
-The primary scan-backed environment names are:
+The retained scan-backed environment names are:
 
 - `LMDrillLiftBi`
-- `LMNavDrillLiftBi`
 - `LMDrillPnP90Bi`
-- `LMNavDrillPnP90Bi`
 - `LMDrillLiftObstacleBi`
-- `LMNavDrillLiftObstacleBi`
-- `LMPickDrillFromHolderHigh`
 - `LMPickDrillFromHolderStandingEasyFar`
-- `LMNavPickDrillFromHolderStandingEasyFar`
-- `LMMildNavPickDrillFromHolder`
+- `LMPushButton`
+- `LMBoxLift`
+- `LMBoxLiftFloor`
+- `LMBoxTableToShelfStaticIndustrial`
+- `LMPushShelfForward`
+
+The shorthand release-review names map to concrete environment classes as
+follows:
+
+- `LMBoxToShelf` maps to `LMBoxTableToShelfStaticIndustrial`.
+- `LMLiftBox` maps to `LMBoxLift`.
+- `LMLiftBoxFloor` maps to `LMBoxLiftFloor`.
+- `LM Push Shelf Forward` maps to `LMPushShelfForward`.
+
+The retained box lift environments are already two-arm tasks through their
+task constraint configs; there are no separate `Bi` class names for them in
+the retained source.
 
 ## Retained Source Files
 

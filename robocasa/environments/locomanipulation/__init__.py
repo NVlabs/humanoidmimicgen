@@ -13,28 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .base import REGISTERED_LOCOMANIPULATION_ENVS
+from .base import REGISTERED_LOCOMANIPULATION_ENVS, RETAINED_LOCOMANIPULATION_ENV_NAMES
 from .locomanip_basic import *  # noqa: F401,F403
 from .locomanip_pnp import *  # noqa: F401,F403
 from .locomanip_push import *  # noqa: F401,F403
 from .locomanip_simple import *  # noqa: F401,F403
 
-PAPER_LOCOMANIPULATION_ENVIRONMENTS = (
-    "LMDrillLiftBi",
-    "LMNavDrillLiftBi",
-    "LMDrillPnP90Bi",
-    "LMNavDrillPnP90Bi",
-    "LMDrillLiftObstacleBi",
-    "LMNavDrillLiftObstacleBi",
-    "LMPickDrillFromHolderHigh",
-    "LMPickDrillFromHolderStandingEasyFar",
-    "LMNavPickDrillFromHolderStandingEasyFar",
-    "LMMildNavPickDrillFromHolder",
-)
-ALL_LOCOMANIPULATION_ENVIRONMENTS = REGISTERED_LOCOMANIPULATION_ENVS.keys()
+PAPER_LOCOMANIPULATION_ENVIRONMENTS = RETAINED_LOCOMANIPULATION_ENV_NAMES
+ALL_LOCOMANIPULATION_ENVIRONMENTS = PAPER_LOCOMANIPULATION_ENVIRONMENTS
+RETAINED_LOCOMANIPULATION_ENVIRONMENTS = PAPER_LOCOMANIPULATION_ENVIRONMENTS
+
+_missing_envs = set(PAPER_LOCOMANIPULATION_ENVIRONMENTS) - set(REGISTERED_LOCOMANIPULATION_ENVS)
+if _missing_envs:
+    raise RuntimeError(f"Retained loco-manipulation envs were not registered: {sorted(_missing_envs)}")
 
 __all__ = [
     "ALL_LOCOMANIPULATION_ENVIRONMENTS",
     "PAPER_LOCOMANIPULATION_ENVIRONMENTS",
+    "RETAINED_LOCOMANIPULATION_ENVIRONMENTS",
     *PAPER_LOCOMANIPULATION_ENVIRONMENTS,
 ]
