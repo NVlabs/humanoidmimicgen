@@ -53,6 +53,24 @@ CAMERA_ALIASES = {
     "tpv": "frontview",
 }
 
+REPLAY_ENV_ALIASES = {
+    "LMDrillLift": "LMDrillLiftBi",
+    "LMDrillLiftObstacle": "LMDrillLiftObstacleBi",
+    "LMDrillPnP90": "LMDrillPnP90Bi",
+    "LMPickDrillFromHolder": "LMPickDrillFromHolderStandingEasyFar",
+}
+
+
+class RawSimEnv:
+    def __init__(self, sim: Any):
+        self.sim = sim
+
+    def render(self) -> None:
+        return None
+
+    def close(self) -> None:
+        return None
+
 
 def import_sim_stack() -> Any:
     # Import robocasa first so the trimmed package registers its environments
@@ -74,8 +92,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--mode",
         choices=("state", "action", "auto"),
-        default="state",
-        help="Playback mode. State playback is the most faithful for inspection.",
+        default="action",
+        help="Playback mode. Action playback is the default; state playback remains available for inspection.",
+    )
+    parser.add_argument(
+        "--action-backend",
+        choices=("auto", "env", "mujoco-control"),
+        default="auto",
+        help=(
+            "Action execution backend. 'env' uses robosuite env.step; "
+            "'mujoco-control' applies recorded whole-body controls to the saved MuJoCo XML."
+        ),
     )
     parser.add_argument(
         "--episodes",
@@ -206,6 +233,7 @@ def normalize_env_kwargs(kwargs: dict[str, Any]) -> dict[str, Any]:
         kwargs["env_name"] = parts[0]
     if len(parts) > 1 and parts[1] and "robots" not in kwargs:
         kwargs["robots"] = parts[1]
+    kwargs["env_name"] = REPLAY_ENV_ALIASES.get(kwargs["env_name"], kwargs["env_name"])
     return kwargs
 
 
@@ -235,6 +263,8 @@ def build_env_kwargs(data_group: h5py.Group, args: argparse.Namespace) -> dict[s
     kwargs = normalize_env_kwargs(metadata_to_env_kwargs(data_group))
     if args.env_name:
         kwargs["env_name"] = args.env_name
+    elif "env_name" in kwargs:
+        kwargs["env_name"] = REPLAY_ENV_ALIASES.get(kwargs["env_name"], kwargs["env_name"])
     if args.robots:
         kwargs["robots"] = parse_robots(args.robots)
     if args.controller_config:
@@ -256,6 +286,29 @@ def build_env_kwargs(data_group: h5py.Group, args: argparse.Namespace) -> dict[s
         kwargs.setdefault("camera_widths", args.width)
         kwargs.setdefault("camera_heights", args.height)
     return kwargs
+
+
+def load_script_config(data_group: h5py.Group) -> dict[str, Any]:
+    return load_json_attr(data_group.attrs, "script_config") or {}
+
+
+def infer_action_control_freq(data_group: h5py.Group, env_kwargs: dict[str, Any]) -> float:
+    script_config = load_script_config(data_group)
+    for key in ("data_collection_frequency", "control_frequency"):
+        value = script_config.get(key)
+        if value:
+            return float(value)
+    return float(env_kwargs.get("control_freq", 20))
+
+
+def load_lerobot_action_names(dataset_path: Path) -> list[str] | None:
+    info_path = dataset_path.parent / "meta" / "info.json"
+    if not info_path.exists():
+        return None
+    with info_path.open("r", encoding="utf-8") as f:
+        info = json.load(f)
+    names = info.get("features", {}).get("action", {}).get("names")
+    return names if isinstance(names, list) else None
 
 
 def natural_episode_key(name: str) -> tuple[str, int]:
@@ -361,7 +414,7 @@ def reset_env_from_episode(
 
 def resolve_mode(args: argparse.Namespace, states: np.ndarray | None, actions: np.ndarray | None) -> str:
     if args.mode == "auto":
-        return "state" if states is not None else "action"
+        return "action" if actions is not None else "state"
     if args.mode == "state" and states is None:
         raise ValueError("State playback requested, but the episode has no 'states' dataset.")
     if args.mode == "action" and actions is None:
@@ -379,6 +432,74 @@ def open_video_writer(args: argparse.Namespace) -> Any:
 
     args.video_path.parent.mkdir(parents=True, exist_ok=True)
     return imageio.get_writer(args.video_path, fps=args.video_fps or args.fps)
+
+
+def prepare_raw_sim_env(env: Any, dataset_path: Path, episode_group: h5py.Group, args: argparse.Namespace) -> RawSimEnv:
+    model_xml = read_model_xml(dataset_path, episode_group)
+    if model_xml is None:
+        raise ValueError("MuJoCo-control action playback requires episode model XML.")
+    if hasattr(env, "edit_model_xml"):
+        model_xml = env.edit_model_xml(model_xml)
+
+    from robosuite.utils.binding_utils import MjRenderContextOffscreen, MjSim
+
+    sim = MjSim.from_xml_string(model_xml)
+    sim.reset()
+    raw_env = RawSimEnv(sim)
+    if args.video_path:
+        MjRenderContextOffscreen(
+            sim,
+            device_id=-1,
+            max_width=max(args.width, 640),
+            max_height=max(args.height, 480),
+        )
+        configure_render_context(raw_env, args)
+    return raw_env
+
+
+def action_name_candidates(action_name: str) -> list[str]:
+    candidates = [action_name, f"robot0_{action_name}"]
+    if action_name.startswith("left_hand_"):
+        candidates.append(f"gripper0_left_{action_name}")
+    if action_name.startswith("right_hand_"):
+        candidates.append(f"gripper0_right_{action_name}")
+    return candidates
+
+
+def build_mujoco_control_indices(
+    raw_env: RawSimEnv,
+    actions: np.ndarray,
+    action_names: list[str] | None,
+) -> list[int]:
+    action_dim = actions.shape[1] if actions.ndim == 2 else 1
+    actuator_names = set(raw_env.sim.model.actuator_names)
+    if action_names is None:
+        if action_dim != raw_env.sim.model.nu:
+            raise ValueError(
+                "Cannot infer MuJoCo control mapping: action metadata is missing and "
+                f"action dim {action_dim} != model.nu {raw_env.sim.model.nu}."
+            )
+        return list(range(raw_env.sim.model.nu))
+
+    if len(action_names) != action_dim:
+        raise ValueError(
+            f"Action metadata has {len(action_names)} names but actions have dim {action_dim}."
+        )
+
+    control_indices = []
+    missing = []
+    for action_name in action_names:
+        actuator_name = next(
+            (candidate for candidate in action_name_candidates(action_name) if candidate in actuator_names),
+            None,
+        )
+        if actuator_name is None:
+            missing.append(action_name)
+            continue
+        control_indices.append(raw_env.sim.model.actuator_name2id(actuator_name))
+    if missing:
+        raise ValueError(f"Could not map action names to MuJoCo actuators: {missing}")
+    return control_indices
 
 
 def render_frame(env: Any, args: argparse.Namespace) -> np.ndarray:
@@ -448,6 +569,62 @@ def playback_actions(
     return played
 
 
+def playback_mujoco_controls(
+    raw_env: RawSimEnv,
+    states: np.ndarray | None,
+    actions: np.ndarray,
+    control_indices: list[int],
+    control_freq: float,
+    args: argparse.Namespace,
+    writer: Any,
+    episode: str,
+) -> int:
+    start = max(args.start_step, 0)
+    stop = len(actions) if args.max_steps is None else min(len(actions), start + args.max_steps)
+    if states is not None and start < len(states):
+        raw_env.sim.set_state_from_flattened(states[start])
+        raw_env.sim.forward()
+
+    steps_per_action = max(1, round(1.0 / (control_freq * raw_env.sim.model.opt.timestep)))
+    played = 0
+    for frame_index, action_index in enumerate(range(start, stop)):
+        raw_env.sim.data.ctrl[:] = 0
+        raw_env.sim.data.ctrl[control_indices] = np.asarray(actions[action_index]).reshape(-1)
+        for _ in range(steps_per_action):
+            raw_env.sim.step()
+        maybe_render(raw_env, args, writer, frame_index, render_stride=args.stride)
+        if args.check_drift and states is not None and action_index + 1 < len(states):
+            state_playback = raw_env.sim.get_state().flatten()
+            err = np.linalg.norm(states[action_index + 1] - state_playback)
+            if err > 1e-8:
+                print(f"[warning] {episode} mujoco-control step {action_index} drifted by {err:.6g}")
+        played += 1
+    return played
+
+
+def resolve_action_backend(
+    args: argparse.Namespace,
+    env: Any,
+    dataset_path: Path,
+    episode_group: h5py.Group,
+    actions: np.ndarray,
+) -> str:
+    action_dim = actions.shape[1] if actions.ndim == 2 else 1
+    env_action_dim = getattr(env, "action_dim", None)
+    if args.action_backend == "env" and env_action_dim is not None and action_dim != env_action_dim:
+        raise ValueError(
+            f"Episode actions have dim {action_dim}, but the robosuite env action_dim is {env_action_dim}. "
+            "Pass a matching --controller-config or use --action-backend mujoco-control."
+        )
+    if args.action_backend != "auto":
+        return args.action_backend
+    if action_dim == env_action_dim:
+        return "env"
+    if read_model_xml(dataset_path, episode_group) is not None:
+        return "mujoco-control"
+    return "env"
+
+
 def main() -> None:
     args = parse_args()
     if args.stride < 1:
@@ -459,6 +636,8 @@ def main() -> None:
             raise KeyError(f"{dataset_path} does not contain a top-level 'data' group.")
         data_group = f["data"]
         env_kwargs = build_env_kwargs(data_group, args)
+        control_freq = infer_action_control_freq(data_group, env_kwargs)
+        action_names = load_lerobot_action_names(dataset_path)
         episodes = select_episodes(data_group, args)
         print(f"Creating env: {env_kwargs['env_name']}")
         robosuite_module = import_sim_stack()
@@ -471,11 +650,29 @@ def main() -> None:
                 states = episode_dataset(episode_group, "states")
                 actions = episode_dataset(episode_group, "actions")
                 mode = resolve_mode(args, states, actions)
-                reset_env_from_episode(env, dataset_path, episode_group, args, mode)
                 if mode == "state":
+                    reset_env_from_episode(env, dataset_path, episode_group, args, mode)
                     count = playback_states(env, states, args, writer)
                 else:
-                    count = playback_actions(env, states, actions, args, writer, episode)
+                    backend = resolve_action_backend(args, env, dataset_path, episode_group, actions)
+                    print(f"Using action backend for {episode}: {backend}")
+                    if backend == "env":
+                        reset_env_from_episode(env, dataset_path, episode_group, args, mode)
+                        count = playback_actions(env, states, actions, args, writer, episode)
+                    else:
+                        raw_env = prepare_raw_sim_env(env, dataset_path, episode_group, args)
+                        control_indices = build_mujoco_control_indices(raw_env, actions, action_names)
+                        count = playback_mujoco_controls(
+                            raw_env,
+                            states,
+                            actions,
+                            control_indices,
+                            control_freq,
+                            args,
+                            writer,
+                            episode,
+                        )
+                        raw_env.close()
                 print(f"Played {episode}: {count} {mode} steps")
         finally:
             if writer is not None:
