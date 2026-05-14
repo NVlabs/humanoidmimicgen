@@ -1,0 +1,110 @@
+<mujoco model="shelf">
+  <compiler angle="degree" coordinate="local"/>
+  <option gravity="0 0 -9.81"/>
+
+  <asset>
+    <texture name="white_tex" builtin="flat" rgb1="1 1 1" rgb2="1 1 1" width="32" height="32"/>
+    <material name="white_mat" texture="white_tex" shininess="0.2" reflectance="0.05" rgba="1 1 1 1"/>
+  </asset>
+
+  <!-- H = 1.80797 m; shelf z = 0, 0.376660, 0.753321, 1.129981, 1.506642 -->
+  <worldbody>
+    <body>
+      <body name="object" pos="0 0 0">
+        <!-- Sides (centered at H/2) -->
+        <geom name="side_left"  type="box"
+              size="0.008255 0.146050 0.903985"
+              pos="-0.302895 0 0.903985"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="side_left_vis"  type="box" material="white_mat"
+              size="0.008255 0.146050 0.903985"
+              pos="-0.302895 0 0.903985"
+              contype="0" conaffinity="0" group="1"/>
+        <geom name="side_right" type="box"
+              size="0.008255 0.146050 0.903985"
+              pos="0.302895 0 0.903985"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="side_right_vis" type="box" material="white_mat"
+              size="0.008255 0.146050 0.903985"
+              pos="0.302895 0 0.903985"
+              contype="0" conaffinity="0" group="1"/>
+
+        <!-- Top & bottom panels (centers) -->
+        <geom name="top" type="box"
+              size="0.311150 0.146050 0.010160"
+              pos="0 0 1.807970"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="top_vis" type="box" material="white_mat"
+              size="0.311150 0.146050 0.010160"
+              pos="0 0 1.807970"
+              contype="0" conaffinity="0" group="1"/>
+        <geom name="bottom" type="box"
+              size="0.311150 0.146050 0.010160"
+              pos="0 0 0.000000"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="bottom_vis" type="box" material="white_mat"
+              size="0.311150 0.146050 0.010160"
+              pos="0 0 0.000000"
+              contype="0" conaffinity="0" group="1"/>
+
+        <!-- Back panel -->
+        <geom name="back" type="box"
+              size="0.311150 0.001270 0.903985"
+              pos="0 -0.144780 0.903985"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="back_vis" type="box" material="white_mat"
+              size="0.311150 0.001270 0.903985"
+              pos="0 -0.144780 0.903985"
+              contype="0" conaffinity="0" group="1"/>
+
+        <!-- Interior shelves (5, evenly spaced from 0 to 5H/6) -->
+        <!-- Shelf half-sizes: x=0.294640, y=0.144780, z=0.010160 -->
+        <geom name="shelf_1" type="box"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 0.000000"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="shelf_1_vis" type="box" material="white_mat"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 0.000000"
+              contype="0" conaffinity="0" group="1"/>
+        <geom name="shelf_2" type="box"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 0.376660"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="shelf_2_vis" type="box" material="white_mat"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 0.376660"
+              contype="0" conaffinity="0" group="1"/>
+        <geom name="shelf_3" type="box"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 0.753321"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="shelf_3_vis" type="box" material="white_mat"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 0.753321"
+              contype="0" conaffinity="0" group="1"/>
+        <geom name="shelf_4" type="box"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 1.129981"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="shelf_4_vis" type="box" material="white_mat"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 1.129981"
+              contype="0" conaffinity="0" group="1"/>
+        <geom name="shelf_5" type="box"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 1.506642"
+              contype="1" conaffinity="1" friction="1 0.1 0.01" density="700" group="0" rgba="0.8 0.8 0.8 0.0"/>
+        <geom name="shelf_5_vis" type="box" material="white_mat"
+              size="0.294640 0.144780 0.010160"
+              pos="0 0 1.506642"
+              contype="0" conaffinity="0" group="1"/>
+
+      </body>
+        <!-- Sites for reference points -->
+        <site name="top_site" pos="0 0 1.817970" size="0.01 0.01 0.01" rgba="1 0 0 0.3"/>
+        <site name="bottom_site" pos="0 0 0.000000" size="0.01 0.01 0.01" rgba="0 1 0 0.3"/>
+        <site name="horizontal_radius_site" pos="0 0 0.903985" size="0.01 0.01 0.01" rgba="0 0 1 0.3"/>
+    </body>
+  </worldbody>
+</mujoco>

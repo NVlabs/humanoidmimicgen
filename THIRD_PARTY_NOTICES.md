@@ -23,6 +23,23 @@ MIT license notice. NVIDIA-authored source files use Apache-2.0 notices.
 Files containing both RoboCasa-derived code and NVIDIA modifications carry
 file-level SPDX notices for both components.
 
+### RoboCasa Asset Subset
+
+- Paths:
+  - [robocasa/models/assets/arenas](robocasa/models/assets/arenas)
+  - [robocasa/models/assets/objects/omniverse/locomanip](robocasa/models/assets/objects/omniverse/locomanip)
+  - [robocasa/models/assets/objects/aigc/shelf](robocasa/models/assets/objects/aigc/shelf)
+  - [robocasa/models/assets/robots/unitree_g1](robocasa/models/assets/robots/unitree_g1)
+- Source project: RoboCasa asset tree
+- License: MIT, matching the RoboCasa source distribution notice
+- License text: [LICENSES/ROBOCASA-MIT.txt](LICENSES/ROBOCASA-MIT.txt)
+- Copyright notice: Copyright (c) 2024 The RoboCasa Team
+
+The repository includes only the RoboCasa asset subset required by the
+retained loco-manipulation environments, the G1 robot used by the paper
+trajectories, and trajectory playback rendering. The original local RoboCasa
+asset cache is larger and is not distributed in full.
+
 ## Runtime Dependencies
 
 The Python package metadata declares direct runtime dependencies used by the
@@ -57,11 +74,10 @@ The optional `visualization` extra declares `matplotlib` for the
 exact resolved Matplotlib version and license if that optional extra is
 included in a distributed package, container, or release artifact.
 
-## Assets, Models, Datasets, and Generated Outputs
+## Datasets, Model Weights, and Generated Outputs
 
-The large local RoboCasa asset cache is not included in this repository
-snapshot. Datasets, model weights, generated outputs, and large
-robot/object/scene assets are also not included.
+Datasets, model weights, generated outputs, and unrelated large RoboCasa
+asset payloads are not included in this repository snapshot.
 
 If any of those materials are added before release, preserve their copyright,
 attribution, and license notices in place, and update this file with the

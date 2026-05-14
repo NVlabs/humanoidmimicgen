@@ -1,0 +1,62 @@
+<mujoco model="yellow_tape_roll">
+  <default>
+    <default class="visual">
+      <geom group="1" contype="0" conaffinity="0" density="0"/>
+    </default>
+    <default class="collision">
+      <geom group="0" density="350" solimp="0.95 0.98 0.001" solref="0.004 1" rgba="1 1 1 0.25" friction="1.2 0.01 0.001"/>
+    </default>
+    <default class="spawn">
+      <geom group="1" rgba="1 1 1 0" contype="0" conaffinity="0" density="0" mass="0"/>
+    </default>
+  </default>
+  <asset>
+    <material name="yellow_mat" rgba="0.96 0.82 0.16 1" specular="0.35" shininess="0.2"/>
+  </asset>
+  <worldbody>
+    <body>
+      <body name="object">
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.04750 0.00000 0.01750" quat="1.000000 0 0 0.000000" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.04588 0.01229 0.01750" quat="0.991445 0 0 0.130526" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.04114 0.02375 0.01750" quat="0.965926 0 0 0.258819" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.03359 0.03359 0.01750" quat="0.923880 0 0 0.382683" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.02375 0.04114 0.01750" quat="0.866025 0 0 0.500000" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.01229 0.04588 0.01750" quat="0.793353 0 0 0.608761" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.00000 0.04750 0.01750" quat="0.707107 0 0 0.707107" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.01229 0.04588 0.01750" quat="0.608761 0 0 0.793353" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.02375 0.04114 0.01750" quat="0.500000 0 0 0.866025" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.03359 0.03359 0.01750" quat="0.382683 0 0 0.923880" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.04114 0.02375 0.01750" quat="0.258819 0 0 0.965926" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.04588 0.01229 0.01750" quat="0.130526 0 0 0.991445" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.04750 0.00000 0.01750" quat="0.000000 0 0 1.000000" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.04588 -0.01229 0.01750" quat="-0.130526 0 0 0.991445" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.04114 -0.02375 0.01750" quat="-0.258819 0 0 0.965926" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.03359 -0.03359 0.01750" quat="-0.382683 0 0 0.923880" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.02375 -0.04114 0.01750" quat="-0.500000 0 0 0.866025" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.01229 -0.04588 0.01750" quat="-0.608761 0 0 0.793353" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="-0.00000 -0.04750 0.01750" quat="-0.707107 0 0 0.707107" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.01229 -0.04588 0.01750" quat="-0.793353 0 0 0.608761" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.02375 -0.04114 0.01750" quat="-0.866025 0 0 0.500000" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.03359 -0.03359 0.01750" quat="-0.923880 0 0 0.382683" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.04114 -0.02375 0.01750" quat="-0.965926 0 0 0.258819" material="yellow_mat"/>
+        <geom class="visual" type="box" size="0.01000 0.00625 0.01750" pos="0.04588 -0.01229 0.01750" quat="-0.991445 0 0 0.130526" material="yellow_mat"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="0.04750 0.00000 0.01750" quat="1.000000 0 0 0.000000"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="0.04114 0.02375 0.01750" quat="0.965926 0 0 0.258819"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="0.02375 0.04114 0.01750" quat="0.866025 0 0 0.500000"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="0.00000 0.04750 0.01750" quat="0.707107 0 0 0.707107"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="-0.02375 0.04114 0.01750" quat="0.500000 0 0 0.866025"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="-0.04114 0.02375 0.01750" quat="0.258819 0 0 0.965926"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="-0.04750 0.00000 0.01750" quat="0.000000 0 0 1.000000"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="-0.04114 -0.02375 0.01750" quat="-0.258819 0 0 0.965926"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="-0.02375 -0.04114 0.01750" quat="-0.500000 0 0 0.866025"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="-0.00000 -0.04750 0.01750" quat="-0.707107 0 0 0.707107"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="0.02375 -0.04114 0.01750" quat="-0.866025 0 0 0.500000"/>
+        <geom class="collision" type="box" size="0.01000 0.01273 0.01750" pos="0.04114 -0.02375 0.01750" quat="-0.965926 0 0 0.258819"/>
+        <geom class="spawn" size="0.02 0.02 0.01" type="box" pos="0 0 0.040" name="spawn_top"/>
+      </body>
+      <site name="bottom_site" pos="0 0 0" rgba="1 1 1 0.5" size="0.005"/>
+      <site name="top_site" pos="0 0 0.035" rgba="1 1 1 0.5" size="0.005"/>
+      <site name="horizontal_radius_site" pos="0.0575 0 0" rgba="1 1 1 0.5" size="0.005"/>
+    </body>
+  </worldbody>
+</mujoco>

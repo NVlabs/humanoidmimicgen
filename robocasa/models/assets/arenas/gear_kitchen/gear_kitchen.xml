@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mujoco model="MergedModel">
+	<asset>
+		<material name="M_White_Painted_Wood" specular="0.5" shininess="0.010000005" rgba="0.930000 0.930000 0.840000 1.000000" />
+		<mesh file="Drawer_M.obj" />
+		<mesh file="Door_G.obj" />
+		<material name="M_Metal_A" specular="0.5" shininess="0.462399994" rgba="0.549453 0.549453 0.549453 1.000000" />
+		<mesh file="Handle_M.obj" />
+		<texture type="2d" name="FloorTileable_BaseColor" file="FloorTileable_BaseColor.png" />
+		<material name="M_Floor" texture="FloorTileable_BaseColor" specular="0.5" shininess="0.25" />
+		<material name="M_Metal_B" specular="0.5" shininess="0.19791992200000003" rgba="0.487794 0.487794 0.487794 1.000000" />
+		<material name="M_Metal_Black" specular="0.5" shininess="0.462399994" rgba="0.016417 0.018630 0.029341 1.000000" />
+		<mesh file="Floor_A_0.obj" />
+		<mesh file="Floor_A_1.obj" />
+		<mesh file="Floor_A_2.obj" />
+		<material name="M_Rubber" specular="0.5" shininess="0.09" rgba="0.024633 0.024633 0.024633 1.000000" />
+		<mesh file="Oven_Rubber.obj" />
+		<mesh file="Door_D.obj" />
+		<mesh file="Drawer_J.obj" />
+		<material name="M_Glass" specular="0.5" shininess="0.36" rgba="0.800000 0.800000 0.800000 1.000000" />
+		<mesh file="Glass_Shelf_B.obj" />
+		<mesh file="Oven_Door_Hinge.obj" />
+		<material name="M_Ceiling" texture="FloorTileable_BaseColor" specular="0.5" shininess="0.25" />
+		<mesh file="Ceiling_0.obj" />
+		<mesh file="Ceiling_1.obj" />
+		<mesh file="Door_F.obj" />
+		<mesh file="Extractor_Rubber.obj" />
+		<mesh file="Drawer_I.obj" />
+		<material name="M_Emissive" specular="0.5" shininess="0.36284024" rgba="1.000000 1.000000 1.000000 1.000000" />
+		<mesh file="Emissive_A.obj" />
+		<mesh file="Shelf_B.obj" />
+		<mesh file="Drawer_C.001.obj" />
+		<mesh file="Tap.obj" />
+		<texture type="2d" name="FingerJoint_BaseColor" file="FingerJoint_BaseColor.png" />
+		<material name="M_FingerJoint_Wood" texture="FingerJoint_BaseColor" specular="0.5" shininess="0.25" />
+		<mesh file="Counter_Top_F.obj" />
+		<material name="M_White_Plaster" specular="0.5" shininess="0.002500001" rgba="0.930000 0.930000 0.930000 1.000000" />
+		<mesh file="Wall_Side.obj" />
+		<mesh file="Handle_H.obj" />
+		<mesh file="Handle_L.obj" />
+		<mesh file="Oven_Hinge_A.obj" />
+		<mesh file="Door_L.obj" />
+		<mesh file="Door_B.obj" />
+		<mesh file="Glass_Shelf_A.obj" />
+		<mesh file="Handle_N.obj" />
+		<mesh file="Shelf_A.obj" />
+		<mesh file="Fridge_Door_A_0.obj" />
+		<mesh file="Fridge_Door_A_1.obj" />
+		<!-- <mesh file="Fridge_Door_A_2.obj" /> -->
+		<mesh file="Fridge_Door_A_3.obj" />
+		<mesh file="Fridge_Door_A_4.obj" />
+		<mesh file="Handle_Oven_Door.obj" />
+		<mesh file="Sink_Door.obj" />
+		<mesh file="Handle_G.obj" />
+		<mesh file="Wall_Back.obj" />
+		<mesh file="Door_A.obj" />
+		<mesh file="Shelf_C.obj" />
+		<material name="M_Metal_White" specular="0.5" shininess="0.16000003100000001" rgba="0.880000 0.880000 0.880000 1.000000" />
+		<mesh file="Dishwasher.obj" />
+		<mesh file="Handle_I.obj" />
+		<mesh file="Handle_A.obj" />
+		<mesh file="Counter_C.obj" />
+		<mesh file="Fridge_Body_0.obj" />
+		<mesh file="Fridge_Body_1.obj" />
+		<mesh file="Fridge_Body_2.obj" />
+		<mesh file="Fridge_Body_3.obj" />
+		<mesh file="Oven_Drawer.obj" />
+		<mesh file="Oven_Rack.obj" />
+		<mesh file="Oven_Door_Glass.obj" />
+		<mesh file="Extractor_Light.obj" />
+		<mesh file="Handle_J.obj" />
+		<mesh file="Counter_A.obj" />
+		<mesh file="Handle_C.obj" />
+		<mesh file="Extractor.obj" />
+		<mesh file="Glass_G.obj" />
+		<mesh file="Drawer_E.obj" />
+		<mesh file="Handle_E.obj" />
+		<mesh file="Emissive_C.obj" />
+		<material name="M_Towel" specular="0.5" shininess="0.002500001" rgba="0.900000 0.700000 0.250000 1.000000" />
+		<mesh file="Towel.obj" />
+		<mesh file="Floor_B_0.obj" />
+		<mesh file="Floor_B_1.obj" />
+		<mesh file="Floor_B_2.obj" />
+		<mesh file="Dishwasher_Rubber.obj" />
+		<mesh file="Counter_Top_E.obj" />
+		<mesh file="Range_Knobs.obj" />
+		<mesh file="Counter_Top_A.obj" />
+		<mesh file="Counter_F.obj" />
+		<mesh file="Handle_Oven_Drawer.obj" />
+		<mesh file="Handle_K.obj" />
+		<mesh file="Door_H.obj" />
+		<mesh file="Couter_B.obj" />
+		<mesh file="Handle_D.obj" />
+		<mesh file="Oven_Door.obj" />
+		<mesh file="Handle_F.obj" />
+		<mesh file="Counter_E.obj" />
+		<mesh file="Range.obj" />
+		<mesh file="Handle_B.obj" />
+		<material name="M_Range_Top" specular="0.5" shininess="0.25" rgba="1.000000 1.000000 1.000000 1.000000" />
+		<mesh file="Range_Stoves.obj" />
+		<mesh file="Glass_H.obj" />
+		<mesh file="Extractor_Glass.obj" />
+		<mesh file="Counter_D.obj" />
+		<mesh file="Door_K.obj" />
+		<mesh file="Shelf_D.obj" />
+		<mesh file="Extractor_switch.obj" />
+		<mesh file="Sink.obj" />
+		<mesh file="Drawer_N.obj" />
+		<mesh file="Fridge_Door_B_0.obj" />
+		<mesh file="Fridge_Door_B_1.obj" />
+		<mesh file="Fridge_Door_B_2.obj" />
+		<mesh file="Fridge_Door_B_3.obj" />
+		<mesh file="Emissive_B.obj" />
+	</asset>
+	<worldbody>
+		<body name="Drawer_M">
+			<geom material="M_White_Painted_Wood" mesh="Drawer_M" class="visual" />
+			<geom mesh="Drawer_M" class="collision" />
+		</body>
+		<body name="Door_G">
+			<geom material="M_White_Painted_Wood" mesh="Door_G" class="visual" />
+			<geom mesh="Door_G" class="collision" />
+		</body>
+		<body name="Handle_M">
+			<geom material="M_Metal_A" mesh="Handle_M" class="visual" />
+			<geom mesh="Handle_M" class="collision" />
+		</body>
+		<body name="Floor_A">
+			<geom mesh="Floor_A_0" material="M_Metal_Black" class="visual" />
+			<geom mesh="Floor_A_1" material="M_Metal_B" class="visual" />
+			<geom mesh="Floor_A_2" material="M_Floor" class="visual" shellinertia="true"/>
+			<geom mesh="Floor_A_0" class="collision" />
+			<geom mesh="Floor_A_1" class="collision" />
+			<!-- <geom mesh="Floor_A_2" class="collision" /> -->
+		</body>
+		<body name="Oven_Rubber">
+			<geom material="M_Rubber" mesh="Oven_Rubber" class="visual" />
+			<geom mesh="Oven_Rubber" class="collision" />
+		</body>
+		<body name="Door_D">
+			<geom material="M_White_Painted_Wood" mesh="Door_D" class="visual" />
+			<geom mesh="Door_D" class="collision" />
+		</body>
+		<body name="Drawer_J">
+			<geom material="M_White_Painted_Wood" mesh="Drawer_J" class="visual" />
+			<geom mesh="Drawer_J" class="collision" />
+		</body>
+		<body name="Glass_Shelf_B">
+			<geom material="M_Glass" mesh="Glass_Shelf_B" class="visual" />
+			<geom mesh="Glass_Shelf_B" class="collision" />
+		</body>
+		<body name="Oven_Door_Hinge">
+			<geom material="M_Metal_A" mesh="Oven_Door_Hinge" class="visual" />
+			<geom mesh="Oven_Door_Hinge" class="collision" />
+		</body>
+		<!-- <body name="Ceiling">
+			<geom mesh="Ceiling_0" material="M_Metal_B" class="visual" />
+			<geom mesh="Ceiling_1" material="M_Ceiling" class="visual" />
+			<geom mesh="Ceiling_0" class="collision" />
+			<geom mesh="Ceiling_1" class="collision" />
+		</body> -->
+		<body name="Door_F">
+			<geom material="M_White_Painted_Wood" mesh="Door_F" class="visual" />
+			<geom mesh="Door_F" class="collision" />
+		</body>
+		<body name="Extractor_Rubber">
+			<geom material="M_Rubber" mesh="Extractor_Rubber" class="visual" />
+			<geom mesh="Extractor_Rubber" class="collision" />
+		</body>
+		<body name="Drawer_I">
+			<geom material="M_White_Painted_Wood" mesh="Drawer_I" class="visual" />
+			<geom mesh="Drawer_I" class="collision" />
+		</body>
+		<body name="Emissive_A">
+			<geom material="M_Emissive" mesh="Emissive_A" class="visual" />
+			<geom mesh="Emissive_A" class="collision" />
+		</body>
+		<body name="Shelf_B">
+			<geom material="M_White_Painted_Wood" mesh="Shelf_B" class="visual" />
+			<geom mesh="Shelf_B" class="collision" />
+		</body>
+		<body name="Drawer_C.001">
+			<geom material="M_White_Painted_Wood" mesh="Drawer_C.001" class="visual" />
+			<geom mesh="Drawer_C.001" class="collision" />
+		</body>
+		<body name="Tap">
+			<geom material="M_Metal_A" mesh="Tap" class="visual" />
+			<geom mesh="Tap" class="collision" />
+		</body>
+		<body name="Counter_Top_F">
+			<geom material="M_FingerJoint_Wood" mesh="Counter_Top_F" class="visual" />
+			<geom mesh="Counter_Top_F" class="collision" />
+		</body>
+		<body name="Wall_Side">
+			<geom material="M_White_Plaster" mesh="Wall_Side" class="visual" />
+			<geom mesh="Wall_Side" class="collision" />
+		</body>
+		<body name="Handle_H">
+			<geom material="M_Metal_A" mesh="Handle_H" class="visual" />
+			<geom mesh="Handle_H" class="collision" />
+		</body>
+		<body name="Handle_L">
+			<geom material="M_Metal_A" mesh="Handle_L" class="visual" />
+			<geom mesh="Handle_L" class="collision" />
+		</body>
+		<body name="Oven_Hinge_A">
+			<geom material="M_Metal_A" mesh="Oven_Hinge_A" class="visual" />
+			<geom mesh="Oven_Hinge_A" class="collision" />
+		</body>
+		<body name="Door_L">
+			<geom material="M_White_Painted_Wood" mesh="Door_L" class="visual" />
+			<geom mesh="Door_L" class="collision" />
+		</body>
+		<body name="Door_B">
+			<geom material="M_White_Painted_Wood" mesh="Door_B" class="visual" />
+			<geom mesh="Door_B" class="collision" />
+		</body>
+		<body name="Glass_Shelf_A">
+			<geom material="M_Glass" mesh="Glass_Shelf_A" class="visual" />
+			<geom mesh="Glass_Shelf_A" class="collision" />
+		</body>
+		<body name="Handle_N">
+			<geom material="M_Metal_A" mesh="Handle_N" class="visual" />
+			<geom mesh="Handle_N" class="collision" />
+		</body>
+		<body name="Shelf_A">
+			<geom material="M_White_Painted_Wood" mesh="Shelf_A" class="visual" />
+			<geom mesh="Shelf_A" class="collision" />
+		</body>
+		<body name="Fridge_Door_A">
+			<geom mesh="Fridge_Door_A_0" material="M_White_Painted_Wood" class="visual" />
+			<geom mesh="Fridge_Door_A_1" material="M_Metal_Black" class="visual" />
+			<!-- <geom mesh="Fridge_Door_A_2" material="M_Emissive" class="visual" /> -->
+			<geom mesh="Fridge_Door_A_3" material="M_Rubber" class="visual" />
+			<geom mesh="Fridge_Door_A_4" material="M_Metal_A" class="visual" />
+			<geom mesh="Fridge_Door_A_0" class="collision" />
+			<geom mesh="Fridge_Door_A_1" class="collision" shellinertia="true"/>
+			<!-- <geom mesh="Fridge_Door_A_2" class="collision" shellinertia="true"/> -->
+			<geom mesh="Fridge_Door_A_3" class="collision" />
+			<geom mesh="Fridge_Door_A_4" class="collision" />
+		</body>
+		<body name="Handle_Oven_Door">
+			<geom material="M_Metal_A" mesh="Handle_Oven_Door" class="visual" />
+			<geom mesh="Handle_Oven_Door" class="collision" />
+		</body>
+		<body name="Sink_Door">
+			<geom material="M_White_Painted_Wood" mesh="Sink_Door" class="visual" />
+			<geom mesh="Sink_Door" class="collision" />
+		</body>
+		<body name="Handle_G">
+			<geom material="M_Metal_A" mesh="Handle_G" class="visual" />
+			<geom mesh="Handle_G" class="collision" />
+		</body>
+		<body name="Wall_Back">
+			<geom material="M_White_Plaster" mesh="Wall_Back" class="visual" />
+			<geom mesh="Wall_Back" class="collision" />
+		</body>
+		<body name="Door_A">
+			<geom material="M_White_Painted_Wood" mesh="Door_A" class="visual" />
+			<geom mesh="Door_A" class="collision" />
+		</body>
+		<body name="Shelf_C">
+			<geom material="M_White_Painted_Wood" mesh="Shelf_C" class="visual" />
+			<geom mesh="Shelf_C" class="collision" />
+		</body>
+		<body name="Dishwasher">
+			<geom material="M_Metal_White" mesh="Dishwasher" class="visual" />
+			<geom mesh="Dishwasher" class="collision" />
+		</body>
+		<body name="Handle_I">
+			<geom material="M_Metal_A" mesh="Handle_I" class="visual" />
+			<geom mesh="Handle_I" class="collision" />
+		</body>
+		<body name="Handle_A">
+			<geom material="M_Metal_A" mesh="Handle_A" class="visual" />
+			<geom mesh="Handle_A" class="collision" />
+		</body>
+		<body name="Counter_C">
+			<geom material="M_White_Painted_Wood" mesh="Counter_C" class="visual" />
+			<geom mesh="Counter_C" class="collision" />
+		</body>
+		<body name="Fridge_Body">
+			<geom mesh="Fridge_Body_0" material="M_White_Painted_Wood" class="visual" />
+			<geom mesh="Fridge_Body_1" material="M_Rubber" class="visual" />
+			<geom mesh="Fridge_Body_2" material="M_Metal_Black" class="visual" />
+			<geom mesh="Fridge_Body_3" material="M_Metal_A" class="visual" />
+			<geom mesh="Fridge_Body_0" class="collision" />
+			<geom mesh="Fridge_Body_1" class="collision" />
+			<geom mesh="Fridge_Body_2" class="collision" />
+			<geom mesh="Fridge_Body_3" class="collision" />
+		</body>
+		<body name="Oven_Drawer">
+			<geom material="M_Metal_A" mesh="Oven_Drawer" class="visual" />
+			<geom mesh="Oven_Drawer" class="collision" />
+		</body>
+		<body name="Oven_Rack">
+			<geom material="M_Metal_A" mesh="Oven_Rack" class="visual" />
+			<geom mesh="Oven_Rack" class="collision" />
+		</body>
+		<body name="Oven_Door_Glass">
+			<geom material="M_Glass" mesh="Oven_Door_Glass" class="visual" />
+			<geom mesh="Oven_Door_Glass" class="collision" />
+		</body>
+		<!-- <body name="Extractor_Light">
+			<geom material="M_Emissive" mesh="Extractor_Light" class="visual" />
+			<geom mesh="Extractor_Light" class="collision" />
+		</body> -->
+		<body name="Handle_J">
+			<geom material="M_Metal_A" mesh="Handle_J" class="visual" />
+			<geom mesh="Handle_J" class="collision" />
+		</body>
+		<body name="Counter_A">
+			<geom material="M_White_Painted_Wood" mesh="Counter_A" class="visual" />
+			<geom mesh="Counter_A" class="collision" />
+		</body>
+		<body name="Handle_C">
+			<geom material="M_Metal_A" mesh="Handle_C" class="visual" />
+			<geom mesh="Handle_C" class="collision" />
+		</body>
+		<body name="Extractor">
+			<geom material="M_Metal_A" mesh="Extractor" class="visual" />
+			<geom mesh="Extractor" class="collision" />
+		</body>
+		<body name="Glass_G">
+			<geom material="M_Glass" mesh="Glass_G" class="visual" />
+			<geom mesh="Glass_G" class="collision" />
+		</body>
+		<body name="Drawer_E">
+			<geom material="M_White_Painted_Wood" mesh="Drawer_E" class="visual" />
+			<geom mesh="Drawer_E" class="collision" />
+		</body>
+		<body name="Handle_E">
+			<geom material="M_Metal_A" mesh="Handle_E" class="visual" />
+			<geom mesh="Handle_E" class="collision" />
+		</body>
+		<body name="Emissive_C">
+			<geom material="M_Emissive" mesh="Emissive_C" class="visual" />
+			<geom mesh="Emissive_C" class="collision" />
+		</body>
+		<body name="Towel">
+			<geom material="M_Towel" mesh="Towel" class="visual" />
+			<geom mesh="Towel" class="collision" />
+		</body>
+		<body name="Floor_B">
+			<geom mesh="Floor_B_0" material="M_Metal_Black" class="visual" />
+			<geom mesh="Floor_B_1" material="M_Metal_B" class="visual" />
+			<geom mesh="Floor_B_2" material="M_Floor" class="visual" />
+			<geom mesh="Floor_B_0" class="collision" />
+			<geom mesh="Floor_B_1" class="collision" />
+			<!-- <geom mesh="Floor_B_2" class="collision" /> -->
+		</body>
+		<body name="Dishwasher_Rubber">
+			<geom material="M_Rubber" mesh="Dishwasher_Rubber" class="visual" />
+			<geom mesh="Dishwasher_Rubber" class="collision" />
+		</body>
+		<body name="Counter_Top_E">
+			<geom material="M_FingerJoint_Wood" mesh="Counter_Top_E" class="visual" />
+			<geom mesh="Counter_Top_E" class="collision" />
+		</body>
+		<body name="Range_Knobs">
+			<geom material="M_Metal_A" mesh="Range_Knobs" class="visual" />
+			<geom mesh="Range_Knobs" class="collision" />
+		</body>
+		<body name="Counter_Top_A">
+			<geom material="M_FingerJoint_Wood" mesh="Counter_Top_A" class="visual" />
+			<geom mesh="Counter_Top_A" class="collision" />
+		</body>
+		<body name="Counter_F">
+			<geom material="M_White_Painted_Wood" mesh="Counter_F" class="visual" />
+			<geom mesh="Counter_F" class="collision" />
+		</body>
+		<body name="Handle_Oven_Drawer">
+			<geom material="M_Metal_A" mesh="Handle_Oven_Drawer" class="visual" />
+			<geom mesh="Handle_Oven_Drawer" class="collision" />
+		</body>
+		<body name="Handle_K">
+			<geom material="M_Metal_A" mesh="Handle_K" class="visual" />
+			<geom mesh="Handle_K" class="collision" />
+		</body>
+		<body name="Door_H">
+			<geom material="M_White_Painted_Wood" mesh="Door_H" class="visual" />
+			<geom mesh="Door_H" class="collision" />
+		</body>
+		<body name="Couter_B">
+			<geom material="M_White_Painted_Wood" mesh="Couter_B" class="visual" />
+			<geom mesh="Couter_B" class="collision" />
+		</body>
+		<body name="Handle_D">
+			<geom material="M_Metal_A" mesh="Handle_D" class="visual" />
+			<geom mesh="Handle_D" class="collision" />
+		</body>
+		<body name="Oven_Door">
+			<geom material="M_Metal_Black" mesh="Oven_Door" class="visual" />
+			<geom mesh="Oven_Door" class="collision" />
+		</body>
+		<body name="Handle_F">
+			<geom material="M_Metal_A" mesh="Handle_F" class="visual" />
+			<geom mesh="Handle_F" class="collision" />
+		</body>
+		<body name="Counter_E">
+			<geom material="M_White_Painted_Wood" mesh="Counter_E" class="visual" />
+			<geom mesh="Counter_E" class="collision" />
+		</body>
+		<body name="Range">
+			<geom material="M_Metal_Black" mesh="Range" class="visual" />
+			<geom mesh="Range" class="collision" />
+		</body>
+		<body name="Handle_B">
+			<geom material="M_Metal_A" mesh="Handle_B" class="visual" />
+			<geom mesh="Handle_B" class="collision" />
+		</body>
+		<body name="Range_Stoves">
+			<geom material="M_Range_Top" mesh="Range_Stoves" class="visual" />
+			<geom mesh="Range_Stoves" class="collision" />
+		</body>
+		<body name="Glass_H">
+			<geom material="M_Glass" mesh="Glass_H" class="visual" />
+			<geom mesh="Glass_H" class="collision" />
+		</body>
+		<body name="Extractor_Glass">
+			<geom material="M_Glass" mesh="Extractor_Glass" class="visual" />
+			<geom mesh="Extractor_Glass" class="collision" />
+		</body>
+		<body name="Counter_D">
+			<geom material="M_White_Painted_Wood" mesh="Counter_D" class="visual" />
+			<geom mesh="Counter_D" class="collision" />
+		</body>
+		<body name="Door_K">
+			<geom material="M_White_Painted_Wood" mesh="Door_K" class="visual" />
+			<geom mesh="Door_K" class="collision" />
+		</body>
+		<body name="Shelf_D">
+			<geom material="M_White_Painted_Wood" mesh="Shelf_D" class="visual" />
+			<geom mesh="Shelf_D" class="collision" />
+		</body>
+		<body name="Extractor_switch">
+			<geom material="M_Metal_White" mesh="Extractor_switch" class="visual" />
+			<geom mesh="Extractor_switch" class="collision" />
+		</body>
+		<body name="Sink">
+			<geom material="M_Metal_A" mesh="Sink" class="visual" />
+			<geom mesh="Sink" class="collision" />
+		</body>
+		<body name="Drawer_N">
+			<geom material="M_White_Painted_Wood" mesh="Drawer_N" class="visual" />
+			<geom mesh="Drawer_N" class="collision" />
+		</body>
+		<body name="Fridge_Door_B">
+			<geom mesh="Fridge_Door_B_0" material="M_White_Painted_Wood" class="visual" />
+			<geom mesh="Fridge_Door_B_1" material="M_Rubber" class="visual" />
+			<geom mesh="Fridge_Door_B_2" material="M_Metal_Black" class="visual" />
+			<geom mesh="Fridge_Door_B_3" material="M_Metal_A" class="visual" />
+			<!-- <geom mesh="Fridge_Door_B_0" class="collision" />
+			<geom mesh="Fridge_Door_B_1" class="collision" />
+			<geom mesh="Fridge_Door_B_2" class="collision" />
+			<geom mesh="Fridge_Door_B_3" class="collision" /> -->
+		</body>
+		<body name="Emissive_B">
+			<geom material="M_Emissive" mesh="Emissive_B" class="visual" />
+			<geom mesh="Emissive_B" class="collision" />
+		</body>
+	</worldbody>
+	<default>
+		<default class="visual">
+			<geom group="2" type="mesh" contype="0" conaffinity="0" />
+		</default>
+		<default class="collision">
+			<geom group="3" type="mesh" />
+		</default>
+	</default>
+</mujoco>

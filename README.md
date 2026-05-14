@@ -10,8 +10,9 @@ The planned release payload is the HumanoidMimicGen loco-manipulation
 environment code under [robocasa/environments/locomanipulation](robocasa/environments/locomanipulation),
 plus the minimal RoboCasa support modules under [robocasa/models](robocasa/models)
 and [robocasa/utils](robocasa/utils) needed to import and register those
-environments. Large local RoboCasa assets are intentionally excluded from
-this repository snapshot. See:
+environments. The repository also includes the RoboCasa asset subset under
+[robocasa/models/assets](robocasa/models/assets) needed for the retained
+loco-manipulation environments and playback rendering. See:
 
 - [LICENSE](LICENSE) for the Apache 2.0 license text.
 - [NOTICE](NOTICE) for NVIDIA project notices.
@@ -25,20 +26,22 @@ this repository snapshot. See:
 This repository packages humanoid manipulation environments built on top of
 RoboCasa and robosuite. The included code focuses on simulation environment
 definitions used by the HumanoidMimicGen paper scans and the small support
-surface needed for import and registration. Datasets, model weights,
-generated outputs, and large object/scene asset payloads are not included in
-this snapshot.
+surface needed for import, registration, and rendering. Datasets, model
+weights, generated outputs, and unrelated large RoboCasa asset payloads are
+not included in this snapshot.
 
 # Getting Started
 
 ```bash
-python -m pip install -e .
+mamba create -n humanoidmimicgen python=3.12 -y
+mamba activate humanoidmimicgen
+python -m pip install -e ".[video]"
+python -c "import robocasa; print('robocasa import OK')"
 ```
 
-RoboCasa-compatible assets are required to instantiate most environments.
-Before public distribution, confirm the asset distribution plan and update
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) with any asset licenses and
-attributions that will be shipped.
+The retained RoboCasa loco-manipulation assets are included at
+`robocasa/models/assets`, so the paper environments and trajectory playback
+do not require an external asset root by default.
 
 # Requirements
 
@@ -52,8 +55,8 @@ attributions that will be shipped.
 # Usage
 
 Importing `robocasa` registers the included loco-manipulation environments
-with robosuite. Environment instantiation also requires compatible RoboCasa
-MJCF/object assets at `robocasa/models/assets` or an equivalent asset root.
+with robosuite. Environment instantiation uses the bundled assets at
+`robocasa/models/assets` by default.
 
 Trajectory datasets stored in robosuite / robomimic-style HDF5 files can be
 inspected with the playback script:
@@ -74,7 +77,10 @@ For headless video export, install the optional video extra and pass
 
 ```bash
 python -m pip install -e ".[video]"
-python scripts/playback_trajectories.py /path/to/demo.hdf5 --video-path playback.mp4 --no-render
+python scripts/playback_trajectories.py /path/to/demo.hdf5 \
+  --video-path playback.mp4 \
+  --width 320 \
+  --height 240
 ```
 
 Playback video export defaults to the `egoview` camera. Use `--camera` to
@@ -84,7 +90,8 @@ camera names. MuJoCo site markers, including gripper / IK debug indicators,
 are hidden by default; pass `--show-sites` when those markers are useful for
 debugging.
 
-If the RoboCasa asset tree is outside this checkout, pass it explicitly:
+If you need to override the bundled asset tree, pass an alternate root
+explicitly:
 
 ```bash
 python scripts/playback_trajectories.py /path/to/demo.hdf5 --assets-root /path/to/robocasa/models/assets

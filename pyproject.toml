@@ -37,3 +37,6 @@ visualization = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["robocasa*"]
+
+[tool.setuptools.package-data]
+"robocasa.models" = ["assets/**/*"]

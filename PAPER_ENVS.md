@@ -32,14 +32,13 @@ The retained environment files are:
 - [robocasa/environments/locomanipulation/base.py](robocasa/environments/locomanipulation/base.py)
 - [robocasa/environments/locomanipulation/locomanip.py](robocasa/environments/locomanipulation/locomanip.py)
 - [robocasa/environments/locomanipulation/locomanip_basic.py](robocasa/environments/locomanipulation/locomanip_basic.py)
-- [robocasa/environments/locomanipulation/locomanip_d1_variants.py](robocasa/environments/locomanipulation/locomanip_d1_variants.py)
 - [robocasa/environments/locomanipulation/locomanip_pnp.py](robocasa/environments/locomanipulation/locomanip_pnp.py)
 - [robocasa/environments/locomanipulation/locomanip_push.py](robocasa/environments/locomanipulation/locomanip_push.py)
 - [robocasa/environments/locomanipulation/locomanip_simple.py](robocasa/environments/locomanipulation/locomanip_simple.py)
 
 Several retained source files define additional ancestor and sibling classes.
 They are kept because the primary scan environments inherit shared scene,
-object, randomization, and D1-variant logic from those modules.
+object, and randomization logic from those modules.
 
 ## Minimal Support Files
 
