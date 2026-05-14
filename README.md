@@ -43,6 +43,27 @@ The retained RoboCasa loco-manipulation assets are included at
 `robocasa/models/assets`, so the paper environments and trajectory playback
 do not require an external asset root by default.
 
+## Clean Clone Replay Check
+
+The standalone install path can be verified from a fresh clone with:
+
+```bash
+git clone https://github.com/NVlabs/humanoidmimicgen.git
+cd humanoidmimicgen
+mamba create -n humanoidmimicgen-replay python=3.12 -y
+mamba activate humanoidmimicgen-replay
+python -m pip install -e ".[video]"
+python -c "import robocasa; print('robocasa import OK')"
+python scripts/playback_trajectories.py /path/to/demo.hdf5 \
+  --episodes demo_1 \
+  --video-path playback.mp4 \
+  --width 320 \
+  --height 240
+```
+
+No `--assets-root` argument should be needed for the bundled
+loco-manipulation assets.
+
 # Requirements
 
 - Python 3.10 or newer.
