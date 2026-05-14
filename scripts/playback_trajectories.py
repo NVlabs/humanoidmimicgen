@@ -61,9 +61,23 @@ REPLAY_ENV_ALIASES = {
 }
 
 
-class RawSimEnv:
-    def __init__(self, sim: Any):
+class MujocoControlPlaybackEnv:
+    def __init__(self, sim: Any, control_indices: list[int], control_freq: float):
         self.sim = sim
+        self.control_indices = np.asarray(control_indices, dtype=np.int64)
+        self.action_dim = len(control_indices)
+        self.steps_per_action = max(1, round(1.0 / (control_freq * self.sim.model.opt.timestep)))
+
+    def step(self, action: np.ndarray) -> tuple[None, float, bool, dict[str, Any]]:
+        action = np.asarray(action).reshape(-1)
+        if action.size != self.action_dim:
+            raise ValueError(f"Expected action dim {self.action_dim}, got {action.size}.")
+
+        self.sim.data.ctrl[:] = 0
+        self.sim.data.ctrl[self.control_indices] = action
+        for _ in range(self.steps_per_action):
+            self.sim.step()
+        return None, 0.0, False, {}
 
     def render(self) -> None:
         return None
@@ -434,7 +448,15 @@ def open_video_writer(args: argparse.Namespace) -> Any:
     return imageio.get_writer(args.video_path, fps=args.video_fps or args.fps)
 
 
-def prepare_raw_sim_env(env: Any, dataset_path: Path, episode_group: h5py.Group, args: argparse.Namespace) -> RawSimEnv:
+def prepare_mujoco_control_env(
+    env: Any,
+    dataset_path: Path,
+    episode_group: h5py.Group,
+    actions: np.ndarray,
+    action_names: list[str] | None,
+    control_freq: float,
+    args: argparse.Namespace,
+) -> MujocoControlPlaybackEnv:
     model_xml = read_model_xml(dataset_path, episode_group)
     if model_xml is None:
         raise ValueError("MuJoCo-control action playback requires episode model XML.")
@@ -445,7 +467,8 @@ def prepare_raw_sim_env(env: Any, dataset_path: Path, episode_group: h5py.Group,
 
     sim = MjSim.from_xml_string(model_xml)
     sim.reset()
-    raw_env = RawSimEnv(sim)
+    control_indices = build_mujoco_control_indices(sim, actions, action_names)
+    action_env = MujocoControlPlaybackEnv(sim, control_indices, control_freq)
     if args.video_path:
         MjRenderContextOffscreen(
             sim,
@@ -453,8 +476,8 @@ def prepare_raw_sim_env(env: Any, dataset_path: Path, episode_group: h5py.Group,
             max_width=max(args.width, 640),
             max_height=max(args.height, 480),
         )
-        configure_render_context(raw_env, args)
-    return raw_env
+        configure_render_context(action_env, args)
+    return action_env
 
 
 def action_name_candidates(action_name: str) -> list[str]:
@@ -467,19 +490,19 @@ def action_name_candidates(action_name: str) -> list[str]:
 
 
 def build_mujoco_control_indices(
-    raw_env: RawSimEnv,
+    sim: Any,
     actions: np.ndarray,
     action_names: list[str] | None,
 ) -> list[int]:
     action_dim = actions.shape[1] if actions.ndim == 2 else 1
-    actuator_names = set(raw_env.sim.model.actuator_names)
+    actuator_names = set(sim.model.actuator_names)
     if action_names is None:
-        if action_dim != raw_env.sim.model.nu:
+        if action_dim != sim.model.nu:
             raise ValueError(
                 "Cannot infer MuJoCo control mapping: action metadata is missing and "
-                f"action dim {action_dim} != model.nu {raw_env.sim.model.nu}."
+                f"action dim {action_dim} != model.nu {sim.model.nu}."
             )
-        return list(range(raw_env.sim.model.nu))
+        return list(range(sim.model.nu))
 
     if len(action_names) != action_dim:
         raise ValueError(
@@ -496,7 +519,7 @@ def build_mujoco_control_indices(
         if actuator_name is None:
             missing.append(action_name)
             continue
-        control_indices.append(raw_env.sim.model.actuator_name2id(actuator_name))
+        control_indices.append(sim.model.actuator_name2id(actuator_name))
     if missing:
         raise ValueError(f"Could not map action names to MuJoCo actuators: {missing}")
     return control_indices
@@ -569,39 +592,6 @@ def playback_actions(
     return played
 
 
-def playback_mujoco_controls(
-    raw_env: RawSimEnv,
-    states: np.ndarray | None,
-    actions: np.ndarray,
-    control_indices: list[int],
-    control_freq: float,
-    args: argparse.Namespace,
-    writer: Any,
-    episode: str,
-) -> int:
-    start = max(args.start_step, 0)
-    stop = len(actions) if args.max_steps is None else min(len(actions), start + args.max_steps)
-    if states is not None and start < len(states):
-        raw_env.sim.set_state_from_flattened(states[start])
-        raw_env.sim.forward()
-
-    steps_per_action = max(1, round(1.0 / (control_freq * raw_env.sim.model.opt.timestep)))
-    played = 0
-    for frame_index, action_index in enumerate(range(start, stop)):
-        raw_env.sim.data.ctrl[:] = 0
-        raw_env.sim.data.ctrl[control_indices] = np.asarray(actions[action_index]).reshape(-1)
-        for _ in range(steps_per_action):
-            raw_env.sim.step()
-        maybe_render(raw_env, args, writer, frame_index, render_stride=args.stride)
-        if args.check_drift and states is not None and action_index + 1 < len(states):
-            state_playback = raw_env.sim.get_state().flatten()
-            err = np.linalg.norm(states[action_index + 1] - state_playback)
-            if err > 1e-8:
-                print(f"[warning] {episode} mujoco-control step {action_index} drifted by {err:.6g}")
-        played += 1
-    return played
-
-
 def resolve_action_backend(
     args: argparse.Namespace,
     env: Any,
@@ -660,19 +650,17 @@ def main() -> None:
                         reset_env_from_episode(env, dataset_path, episode_group, args, mode)
                         count = playback_actions(env, states, actions, args, writer, episode)
                     else:
-                        raw_env = prepare_raw_sim_env(env, dataset_path, episode_group, args)
-                        control_indices = build_mujoco_control_indices(raw_env, actions, action_names)
-                        count = playback_mujoco_controls(
-                            raw_env,
-                            states,
+                        action_env = prepare_mujoco_control_env(
+                            env,
+                            dataset_path,
+                            episode_group,
                             actions,
-                            control_indices,
+                            action_names,
                             control_freq,
                             args,
-                            writer,
-                            episode,
                         )
-                        raw_env.close()
+                        count = playback_actions(action_env, states, actions, args, writer, episode)
+                        action_env.close()
                 print(f"Played {episode}: {count} {mode} steps")
         finally:
             if writer is not None:

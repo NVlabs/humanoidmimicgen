@@ -70,10 +70,11 @@ python scripts/playback_trajectories.py /path/to/demo.hdf5
 Action playback is the default. When recorded actions match the robosuite
 environment action space, the script uses `env.step`. For G1 whole-body demos
 whose `actions` are recorded 43-dof whole-body control outputs, the script uses
-the saved episode XML and applies those controls to the MuJoCo actuators instead
-of setting every recorded state. If you have a compatible robosuite controller
-configuration, pass `--controller-config` with `--action-backend env` to replay
-through `env.step`. To compare action replay against recorded states:
+an env-like `step(action)` adapter over the saved episode XML, applying those
+controls to the MuJoCo actuators instead of setting every recorded state. If you
+have a compatible robosuite controller configuration, pass `--controller-config`
+with `--action-backend env` to replay through the robosuite environment itself.
+To compare action replay against recorded states:
 
 ```bash
 python scripts/playback_trajectories.py /path/to/demo.hdf5 --check-drift
