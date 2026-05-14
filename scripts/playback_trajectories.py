@@ -32,6 +32,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from robocasa.utils.robot_control_playback import make_mujoco_control_playback_env
+
 
 INTERNAL_METADATA_KEYS = {
     "env_lang",
@@ -59,31 +61,6 @@ REPLAY_ENV_ALIASES = {
     "LMDrillPnP90": "LMDrillPnP90Bi",
     "LMPickDrillFromHolder": "LMPickDrillFromHolderStandingEasyFar",
 }
-
-
-class MujocoControlPlaybackEnv:
-    def __init__(self, sim: Any, control_indices: list[int], control_freq: float):
-        self.sim = sim
-        self.control_indices = np.asarray(control_indices, dtype=np.int64)
-        self.action_dim = len(control_indices)
-        self.steps_per_action = max(1, round(1.0 / (control_freq * self.sim.model.opt.timestep)))
-
-    def step(self, action: np.ndarray) -> tuple[None, float, bool, dict[str, Any]]:
-        action = np.asarray(action).reshape(-1)
-        if action.size != self.action_dim:
-            raise ValueError(f"Expected action dim {self.action_dim}, got {action.size}.")
-
-        self.sim.data.ctrl[:] = 0
-        self.sim.data.ctrl[self.control_indices] = action
-        for _ in range(self.steps_per_action):
-            self.sim.step()
-        return None, 0.0, False, {}
-
-    def render(self) -> None:
-        return None
-
-    def close(self) -> None:
-        return None
 
 
 def import_sim_stack() -> Any:
@@ -456,7 +433,7 @@ def prepare_mujoco_control_env(
     action_names: list[str] | None,
     control_freq: float,
     args: argparse.Namespace,
-) -> MujocoControlPlaybackEnv:
+) -> Any:
     model_xml = read_model_xml(dataset_path, episode_group)
     if model_xml is None:
         raise ValueError("MuJoCo-control action playback requires episode model XML.")
@@ -467,8 +444,7 @@ def prepare_mujoco_control_env(
 
     sim = MjSim.from_xml_string(model_xml)
     sim.reset()
-    control_indices = build_mujoco_control_indices(sim, actions, action_names)
-    action_env = MujocoControlPlaybackEnv(sim, control_indices, control_freq)
+    action_env = make_mujoco_control_playback_env(sim, actions, action_names, control_freq)
     if args.video_path:
         MjRenderContextOffscreen(
             sim,
@@ -478,51 +454,6 @@ def prepare_mujoco_control_env(
         )
         configure_render_context(action_env, args)
     return action_env
-
-
-def action_name_candidates(action_name: str) -> list[str]:
-    candidates = [action_name, f"robot0_{action_name}"]
-    if action_name.startswith("left_hand_"):
-        candidates.append(f"gripper0_left_{action_name}")
-    if action_name.startswith("right_hand_"):
-        candidates.append(f"gripper0_right_{action_name}")
-    return candidates
-
-
-def build_mujoco_control_indices(
-    sim: Any,
-    actions: np.ndarray,
-    action_names: list[str] | None,
-) -> list[int]:
-    action_dim = actions.shape[1] if actions.ndim == 2 else 1
-    actuator_names = set(sim.model.actuator_names)
-    if action_names is None:
-        if action_dim != sim.model.nu:
-            raise ValueError(
-                "Cannot infer MuJoCo control mapping: action metadata is missing and "
-                f"action dim {action_dim} != model.nu {sim.model.nu}."
-            )
-        return list(range(sim.model.nu))
-
-    if len(action_names) != action_dim:
-        raise ValueError(
-            f"Action metadata has {len(action_names)} names but actions have dim {action_dim}."
-        )
-
-    control_indices = []
-    missing = []
-    for action_name in action_names:
-        actuator_name = next(
-            (candidate for candidate in action_name_candidates(action_name) if candidate in actuator_names),
-            None,
-        )
-        if actuator_name is None:
-            missing.append(action_name)
-            continue
-        control_indices.append(sim.model.actuator_name2id(actuator_name))
-    if missing:
-        raise ValueError(f"Could not map action names to MuJoCo actuators: {missing}")
-    return control_indices
 
 
 def render_frame(env: Any, args: argparse.Namespace) -> np.ndarray:
