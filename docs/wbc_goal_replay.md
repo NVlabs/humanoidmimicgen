@@ -16,7 +16,7 @@ Use `scripts/playback_wbc_goals.py` for LeRobot-style datasets that contain:
   - `teleop.base_height_command`
   - `observation.sim.target_upper_body_pose`
 
-The wrapper sets the GR00T playback config to:
+The HumanoidMimicGen replay module sets the local WBC playback config to:
 
 ```text
 use_actions=True
@@ -33,9 +33,10 @@ when strict state equality still reports drift.
 
 ## Environment
 
-The public HumanoidMimicGen repo includes the environment subset, but this
-WBC-goal replay also needs GR00T's controller stack and WBC checkpoints. Use a
-GR00T checkout that has the G1 controller dependencies and LFS assets:
+The public HumanoidMimicGen repo now owns the WBC-goal replay driver logic,
+but execution still needs GR00T's controller stack, sync-sim environment, robot
+model, dataset loader, and WBC checkpoints. Use a GR00T checkout that has the
+G1 controller dependencies and LFS assets:
 
 ```bash
 git clone git@github.com:NVlabs/gr00t.git /path/to/gr00t
@@ -60,7 +61,7 @@ export MUJOCO_GL=egl
 
 ## Run One Dataset
 
-Pass the LeRobot dataset root. If you pass a `demo.hdf5` path, the wrapper uses
+Pass the LeRobot dataset root. If you pass a `demo.hdf5` path, the script uses
 its parent as the dataset root.
 
 ```bash
@@ -96,7 +97,7 @@ strict state replay success: 0/6
 ```
 
 So the WBC-goal path is currently the best reproduction path for full-episode
-videos, but strict replay correctness is not solved by this wrapper.
+videos, but strict replay correctness is not solved by this replay path.
 
 ## Stitch Outputs
 

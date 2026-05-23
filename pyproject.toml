@@ -36,7 +36,7 @@ visualization = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["robocasa*"]
+include = ["robocasa*", "humanoidmimicgen*"]
 
 [tool.setuptools.package-data]
 "robocasa.models" = ["assets/**/*"]

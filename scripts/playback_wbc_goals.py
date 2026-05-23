@@ -13,13 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Replay G1 loco-manipulation LeRobot episodes through stored WBC goals.
-
-This is intentionally a small bridge into the GR00T control stack. The
-HumanoidMimicGen repository contains the public environment subset, but the
-successful whole-body-controller replay path also needs GR00T's WBC policy,
-robot model, sync-sim environment, and checkpoint files.
-"""
+"""Replay G1 loco-manipulation LeRobot episodes through stored WBC goals."""
 
 from __future__ import annotations
 
@@ -112,12 +106,14 @@ def main() -> int:
 
     try:
         import rclpy
-        from groot.control.main.teleop.playback_sync_sim_data import SyncSimPlaybackConfig
-        from groot.control.main.teleop.playback_sync_sim_data import main as playback_main
+        from humanoidmimicgen.wbc_goal_playback import (
+            SyncSimPlaybackConfig,
+            playback_wbc_goal_dataset,
+        )
     except ImportError as exc:
         raise ImportError(
-            "WBC-goal playback requires the GR00T control stack on PYTHONPATH. "
-            "Install GR00T or pass --groot-root /path/to/gr00t."
+            "WBC-goal playback requires HumanoidMimicGen and the GR00T control stack "
+            "on PYTHONPATH. Install this repo plus GR00T, or pass --groot-root /path/to/gr00t."
         ) from exc
 
     config = SyncSimPlaybackConfig()
@@ -133,7 +129,7 @@ def main() -> int:
     rclpy.init(args=None)
     node = rclpy.create_node("humanoidmimicgen_wbc_goal_playback")
     try:
-        ok = bool(playback_main(config))
+        ok = bool(playback_wbc_goal_dataset(config))
     finally:
         node.destroy_node()
         rclpy.shutdown()
