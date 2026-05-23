@@ -102,6 +102,13 @@ camera names. MuJoCo site markers, including gripper / IK debug indicators,
 are hidden by default; pass `--show-sites` when those markers are useful for
 debugging.
 
+For G1 LeRobot datasets with saved WBC goals, use
+[scripts/playback_wbc_goals.py](scripts/playback_wbc_goals.py). That path
+replays the saved high-level WBC goal, including navigation command, through
+the GR00T whole-body controller. See
+[docs/wbc_goal_replay.md](docs/wbc_goal_replay.md) for the required GR00T
+environment and example commands.
+
 If you need to override the bundled asset tree, pass an alternate root
 explicitly:
 
