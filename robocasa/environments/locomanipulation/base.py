@@ -38,14 +38,20 @@ from robocasa.utils.object_utils import check_obj_upright
 from robocasa.utils.visuals_utls import Gradient, randomize_materials_rgba
 
 RETAINED_LOCOMANIPULATION_ENV_NAMES = (
+    "LMDrillLift",
     "LMDrillLiftBi",
+    "LMDrillPnP90",
     "LMDrillPnP90Bi",
     "LMDrillLiftObstacleBi",
+    "LMPickDrillFromHolderStanding",
     "LMPickDrillFromHolderStandingEasyFar",
     "LMPushButton",
     "LMBoxLift",
     "LMBoxLiftFloor",
+    "LMBoxTableToCartStaticDT",
     "LMBoxTableToShelfStaticIndustrial",
+    "LMBottleLiftLowShelf",
+    "LMTargetPnPBottleStatic",
     "LMPushShelfForward",
 )
 
@@ -334,12 +340,6 @@ class LocoManipulationEnv(ManipulationEnv, metaclass=LocoManipulationEnvMeta):
                         new_path = robosuite_models_candidate
 
                 elem.set("file", new_path)
-
-        for elem in meshes:
-            mesh_name = elem.get("name", "")
-            mesh_file = elem.get("file", "")
-            if "gear_factory" in mesh_name or "gear_factory" in mesh_file:
-                elem.set("inertia", "shell")
 
         # set cameras
         for cam_name, cam_config in self._cam_configs.items():

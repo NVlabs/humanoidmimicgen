@@ -5,7 +5,7 @@ import gymnasium as gym
 from gymnasium.envs.registration import register
 import numpy as np
 from robocasa.models.robots import GROOT2_ENVS_ROBOTS
-from robocasa.utils.gym_utils.gymnasium_basic import REGISTERED_ENVS
+from robosuite.environments.base import REGISTERED_ENVS
 from scipy.spatial.transform import Rotation as R
 
 from humanoidmimicgen.wbc.envs.robocasa.utils.controller_utils import update_robosuite_controller_configs
@@ -237,7 +237,18 @@ class SyncEnv(gym.Env):
                     )
                     env.sim.forward()
             if "states" in state:
-                env.sim.set_state_from_flattened(state["states"])
+                try:
+                    env.sim.set_state_from_flattened(state["states"])
+                except ValueError:
+                    legacy_state = np.asarray(state["states"])
+                    nq = env.sim.model.nq
+                    nv = env.sim.model.nv
+                    full_state_len = 1 + nq + nv
+                    if legacy_state.shape[0] < 1 + nq or legacy_state.shape[0] > full_state_len:
+                        raise
+                    padded_state = np.zeros(full_state_len, dtype=legacy_state.dtype)
+                    padded_state[: legacy_state.shape[0]] = legacy_state
+                    env.sim.set_state_from_flattened(padded_state)
                 if do_visual_domain_randomization:
                     randomize_appearances(
                         env,

@@ -5,12 +5,11 @@ from gymnasium import spaces
 import mujoco
 import numpy as np
 import robocasa
-from robocasa.utils.gym_utils.gymnasium_basic import (
-    RoboCasaEnv,
-    create_env_robosuite,
-)
 from robocasa.wrappers.ik_wrapper import IKWrapper
+import robosuite
 from robosuite.controllers import load_composite_controller_config
+from robosuite.controllers.composite.composite_controller import HybridMobileBase
+from robosuite.environments.base import REGISTERED_ENVS
 from robosuite.utils.log_utils import ROBOSUITE_DEFAULT_LOGGER
 
 from humanoidmimicgen.wbc.envs.robocasa.utils.cam_key_converter import CameraKeyMapper
@@ -21,6 +20,86 @@ try:
 except ImportError:
     import robosuite.macros as macros
 macros.SIMULATION_TIMESTEP = 0.005  # 200hz
+
+
+def create_env_robosuite(
+    env_name: str,
+    robots,
+    controller_configs,
+    camera_names,
+    camera_widths,
+    camera_heights,
+    render_camera=None,
+    enable_render=True,
+    onscreen=False,
+    renderer="mjviewer",
+    translucent_robot=True,
+    control_freq=20,
+    seed=None,
+    **kwargs,
+):
+    env_kwargs = dict(
+        env_name=env_name,
+        robots=robots,
+        controller_configs=controller_configs,
+        camera_names=camera_names,
+        camera_widths=camera_widths,
+        camera_heights=camera_heights,
+        has_renderer=onscreen,
+        has_offscreen_renderer=enable_render,
+        renderer=renderer,
+        ignore_done=True,
+        use_object_obs=True,
+        use_camera_obs=enable_render,
+        camera_depths=False,
+        seed=seed,
+        translucent_robot=translucent_robot,
+        control_freq=control_freq,
+        render_camera=render_camera,
+    )
+    env_kwargs.update(kwargs)
+    if env_name not in REGISTERED_ENVS:
+        raise ValueError(f"Unknown local RoboCasa env: {env_name}")
+    return robosuite.make(**env_kwargs), env_kwargs
+
+
+class RoboCasaEnv:
+    def reset(self, seed=None, options=None):
+        raw_obs = self.env.reset()
+        return self.get_basic_observation(raw_obs), {}
+
+    def step(self, action):
+        action_dict = dict(action)
+        env_action = []
+        for robot in self.env.robots:
+            cc = robot.composite_controller
+            pf = robot.robot_model.naming_prefix
+            robot_action = np.zeros(cc.action_limits[0].shape)
+            for part_name in cc.part_controllers:
+                start_idx, end_idx = cc._action_split_indexes[part_name]
+                robot_action[start_idx:end_idx] = action_dict.pop(f"{pf}{part_name}")
+            if isinstance(cc, HybridMobileBase):
+                robot_action[-1] = action_dict.pop(f"{pf}base_mode")
+            env_action.append(robot_action)
+
+        if action_dict:
+            raise ValueError(f"Unprocessed local RoboCasa action keys: {sorted(action_dict)}")
+
+        raw_obs, reward, done, info = self.env.step(np.concatenate(env_action))
+        info = dict(info)
+        info["success"] = reward > 0
+        info["intermediate_signals"] = {}
+        return self.get_basic_observation(raw_obs), reward, done, False, info
+
+    def render(self):
+        return self.render_cache
+
+    def close(self):
+        self.env.close()
+
+    @property
+    def unwrapped(self):
+        return self
 
 
 def get_body_pose(

@@ -310,6 +310,12 @@ def load_lerobot_dataset(root_path: str | os.PathLike[str], max_episodes: int | 
 
 
 def validate_state(recorded_state, playback_state, ep, step, tolerance=1e-5) -> bool:
+    if recorded_state.shape != playback_state.shape:
+        print(
+            f"[warning] state shape changed from {recorded_state.shape} to "
+            f"{playback_state.shape} for ep {ep} at step {step}"
+        )
+        return False
     if not np.allclose(recorded_state, playback_state, atol=tolerance):
         err = np.linalg.norm(recorded_state - playback_state)
         print(f"[warning] state diverged by {err:.12f} for ep {ep} at step {step}")

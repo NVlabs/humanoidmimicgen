@@ -18,6 +18,7 @@ from .locomanip_basic import *  # noqa: F401,F403
 from .locomanip_pnp import *  # noqa: F401,F403
 from .locomanip_push import *  # noqa: F401,F403
 from .locomanip_simple import *  # noqa: F401,F403
+from .locomanip_targets import *  # noqa: F401,F403
 
 PAPER_LOCOMANIPULATION_ENVIRONMENTS = RETAINED_LOCOMANIPULATION_ENV_NAMES
 ALL_LOCOMANIPULATION_ENVIRONMENTS = PAPER_LOCOMANIPULATION_ENVIRONMENTS
