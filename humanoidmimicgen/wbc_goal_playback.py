@@ -1,12 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-"""Replay LeRobot G1 episodes through stored WBC goals.
-
-This module vendors the narrow replay path HumanoidMimicGen needs from GR00T's
-``playback_sync_sim_data.py`` flow. It keeps the actual GR00T controller,
-environment, policy, robot-model, and dataset dependencies external, but avoids
-depending on GR00T's teleop playback script as an API surface.
-"""
+"""Replay LeRobot G1 episodes through stored WBC goals."""
 
 from __future__ import annotations
 
@@ -74,8 +68,8 @@ def override_wbc_config(
 class SyncSimPlaybackConfig:
     """Configuration for WBC-goal replay.
 
-    The fields mirror the subset of GR00T's sync-sim playback config needed by
-    ``groot.control.utils.sync_sim_utils`` and the WBC policy factory.
+    The fields mirror the subset of sync-sim playback config needed by the
+    local runtime facade and the WBC policy factory.
     """
 
     dataset_version: str = "v1"
@@ -101,6 +95,11 @@ class SyncSimPlaybackConfig:
     verbose_timing: bool = False
     keyboard_dispatcher_type: str = "raw"
     enable_gravity_compensation: bool = False
+    use_dual_wbc_env: bool = False
+    controller_initial_base_height: float = 0.74
+    controller_min_base_height: float = 0.3
+    controller_max_base_height: float = 1.1
+    use_raised_arm_pose: bool = False
     gravity_compensation_joints: list[str] | None = None
     joint_safety_mode: Literal["kill", "freeze"] = "kill"
     arm_velocity_limit: float = 25.0
@@ -166,11 +165,13 @@ class SyncSimPlaybackConfig:
     def __post_init__(self) -> None:
         if self.gravity_compensation_joints is None:
             self.gravity_compensation_joints = ["arms"]
-        try:
-            from groot.control.utils import network_utils
-
-            self.interface, self.env_type = network_utils.resolve_interface(self.interface)
-        except Exception:
+        if self.interface in {"sim", "real"}:
+            self.env_type = self.interface
+        elif self.interface.startswith("sim"):
+            self.interface, self.env_type = "sim", "sim"
+        elif self.interface.startswith("real"):
+            self.interface, self.env_type = "real", "real"
+        else:
             self.env_type = self.interface
         try:
             self.commit_id = (
@@ -227,29 +228,19 @@ class SyncSimPlaybackConfig:
             raise ValueError("intervention requires save_video")
 
     def load_wbc_yaml(self) -> dict:
-        import groot
-
-        groot_path = Path(groot.__file__).resolve().parent
+        config_root = Path(__file__).resolve().parent / "configs" / "wbc"
         if self.wbc_version == "v1":
-            config_path = groot_path / "control/main/teleop/configs/g1_43dof_hist.yaml"
+            config_path = config_root / "g1_43dof_hist.yaml"
         elif self.wbc_version == "v2":
-            config_path = (
-                groot_path
-                / "control/main/teleop/configs/g1_29dof_waist_stand_height_history_fixed3dex.yaml"
-            )
+            config_path = config_root / "g1_29dof_waist_stand_height_history_fixed3dex.yaml"
         elif self.wbc_version == "homie":
-            config_path = groot_path / "control/main/teleop/configs/g1_29dof_homie.yaml"
-        elif self.wbc_version == "homie_v2":
-            config_path = groot_path / "control/main/teleop/configs/g1_29dof_homie_v2.yaml"
+            config_path = config_root / "g1_29dof_homie.yaml"
+        elif self.wbc_version == "homie_v2" or self.wbc_version.startswith("homie_v2_"):
+            config_path = config_root / "g1_29dof_homie_v2.yaml"
         elif self.wbc_version == "locomotion_z":
-            config_path = (
-                groot_path / "control/main/rl/configs/rl_wbc_config/g1_29dof_locomotion_z.yaml"
-            )
+            config_path = config_root / "g1_29dof_locomotion_z.yaml"
         elif self.wbc_version == "local_tracking":
-            config_path = (
-                groot_path
-                / "control/main/rl/configs/rl_wbc_config/g1_29dof_local_tracking.yaml"
-            )
+            config_path = config_root / "g1_29dof_local_tracking.yaml"
         else:
             raise ValueError(f"Invalid wbc_version: {self.wbc_version}")
 
@@ -259,7 +250,7 @@ class SyncSimPlaybackConfig:
 
 
 def load_lerobot_dataset(root_path: str | os.PathLike[str], max_episodes: int | None = None):
-    from groot.data.exporter import TypedLeRobotDataset
+    from humanoidmimicgen.lerobot_dataset import TypedLeRobotDataset
 
     task_name = None
     episodes = []
@@ -327,7 +318,7 @@ def validate_state(recorded_state, playback_state, ep, step, tolerance=1e-5) -> 
 
 
 def capture_or_render_frame(env, onscreen: bool, config: SyncSimPlaybackConfig, video_writer):
-    from groot.data.constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
+    from humanoidmimicgen.wbc_constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
 
     if config.save_video:
         img = env.sim.render(
@@ -373,9 +364,8 @@ def playback_wbc_goals(
 
 
 def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
-    from groot.control.robot_model.instantiation import get_robot_type_and_model
-    from groot.control.utils.sync_sim_utils import get_env, get_policies
-    from groot.data.constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
+    from humanoidmimicgen.wbc_constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
+    from humanoidmimicgen.wbc_runtime import get_env, get_policies, get_robot_type_and_model
 
     ret = True
     start_time = time.time()

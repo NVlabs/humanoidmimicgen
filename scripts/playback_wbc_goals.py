@@ -23,16 +23,19 @@ import subprocess
 import sys
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Replay a LeRobot dataset with GR00T's stored WBC-goal playback path. "
+            "Replay a LeRobot dataset with HumanoidMimicGen's stored WBC-goal playback path. "
             "Pass a LeRobot dataset root; if demo.hdf5 is passed, its parent is used."
         )
     )
     parser.add_argument("dataset", type=Path, help="LeRobot dataset root, or a demo.hdf5 inside it.")
-    parser.add_argument("--groot-root", type=Path, help="Path to a GR00T checkout to add to PYTHONPATH.")
     parser.add_argument("--video-path", type=Path, required=True, help="Raw replay MP4 output path.")
     parser.add_argument(
         "--lowres-video-path",
@@ -45,7 +48,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--strict",
         action="store_true",
-        help="Exit nonzero when GR00T reports state divergence. Videos can still be valid when strict replay fails.",
+        help="Exit nonzero when state replay diverges. Videos can still be valid when strict replay fails.",
     )
     return parser.parse_args()
 
@@ -61,15 +64,6 @@ def resolve_dataset(path: Path) -> Path:
             f"{dataset} does not look like a LeRobot dataset root; missing meta/episodes.jsonl"
         )
     return dataset
-
-
-def add_groot_to_path(groot_root: Path | None) -> None:
-    if groot_root is None:
-        return
-    root = groot_root.expanduser().resolve()
-    if not root.exists():
-        raise FileNotFoundError(f"GR00T checkout not found: {root}")
-    sys.path.insert(0, str(root))
 
 
 def maybe_downscale(video_path: Path, lowres_video_path: Path | None, width: int) -> None:
@@ -99,7 +93,6 @@ def maybe_downscale(video_path: Path, lowres_video_path: Path | None, width: int
 def main() -> int:
     args = parse_args()
     os.environ.setdefault("MUJOCO_GL", args.mujoco_gl)
-    add_groot_to_path(args.groot_root)
     dataset = resolve_dataset(args.dataset)
     args.video_path = args.video_path.expanduser().resolve()
     args.video_path.parent.mkdir(parents=True, exist_ok=True)
@@ -112,8 +105,8 @@ def main() -> int:
         )
     except ImportError as exc:
         raise ImportError(
-            "WBC-goal playback requires HumanoidMimicGen and the GR00T control stack "
-            "on PYTHONPATH. Install this repo plus GR00T, or pass --groot-root /path/to/gr00t."
+            "WBC-goal playback requires HumanoidMimicGen and the WBC controller runtime "
+            "on PYTHONPATH. Install this repo plus the controller runtime checkout."
         ) from exc
 
     config = SyncSimPlaybackConfig()

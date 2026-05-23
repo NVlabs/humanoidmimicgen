@@ -10,7 +10,7 @@ Use `scripts/playback_wbc_goals.py` for LeRobot-style datasets that contain:
 
 - `meta/episodes.jsonl`
 - saved simulator state under `observation.sim.mujoco_state`
-- saved WBC goal fields reconstructed by GR00T's dataset loader:
+- saved WBC goal fields reconstructed by HumanoidMimicGen's dataset loader:
   - `action.eef`
   - `teleop.navigate_command`
   - `teleop.base_height_command`
@@ -34,9 +34,9 @@ when strict state equality still reports drift.
 ## Environment
 
 The public HumanoidMimicGen repo now owns the WBC-goal replay driver logic,
-but execution still needs GR00T's controller stack, sync-sim environment, robot
-model, dataset loader, and WBC checkpoints. Use a GR00T checkout that has the
-G1 controller dependencies and LFS assets:
+local dataset reader, and WBC YAML lookup. Execution still needs the controller
+runtime, sync-sim environment, robot model, and WBC checkpoints from a checkout
+with the G1 controller dependencies and LFS assets:
 
 ```bash
 git clone git@github.com:NVlabs/gr00t.git /path/to/gr00t
@@ -67,7 +67,6 @@ its parent as the dataset root.
 ```bash
 python scripts/playback_wbc_goals.py \
   /path/to/gr00t/groot/dexmg/collected_demo/G1_LMPushButton_20260129_234556 \
-  --groot-root /path/to/gr00t \
   --video-path /tmp/pushbutton_wbc_goal_raw.mp4 \
   --lowres-video-path /tmp/pushbutton_wbc_goal_320w.mp4 \
   --lowres-width 320
