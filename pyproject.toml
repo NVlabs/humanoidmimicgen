@@ -41,3 +41,13 @@ include = ["robocasa*", "humanoidmimicgen*"]
 [tool.setuptools.package-data]
 "robocasa.models" = ["assets/**/*"]
 "humanoidmimicgen" = ["configs/wbc/*.yaml"]
+"humanoidmimicgen.wbc" = [
+    "**/*.json",
+    "**/*.md",
+    "**/*.onnx",
+    "**/*.STL",
+    "**/*.stl",
+    "**/*.urdf",
+    "**/*.xml",
+    "**/*.yaml",
+]

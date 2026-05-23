@@ -1,8 +1,8 @@
 # WBC-Goal Replay
 
-This is the minimal path that reproduced the useful full-episode G1 replay
-videos in GR00T: replay stored `wbc_goal` records through the whole-body
-controller instead of applying the saved joint action vector directly.
+This is the minimal path that reproduced useful full-episode G1 replay videos:
+replay stored `wbc_goal` records through the whole-body controller instead of
+applying the saved joint action vector directly.
 
 ## What This Replays
 
@@ -33,24 +33,21 @@ when strict state equality still reports drift.
 
 ## Environment
 
-The public HumanoidMimicGen repo now owns the WBC-goal replay driver logic,
-local dataset reader, and WBC YAML lookup. Execution still needs the controller
-runtime, sync-sim environment, robot model, and WBC checkpoints from a checkout
-with the G1 controller dependencies and LFS assets:
+HumanoidMimicGen owns the WBC-goal replay driver, dataset reader, WBC runtime
+wrapper, G1 robot model assets, and bundled `stand.onnx` / `walk.onnx` policy
+files. Execution still needs a Python environment with the controller
+dependencies installed, including Pinocchio, ONNX Runtime, RoboSuite, and
+RoboCasa:
 
 ```bash
-git clone git@github.com:NVlabs/gr00t.git /path/to/gr00t
-cd /path/to/gr00t
-git lfs pull --include="groot/control/robot_model/model_data/**,groot/control/wbc_checkpoints/**,external_dependencies/**"
-uv sync --extra dev
-source .venv/bin/activate
+python -m pip install -e ".[video]"
 ```
 
-Install this repo into the same environment:
+If you are using internal RoboCasa/RoboSuite checkouts, put them on
+`PYTHONPATH` ahead of this repo:
 
 ```bash
-cd /path/to/humanoidmimicgen
-python -m pip install -e ".[video]"
+export PYTHONPATH=/path/to/grootrobocasa:/path/to/grootrobosuite:/path/to/humanoidmimicgen
 ```
 
 For headless Linux rendering:
@@ -66,7 +63,7 @@ its parent as the dataset root.
 
 ```bash
 python scripts/playback_wbc_goals.py \
-  /path/to/gr00t/groot/dexmg/collected_demo/G1_LMPushButton_20260129_234556 \
+  /path/to/collected_demo/G1_LMPushButton_20260129_234556 \
   --video-path /tmp/pushbutton_wbc_goal_raw.mp4 \
   --lowres-video-path /tmp/pushbutton_wbc_goal_320w.mp4 \
   --lowres-width 320
