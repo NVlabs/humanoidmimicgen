@@ -32,6 +32,8 @@ not included in this snapshot.
 
 # Getting Started
 
+For environment import, trajectory playback, and other non-WBC workflows:
+
 ```bash
 git clone https://github.com/NVlabs/humanoidmimicgen.git
 cd humanoidmimicgen
@@ -45,6 +47,31 @@ The retained RoboCasa loco-manipulation assets are included at
 `robocasa/models/assets`, so the paper environments and trajectory playback
 do not require an external asset root by default.
 
+For G1 LeRobot WBC-goal replay, use the replay extra:
+
+```bash
+mamba create -n humanoidmimicgen-wbc python=3.10 -y
+mamba activate humanoidmimicgen-wbc
+python -m pip install -e ".[wbc-replay]"
+```
+
+The WBC replay path uses RoboCasa wrappers that are not part of this trimmed
+release snapshot. Put a full RoboCasa checkout, a compatible RoboSuite checkout,
+and this repository on `PYTHONPATH` before running WBC replay:
+
+```bash
+export PYTHONPATH=/path/to/full/robocasa:/path/to/compatible/robosuite:/path/to/humanoidmimicgen
+```
+
+For the local GR00T workspace this is:
+
+```bash
+export PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/humanoidmimicgen
+```
+
+Run WBC replay from outside this repository, such as `/tmp`, so the trimmed
+bundled `robocasa` package does not shadow the full RoboCasa checkout.
+
 # Requirements
 
 - Python 3.10 or newer.
@@ -52,7 +79,8 @@ do not require an external asset root by default.
   [pyproject.toml](pyproject.toml).
 - `robosuite-models` is required for the G1 robot names used by the paper
   scan configurations.
-- Runtime dependencies declared in [pyproject.toml](pyproject.toml).
+- Runtime dependencies declared in [pyproject.toml](pyproject.toml). Use the
+  `wbc-replay` extra for G1 LeRobot WBC-goal replay.
 
 # Usage
 
@@ -107,7 +135,7 @@ For G1 LeRobot datasets with saved WBC goals, use
 replays the saved high-level WBC goal, including navigation command, through
 the bundled HumanoidMimicGen whole-body-controller runtime. See
 [docs/wbc_goal_replay.md](docs/wbc_goal_replay.md) for environment details and
-example commands.
+example commands. This sim replay path does not require ROS or `rclpy`.
 
 If you need to override the bundled asset tree, pass an alternate root
 explicitly:

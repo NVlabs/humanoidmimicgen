@@ -35,22 +35,34 @@ when strict state equality still reports drift.
 
 HumanoidMimicGen owns the WBC-goal replay driver, dataset reader, WBC runtime
 wrapper, G1 robot model assets, and bundled `stand.onnx` / `walk.onnx` policy
-files. Execution still needs a Python environment with the controller
-dependencies installed, including Pinocchio, ONNX Runtime, RoboSuite, and
-RoboCasa:
+files. This documented path is sim-only and does not require ROS or `rclpy`.
+
+Create the replay environment with:
 
 ```bash
-python -m pip install -e ".[video]"
+mamba create -n humanoidmimicgen-wbc python=3.10 -y
+mamba activate humanoidmimicgen-wbc
+python -m pip install -e ".[wbc-replay]"
 ```
 
-If you are using internal RoboCasa/RoboSuite checkouts, put them on
-`PYTHONPATH` ahead of this repo:
+The WBC replay path imports `robocasa.wrappers.ik_wrapper`, which is not part
+of this trimmed release snapshot. Put a full RoboCasa checkout, a compatible
+RoboSuite checkout, and this repository on `PYTHONPATH`:
 
 ```bash
-export PYTHONPATH=/path/to/grootrobocasa:/path/to/grootrobosuite:/path/to/humanoidmimicgen
+export PYTHONPATH=/path/to/full/robocasa:/path/to/compatible/robosuite:/path/to/humanoidmimicgen
 ```
 
-For headless Linux rendering:
+For the local GR00T workspace this is:
+
+```bash
+export PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/humanoidmimicgen
+```
+
+Run the replay command from outside this repository, such as `/tmp`, so the
+trimmed bundled `robocasa` package does not shadow the full RoboCasa checkout.
+
+For headless Linux rendering, use EGL:
 
 ```bash
 export MUJOCO_GL=egl
@@ -69,8 +81,24 @@ python scripts/playback_wbc_goals.py \
   --lowres-width 320
 ```
 
-Use `--ci-test` for a 20-step smoke test. Use `--strict` only when you want the
-process to exit nonzero on state drift; leave it off for video generation.
+To render exactly one complete episode, add `--num-episodes 1`. The default is
+to render every episode in the dataset. Use `--ci-test` only for a 20-step
+smoke test. Use `--strict` only when you want the process to exit nonzero on
+state drift; leave it off for video generation.
+
+The command shape used in the local GR00T workspace is:
+
+```bash
+cd /tmp
+MUJOCO_GL=egl mamba run -n humanoidmimicgen-wbc env \
+  PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/humanoidmimicgen \
+  python /home/linke/humanoidmimicgen/scripts/playback_wbc_goals.py \
+  /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMDrillPnP90_20260129_231446 \
+  --num-episodes 1 \
+  --video-path /tmp/drillpnp90_full_ep1_wbc_goal_raw.mp4 \
+  --lowres-video-path /tmp/drillpnp90_full_ep1_wbc_goal_320w.mp4 \
+  --lowres-width 320
+```
 
 ## Batch Used For The Successful Videos
 

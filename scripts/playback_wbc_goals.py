@@ -43,6 +43,11 @@ def parse_args() -> argparse.Namespace:
         help="Optional downscaled MP4 written with ffmpeg after raw replay completes.",
     )
     parser.add_argument("--lowres-width", type=int, default=320, help="Width for --lowres-video-path.")
+    parser.add_argument(
+        "--num-episodes",
+        type=int,
+        help="Optional number of complete episodes to replay. Defaults to all episodes.",
+    )
     parser.add_argument("--ci-test", action="store_true", help="Run only the first 20 steps.")
     parser.add_argument("--mujoco-gl", default="egl", help="MUJOCO_GL backend. Use egl for headless Linux.")
     parser.add_argument(
@@ -98,7 +103,6 @@ def main() -> int:
     args.video_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        import rclpy
         from humanoidmimicgen.wbc_goal_playback import (
             SyncSimPlaybackConfig,
             playback_wbc_goal_dataset,
@@ -119,13 +123,8 @@ def main() -> int:
     config.enable_offscreen = True
     config.enable_onscreen = False
     config.ci_test = args.ci_test
-    rclpy.init(args=None)
-    node = rclpy.create_node("humanoidmimicgen_wbc_goal_playback")
-    try:
-        ok = bool(playback_wbc_goal_dataset(config))
-    finally:
-        node.destroy_node()
-        rclpy.shutdown()
+    config.num_episodes = args.num_episodes
+    ok = bool(playback_wbc_goal_dataset(config))
 
     maybe_downscale(args.video_path, args.lowres_video_path, args.lowres_width)
     if args.strict and not ok:

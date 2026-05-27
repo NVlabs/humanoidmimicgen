@@ -30,6 +30,20 @@ dependencies = [
 video = [
     "imageio[ffmpeg]",
 ]
+wbc-replay = [
+    "datasets==3.6.0",
+    "gymnasium==0.29.1",
+    "imageio[ffmpeg]",
+    "lerobot==0.1.0",
+    "loguru",
+    "onnxruntime==1.22.1",
+    "opencv-python==4.11.0.86",
+    "pin>=2.7,<3",
+    "PyYAML==6.0.3",
+    "scipy==1.15.3",
+    "torch>=2.2.1,<2.7",
+    "tqdm==4.67.1",
+]
 visualization = [
     "matplotlib",
 ]
