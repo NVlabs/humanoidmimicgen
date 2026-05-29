@@ -46,9 +46,14 @@ run_one() {
   rm -f "$video" "$lowres" "$OUT/${label}.rc" "$OUT/${label}.ffprobe"
 
   set +e
+  episode_args=()
+  if [[ "$EPISODES" != "all" ]]; then
+    episode_args=(--num-episodes "$EPISODES")
+  fi
+
   mamba run -n "$ENV_NAME" env PYTHONPATH="$REPO" python "$SCRIPT" \
     "$dataset" \
-    --num-episodes "$EPISODES" \
+    "${episode_args[@]}" \
     --video-path "$video" \
     --lowres-video-path "$lowres" \
     --lowres-width "$LOWRES_WIDTH" \

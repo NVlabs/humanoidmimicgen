@@ -80,6 +80,9 @@ OUT=/tmp/hmg_wbc_goal_benchmark \
 scripts/run_wbc_goal_benchmark.sh
 ```
 
+Set `EPISODES=all` to replay every available demo in each retained benchmark
+dataset instead of only `demo_1`.
+
 # Requirements
 
 - Python 3.10 or newer.

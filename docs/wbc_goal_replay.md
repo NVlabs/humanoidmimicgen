@@ -85,6 +85,17 @@ one raw MP4 and one low-resolution MP4 per task, records per-task `.log`, `.rc`,
 and `.ffprobe` files, writes `summary.txt`, and creates a 3x3 preview grid at
 `$OUT/wbc_goal_benchmark_grid_320w.mp4`.
 
+To replay every available demo in each dataset instead of only `demo_1`, set
+`EPISODES=all`:
+
+```bash
+DATA_ROOT=/home/linke/Projects/gr00t/groot/dexmg/collected_demo \
+OUT=/tmp/hmg_wbc_goal_benchmark_all_demos \
+EPISODES=all \
+MAKE_GRID=0 \
+scripts/run_wbc_goal_benchmark.sh
+```
+
 On 2026-05-29, a fresh worktree reproduced all nine MP4s from
 `/tmp/hmg-clean-repro-698727e` into `/tmp/hmg_clean_repro_698727e`. The final
 output directory had `DONE`, rc=0 for all nine tasks, one raw MP4 per task, one
@@ -107,6 +118,26 @@ One clean batch task-predicate sample from that run:
 Direct reruns in the same clean worktree subsequently produced predicate
 success for `04_push_shelf_forward` and `08_pick_drill_from_holder`, while
 `03_box_lift` remained false. Treat predicate summaries as diagnostics only.
+
+An expanded all-demos check on 2026-05-29 replayed 17 total episodes across the
+same nine task datasets and exited rc=0 for every task process. Predicate
+success was 11/17 by ever-success and 10/17 by final-success:
+
+```text
+01_box_lift_floor: 2/2 task success, 2/2 final success
+02_push_button: 0/1 task success, 0/1 final success
+03_box_lift: 1/2 task success, 1/2 final success
+04_push_shelf_forward: 2/3 task success, 2/3 final success
+05_drill_lift: 1/1 task success, 1/1 final success
+06_drill_pnp: 1/2 task success, 1/2 final success
+07_box_table_to_shelf: 2/2 task success, 1/2 final success
+08_pick_drill_from_holder: 2/2 task success, 2/2 final success
+09_obstacle_aware_pick_drill: 0/2 task success, 0/2 final success
+```
+
+This broader sample supports the same conclusion: the action/WBC-goal replay
+path is generating videos for the retained datasets, while task-predicate
+success remains a drift-sensitive diagnostic rather than the release criterion.
 
 Final MP4 metadata from the generated `.ffprobe` files:
 
