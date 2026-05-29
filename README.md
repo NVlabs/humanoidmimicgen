@@ -48,6 +48,8 @@ asset root by default.
 For G1 LeRobot WBC-goal replay, use the replay extra:
 
 ```bash
+git clone https://github.com/NVlabs/humanoidmimicgen.git
+cd humanoidmimicgen
 mamba create -n humanoidmimicgen-wbc python=3.10 -y
 mamba activate humanoidmimicgen-wbc
 python -m pip install -e ".[wbc-replay]"
@@ -69,10 +71,20 @@ export PYTHONPATH=/home/linke/Projects/humanoidmimicgen
 The LeRobot demo datasets may still live in the GR00T workspace; only the
 runtime package imports are local to this repository.
 
+To reproduce the 9-task action/WBC-goal MP4 benchmark from the local dataset
+mirror:
+
+```bash
+DATA_ROOT=/home/linke/Projects/gr00t/groot/dexmg/collected_demo \
+OUT=/tmp/hmg_wbc_goal_benchmark \
+scripts/run_wbc_goal_benchmark.sh
+```
+
 # Requirements
 
 - Python 3.10 or newer.
-- MuJoCo compatible with [pyproject.toml](pyproject.toml).
+- MuJoCo `3.2.6`, as pinned in [pyproject.toml](pyproject.toml). Newer
+  MuJoCo releases can reject some retained mesh assets during model compile.
 - `robosuite-models` is required for the G1 robot names used by the paper
   scan configurations.
 - Runtime dependencies declared in [pyproject.toml](pyproject.toml). Use the

@@ -5,16 +5,10 @@ import numpy as np
 
 class RerunViewer:
     def __init__(self, sim, render_camera=None):
-        try:
-            from groot.data.viz.rerun_viz import RerunViz
-        except ModuleNotFoundError as exc:
-            if exc.name == "rerun":
-                raise ModuleNotFoundError(
-                    "The rerun viewer requires rerun-sdk. Install it with "
-                    "`python -m pip install rerun-sdk==0.21.0`, or use a "
-                    "different renderer."
-                ) from exc
-            raise
+        raise NotImplementedError(
+            "RerunViewer is not included in the local HumanoidMimicGen runtime. "
+            "Use the default offscreen renderer for WBC-goal replay."
+        )
 
         self.sim = sim
         self.rr_viz = RerunViz(

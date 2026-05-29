@@ -24,12 +24,10 @@ class IKSolverExternal:
         input_ref_frame: Literal["world", "base", "eef"] = "world",
         input_rotation_repr: Literal["quat_wxyz", "axis_angle"] = "axis_angle",
     ):
-        # Imported from groot2
-        from groot.control.robot_model.instantiation.g1 import instantiate_g1_robot_model
-        from groot.control.robot_model.instantiation.gr1 import instantiate_gr1_robot_model
-        from groot.control.robot_model.robot_model import ReducedRobotModel
-        from groot.control.teleop.solver.body.body_ik_solver import BodyIKSolver
-        from groot.control.teleop.solver.body.body_ik_solver_settings import BodyIKSolverSettings
+        raise NotImplementedError(
+            "The third-party external IK controller is not included in the local "
+            "HumanoidMimicGen runtime. Use the bundled WBC-goal replay path instead."
+        )
 
         if robot_type == "g1":
             self.robot_model = instantiate_g1_robot_model()
