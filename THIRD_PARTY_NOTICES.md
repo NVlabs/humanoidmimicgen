@@ -8,8 +8,7 @@ the planned HumanoidMimicGen open source distribution.
 ### RoboCasa
 
 - Paths:
-  - [robocasa/models](robocasa/models)
-  - [robocasa/utils](robocasa/utils)
+  - [robocasa](robocasa)
   - RoboCasa-derived support code in [robocasa/environments/locomanipulation](robocasa/environments/locomanipulation)
 - Source project: RoboCasa
 - License: MIT
@@ -23,22 +22,30 @@ MIT license notice. NVIDIA-authored source files use Apache-2.0 notices.
 Files containing both RoboCasa-derived code and NVIDIA modifications carry
 file-level SPDX notices for both components.
 
-### RoboCasa Asset Subset
+### RoboCasa Assets
 
 - Paths:
-  - [robocasa/models/assets/arenas](robocasa/models/assets/arenas)
-  - [robocasa/models/assets/objects/omniverse/locomanip](robocasa/models/assets/objects/omniverse/locomanip)
-  - [robocasa/models/assets/objects/aigc/shelf](robocasa/models/assets/objects/aigc/shelf)
-  - [robocasa/models/assets/robots/unitree_g1](robocasa/models/assets/robots/unitree_g1)
+  - [robocasa/models/assets](robocasa/models/assets)
 - Source project: RoboCasa asset tree
 - License: MIT, matching the RoboCasa source distribution notice
 - License text: [LICENSES/ROBOCASA-MIT.txt](LICENSES/ROBOCASA-MIT.txt)
 - Copyright notice: Copyright (c) 2024 The RoboCasa Team
 
-The repository includes only the RoboCasa asset subset required by the
-retained loco-manipulation environments, the G1 robot used by the paper
-trajectories, and WBC-goal replay rendering. The original local RoboCasa
-asset cache is larger and is not distributed in full.
+The repository includes the RoboCasa assets vendored from the compatible GR00T
+RoboCasa checkout for the retained loco-manipulation environments and
+WBC-goal replay rendering.
+
+### RoboSuite
+
+- Paths:
+  - [robosuite](robosuite)
+- Source project: RoboSuite
+- License: MIT
+- License text: [LICENSES/ROBOSUITE-MIT.txt](LICENSES/ROBOSUITE-MIT.txt)
+- Copyright notice: Copyright (c) 2018-2022, Stanford University
+
+The `robosuite` package in this repository is vendored from the compatible
+RoboSuite checkout used by the WBC replay path.
 
 ## Runtime Dependencies
 
@@ -50,12 +57,12 @@ the exact versions selected for any public release.
 | --- | --- | --- |
 | mujoco | MuJoCo simulation bindings | Apache-2.0 |
 | numpy | Numeric arrays | BSD-3-Clause |
-| robosuite | Robot simulation framework | MIT; see [LICENSES/ROBOSUITE-MIT.txt](LICENSES/ROBOSUITE-MIT.txt) |
 | robosuite-models | G1 and other robosuite robot model registrations | MIT; see [LICENSES/ROBOSUITE-MODELS-MIT.txt](LICENSES/ROBOSUITE-MODELS-MIT.txt) |
 
 The verified local import environment used `robosuite==1.5.2`,
 `robosuite-models==1.0.0`, `mujoco==3.3.7`, and `numpy==1.26.4`.
-Robosuite also installs transitive runtime packages such as
+The vendored RoboSuite tree corresponds to the local `robosuite==1.5.2`
+runtime. RoboSuite also installs transitive runtime packages such as
 `numba`, `scipy`, `mink`, `qpsolvers`, `Pillow`, `opencv-python`, `pynput`,
 `termcolor`, `pytest`, and `tqdm`. If a release artifact vendors or
 redistributes a Python environment rather than only declaring package

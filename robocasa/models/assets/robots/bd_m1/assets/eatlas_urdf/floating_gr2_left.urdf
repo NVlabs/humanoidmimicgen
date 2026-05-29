@@ -1,0 +1,314 @@
+<?xml version="1.0" ?> 
+<robot name="gr2"> 
+  <mujoco>
+    <compiler discardvisual="false" fusestatic="false" strippath="false"/>
+  </mujoco>
+  <link name="l_f0dist_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f0dist_link.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f0dist_link.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0297365 -0.000949624 0.00031117499999999996"/>
+      <mass value="0.0671978"/>
+      <inertia ixx="6.81979e-06" ixy="-4.1535e-07" ixz="-8.42325e-09" iyy="1.82765e-05" iyz="-3.87258e-11" izz="1.59078e-05"/>
+    </inertial>
+  </link>
+  <link name="l_f0prox_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f0prox_link.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f0prox_link.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.04429930000000001 -0.00017715700000000003 0.000195832"/>
+      <mass value="0.139091"/>
+      <inertia ixx="1.38809e-05" ixy="-2.86826e-07" ixz="1.09628e-06" iyy="7.30245e-05" iyz="-1.07451e-08" izz="7.1111e-05"/>
+    </inertial>
+  </link>
+  <link name="l_f1dist_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f1dist_link.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f1dist_link.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0297365 -0.000949624 0.00031117499999999996"/>
+      <mass value="0.0671978"/>
+      <inertia ixx="6.81979e-06" ixy="-4.1535e-07" ixz="-8.42325e-09" iyy="1.82765e-05" iyz="-3.87258e-11" izz="1.59078e-05"/>
+    </inertial>
+  </link>
+  <link name="l_f1prox_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f1prox_link.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f1prox_link.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.04429930000000001 -0.00017715700000000003 0.000195832"/>
+      <mass value="0.139091"/>
+      <inertia ixx="1.38809e-05" ixy="-2.86826e-07" ixz="1.09628e-06" iyy="7.30245e-05" iyz="-1.07451e-08" izz="7.1111e-05"/>
+    </inertial>
+  </link>
+  <link name="l_f2dist_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f2dist_link.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f2dist_link.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0297365 -0.000949624 0.00031117499999999996"/>
+      <mass value="0.0671978"/>
+      <inertia ixx="6.81979e-06" ixy="-4.1535e-07" ixz="-8.42325e-09" iyy="1.82765e-05" iyz="-3.87258e-11" izz="1.59078e-05"/>
+    </inertial>
+  </link>
+  <link name="l_f2prox_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f2prox_link.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_f2prox_link.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.04429930000000001 -0.00017715700000000003 0.000195832"/>
+      <mass value="0.139091"/>
+      <inertia ixx="1.38809e-05" ixy="-2.86826e-07" ixz="1.09628e-06" iyy="7.30245e-05" iyz="-1.07451e-08" izz="7.1111e-05"/>
+    </inertial>
+  </link>
+  <link name="l_gripper_base">
+    <visual>
+      <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_gripper_base.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/collision/l_gripper_base_2.stl"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/collision/l_gripper_base_1.stl"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/collision/l_gripper_base_3.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0013199099999999999 -0.00587754 0.030133"/>
+      <mass value="0.468734"/>
+      <inertia ixx="0.000393104" ixy="-1.65423e-05" ixz="4.69691e-06" iyy="0.000367934" iyz="9.07396e-05" izz="0.000324319"/>
+    </inertial>
+  </link>
+  <link name="l_palm_rot_link">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/l_palm_rot_link.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/collision/l_palm_rot_link_2.stl"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/gr2/collision/l_palm_rot_link_1.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0129272 -0.0359394 -0.0108108"/>
+      <mass value="0.168895"/>
+      <inertia ixx="9.98783e-05" ixy="-8.98751e-06" ixz="-2.66045e-06" iyy="7.1679e-05" iyz="-2.13152e-05" izz="5.24085e-05"/>
+    </inertial>
+  </link>
+  <joint name="lhand.f0.dist" type="revolute">
+    <limit effort="3.4" lower="-2.007128639793479" upper="2.007128639793479" velocity="inf"/>
+    <dynamics damping="0.008" friction="0.0"/>
+    <child link="l_f0dist_link"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_f0prox_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.07225 0.0 0.0"/>
+  </joint>
+  <transmission name="lhand.f0.dist.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lhand.f0.dist">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lhand.f0.dist">
+      <mechanicalReduction>-113.90625</mechanicalReduction>
+      <motorInertia>0.0010379707031249999</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lhand.f0.prox" type="revolute">
+    <limit effort="3.4" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="inf"/>
+    <dynamics damping="0.008" friction="0.0"/>
+    <child link="l_f0prox_link"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_gripper_base"/>
+    <origin rpy="-3.141592653589793 1.5707963057214722 0.0" xyz="-0.015 -0.02075 0.06725"/>
+  </joint>
+  <transmission name="lhand.f0.prox.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lhand.f0.prox">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lhand.f0.prox">
+      <mechanicalReduction>-113.90625</mechanicalReduction>
+      <motorInertia>0.0010379707031249999</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lhand.f1.dist" type="revolute">
+    <limit effort="3.4" lower="-2.007128639793479" upper="2.007128639793479" velocity="inf"/>
+    <dynamics damping="0.008" friction="0.0"/>
+    <child link="l_f1dist_link"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_f1prox_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.07225 0.0 0.0"/>
+  </joint>
+  <transmission name="lhand.f1.dist.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lhand.f1.dist">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lhand.f1.dist">
+      <mechanicalReduction>113.90625</mechanicalReduction>
+      <motorInertia>0.0010379707031249999</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lhand.f1.prox" type="revolute">
+    <limit effort="3.4" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="inf"/>
+    <dynamics damping="0.008" friction="0.0"/>
+    <child link="l_f1prox_link"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_gripper_base"/>
+    <origin rpy="-3.141592653589793 1.5707963057214722 0.0" xyz="0.015 -0.02075 0.06725"/>
+  </joint>
+  <transmission name="lhand.f1.prox.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lhand.f1.prox">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lhand.f1.prox">
+      <mechanicalReduction>113.90625</mechanicalReduction>
+      <motorInertia>0.0010379707031249999</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lhand.f2.dist" type="revolute">
+    <limit effort="3.4" lower="-2.007128639793479" upper="2.007128639793479" velocity="inf"/>
+    <dynamics damping="0.008" friction="0.0"/>
+    <child link="l_f2dist_link"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_f2prox_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.07225 0.0 0.0"/>
+  </joint>
+  <transmission name="lhand.f2.dist.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lhand.f2.dist">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lhand.f2.dist">
+      <mechanicalReduction>-113.90625</mechanicalReduction>
+      <motorInertia>0.0010379707031249999</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lhand.f2.prox" type="revolute">
+    <limit effort="3.4" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="inf"/>
+    <dynamics damping="0.008" friction="0.0"/>
+    <child link="l_f2prox_link"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_palm_rot_link"/>
+    <origin rpy="1.5707963267948968 -1.3959503859687479 1.5707963267948968" xyz="-0.015 -0.047684 -0.040079000000000004"/>
+  </joint>
+  <transmission name="lhand.f2.prox.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lhand.f2.prox">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lhand.f2.prox">
+      <mechanicalReduction>-113.90625</mechanicalReduction>
+      <motorInertia>0.0010379707031249999</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lhand.f2.thum" type="revolute">
+    <limit effort="3.4" lower="-3.141592653589793" upper="0.0" velocity="inf"/>
+    <dynamics damping="0.008" friction="0.0"/>
+    <child link="l_palm_rot_link"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_gripper_base"/>
+    <origin rpy="-2.9667467127636455 0.0 3.141592653589793" xyz="0.03 0.01925 0.0195"/>
+  </joint>
+  <transmission name="lhand.f2.thum.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lhand.f2.thum">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lhand.f2.thum">
+      <mechanicalReduction>113.90625</mechanicalReduction>
+      <motorInertia>0.0010379707031249999</motorInertia>
+    </actuator>
+  </transmission>
+  <fixed_frame name="l_f0t_frame">
+    <parent link="l_f0dist_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.062 0.0 0.0"/>
+  </fixed_frame>
+  <fixed_frame name="l_f1t_frame">
+    <parent link="l_f1dist_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.062 0.0 0.0"/>
+  </fixed_frame>
+  <fixed_frame name="l_f2t_frame">
+    <parent link="l_f2dist_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.062 0.0 0.0"/>
+  </fixed_frame>
+</robot>

@@ -1,0 +1,19 @@
+<mujoco model="bottle">
+  <asset>
+    <texture type="2d" name="bottle_tex" builtin="flat" rgb1="0.3 0.7 0.8" width="512" height="512"/>
+    <material name="bottle_mat" texture="bottle_tex" texuniform="true" reflectance="0.1"/>
+  </asset>
+  <worldbody>
+    <body>
+      <body name="object">
+        <geom pos="0 0 0.075" size="0.03 0.075" type="cylinder" material="bottle_mat" group="1" conaffinity="0" contype="0"/>
+        <geom type="box" pos="0 0 0.075" size="0.03 0.01732050807568877 0.075" quat="1.0 0.0 0.0 0.0" solimp="0.998 0.998 0.001" solref="0.001 2" density="100" friction="0.95 0.3 0.1" group="0"/>
+        <geom type="box" pos="0 0 0.075" size="0.03 0.01732050807568877 0.075" quat="0.8660254037844387 0.0 0.0 0.49999999999999994" solimp="0.998 0.998 0.001" solref="0.001 2" density="100" friction="0.95 0.3 0.1" group="0"/>
+        <geom type="box" pos="0 0 0.075" size="0.03 0.01732050807568877 0.075" quat="0.5000000000000001 0.0 0.0 0.8660254037844386" solimp="0.998 0.998 0.001" solref="0.001 2" density="100" friction="0.95 0.3 0.1" group="0"/>
+      </body>
+      <site rgba="0 0 0 0" size="0.005" pos="0 0 0" name="bottom_site"/>
+      <site rgba="0 0 0 0" size="0.005" pos="0 0 0.15" name="top_site"/>
+      <site rgba="0 0 0 0" size="0.005" pos="0.03 0.03 0.075" name="horizontal_radius_site"/>
+    </body>
+  </worldbody>
+</mujoco>

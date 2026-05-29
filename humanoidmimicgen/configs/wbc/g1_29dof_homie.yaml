@@ -2,8 +2,8 @@ HOMIE_CONFIG: "external_dependencies/OpenHomie/MujocoDeploy/g1.yaml"
 
 # copy from g1_43dof_hist.yaml
 ROBOT_TYPE: "g1_29dof" # Robot name, "go2", "b2", "b2w", "h1", "go2w", "g1"
-ROBOT_SCENE: "groot/control/robot_model/model_data/g1/scene_43dof.xml" # Robot scene, for Sim2Sim
-# ROBOT_SCENE: "groot/control/robot_model/model_data/g1/scene_29dof_activated3dex.xml"
+ROBOT_SCENE: "robot_model/model_data/g1/scene_43dof.xml" # Robot scene, for Sim2Sim
+# ROBOT_SCENE: "robot_model/model_data/g1/scene_29dof_activated3dex.xml"
 
 DOMAIN_ID: 0 # Domain id
 # Network Interface, "lo" for simulation and the one with "192.168.123.222" for real robot

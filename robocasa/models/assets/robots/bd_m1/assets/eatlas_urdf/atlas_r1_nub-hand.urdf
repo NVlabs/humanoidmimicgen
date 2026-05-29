@@ -1,0 +1,2377 @@
+<?xml version="1.0" ?>
+<robot name="r1">
+  <mujoco>
+    <compiler discardvisual="false" fusestatic="false" strippath="false"/>
+  </mujoco>
+  <link name="back_l_bu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_bu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_bu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0.0033941 0.0"/>
+      <mass value="0.036226"/>
+      <inertia ixx="2.16088e-06" ixy="3.41668e-15" ixz="3.3139599999999998e-21" iyy="2.22415e-06" iyz="-5.7936e-15" izz="2.19512e-06"/>
+    </inertial>
+  </link>
+  <link name="back_l_rod_end">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_rod_end.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_rod_end.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00025062 1.52673e-07 -0.00580982"/>
+      <mass value="0.0518374"/>
+      <inertia ixx="4.84777e-06" ixy="1.39989e-10" ixz="7.55144e-08" iyy="9.95235e-06" iyz="-1.91268e-11" izz="7.21532e-06"/>
+    </inertial>
+  </link>
+  <link name="back_l_rod_top">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_rod_top.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_rod_top.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="8.36146e-06 -1.7498400000000002e-05 -0.116955"/>
+      <mass value="0.0871944"/>
+      <inertia ixx="0.000112542" ixy="3.4323e-09" ixz="1.22827e-08" iyy="0.00011255" iyz="-3.24487e-08" izz="5.30797e-06"/>
+    </inertial>
+  </link>
+  <link name="back_l_screw_housing">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_screw_housing.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_screw_housing.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-2.94008e-06 0.06558240000000001 0.000347701"/>
+      <mass value="0.551512"/>
+      <inertia ixx="0.00101276" ixy="-4.70022e-08" ixz="-5.43664e-08" iyy="0.000189373" iyz="6.10471e-06" izz="0.000999148"/>
+    </inertial>
+  </link>
+  <link name="back_l_tu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_tu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_l_tu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000294298 -0.00202915 -0.00033195200000000005"/>
+      <mass value="0.0535394"/>
+      <inertia ixx="8.58152e-06" ixy="5.46482e-08" ixz="-5.22265e-09" iyy="1.06576e-05" iyz="3.61069e-08" izz="3.61208e-06"/>
+    </inertial>
+  </link>
+  <link name="back_r_bu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_bu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_bu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0.0033941 0.0"/>
+      <mass value="0.036226"/>
+      <inertia ixx="2.16088e-06" ixy="3.41668e-15" ixz="3.3139599999999998e-21" iyy="2.22415e-06" iyz="-5.7936e-15" izz="2.19512e-06"/>
+    </inertial>
+  </link>
+  <link name="back_r_rod_end">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_rod_end.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_rod_end.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00025062 1.52673e-07 -0.00580982"/>
+      <mass value="0.0518374"/>
+      <inertia ixx="4.84777e-06" ixy="1.39989e-10" ixz="7.55144e-08" iyy="9.95235e-06" iyz="-1.91268e-11" izz="7.21532e-06"/>
+    </inertial>
+  </link>
+  <link name="back_r_rod_top">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_rod_top.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_rod_top.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="8.36146e-06 -1.7498400000000002e-05 -0.116955"/>
+      <mass value="0.0871944"/>
+      <inertia ixx="0.000112542" ixy="3.4323e-09" ixz="1.22827e-08" iyy="0.00011255" iyz="-3.24487e-08" izz="5.30797e-06"/>
+    </inertial>
+  </link>
+  <link name="back_r_screw_housing">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_screw_housing.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_screw_housing.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-2.94008e-06 0.06558240000000001 0.000347701"/>
+      <mass value="0.551512"/>
+      <inertia ixx="0.00101276" ixy="-4.70022e-08" ixz="-5.43664e-08" iyy="0.000189373" iyz="6.10471e-06" izz="0.000999148"/>
+    </inertial>
+  </link>
+  <link name="back_r_tu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_tu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/back_r_tu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000294298 -0.00202915 -0.00033195200000000005"/>
+      <mass value="0.0535394"/>
+      <inertia ixx="8.58152e-06" ixy="5.46482e-08" ixz="-5.22265e-09" iyy="1.06576e-05" iyz="3.61069e-08" izz="3.61208e-06"/>
+    </inertial>
+  </link>
+  <link name="head">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/head.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/head.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0209717 -0.00033650000000000005 0.049644100000000004"/>
+      <mass value="3.69961"/>
+      <inertia ixx="0.0167288" ixy="-1.66e-06" ixz="-0.000679952" iyy="0.0192853" iyz="1.35e-06" izz="0.0174721"/>
+    </inertial>
+  </link>
+  <link name="l_ee_base">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_ee_base.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_ee_base.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.011465 -2.00782e-05 -0.0034887700000000004"/>
+      <mass value="1.02173"/>
+      <inertia ixx="0.00064027" ixy="-1.86e-08" ixz="-4.46e-05" iyy="0.000966193" iyz="-3.52e-07" izz="0.000915083"/>
+    </inertial>
+  </link>
+  <link name="l_foot">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.08075 0.0 -0.019000000000000003"/>
+      <geometry>
+        <box size="0.1785 0.092 0.02"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0085 0.0 -0.019000000000000003"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.046"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_foot.stl"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.050069499999999996 -1.67589e-05 -0.0155558"/>
+      <mass value="0.33027"/>
+      <inertia ixx="0.000228993" ixy="-2.65002e-07" ixz="1.3692e-05" iyy="0.00118045" iyz="1.64636e-07" izz="0.00135256"/>
+    </inertial>
+  </link>
+  <link name="l_forearm">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_forearm.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_forearm.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.76471e-05 -0.006628230000000001 0.0971638"/>
+      <mass value="0.399666"/>
+      <inertia ixx="0.000848008" ixy="-3.16e-07" ixz="-1.48e-07" iyy="0.000412659" iyz="5.41e-05" izz="0.000729089"/>
+    </inertial>
+  </link>
+  <link name="l_leg_inner_bu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_bu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_bu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 -0.00130901 0.0"/>
+      <mass value="0.026838"/>
+      <inertia ixx="1.57122e-06" ixy="-8.79511e-14" ixz="3.51829e-18" iyy="1.32096e-06" iyz="-2.20868e-15" izz="1.02599e-06"/>
+    </inertial>
+  </link>
+  <link name="l_leg_inner_rod_end">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_rod_end.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_rod_end.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.22703e-09 -5.16315e-09 -0.0156375"/>
+      <mass value="0.0537583"/>
+      <inertia ixx="1.9808e-05" ixy="-6.19838e-15" ixz="2.56861e-13" iyy="2.30793e-05" iyz="-1.08083e-12" izz="5.70676e-06"/>
+    </inertial>
+  </link>
+  <link name="l_leg_inner_rod_top">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_rod_top.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_rod_top.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="6.17569e-06 -1.29242e-05 -0.205435"/>
+      <mass value="0.118061"/>
+      <inertia ixx="0.000543519" ixy="3.43564e-09" ixz="3.50794e-08" iyy="0.000543542" iyz="-8.11026e-08" izz="9.31963e-06"/>
+    </inertial>
+  </link>
+  <link name="l_leg_inner_screw_housing">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_screw_housing.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_screw_housing.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.16641e-06 0.0620012 0.000360708"/>
+      <mass value="0.532486"/>
+      <inertia ixx="0.000745411" ixy="-3.96894e-08" ixz="-5.51723e-08" iyy="0.000186142" iyz="5.35695e-06" izz="0.000731811"/>
+    </inertial>
+  </link>
+  <link name="l_leg_inner_tu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_tu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_inner_tu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000294298 0.00202915 -0.00033195200000000005"/>
+      <mass value="0.0535394"/>
+      <inertia ixx="8.58152e-06" ixy="5.46482e-08" ixz="5.22265e-09" iyy="1.06576e-05" iyz="-3.61069e-08" izz="3.61208e-06"/>
+    </inertial>
+  </link>
+  <link name="l_leg_kn_conrod">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_kn_conrod.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_kn_conrod.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0269765 0.06432210000000001 0.0"/>
+      <mass value="0.227858"/>
+      <inertia ixx="0.000702597" ixy="0.000283515" ixz="8.3025e-24" iyy="0.000145495" iyz="2.5469700000000003e-24" izz="0.000841459"/>
+    </inertial>
+  </link>
+  <link name="l_leg_kn_driver">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_kn_driver.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_kn_driver.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00234081 -0.0107188 0.0302656"/>
+      <mass value="0.387673"/>
+      <inertia ixx="0.000482489" ixy="-4.72495e-05" ixz="-4.12097e-06" iyy="0.000334784" iyz="-3.76852e-05" izz="0.000552889"/>
+    </inertial>
+  </link>
+  <link name="l_leg_outer_bu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_bu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_bu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 -0.00130901 0.0"/>
+      <mass value="0.026838"/>
+      <inertia ixx="1.57122e-06" ixy="-8.79511e-14" ixz="3.51829e-18" iyy="1.32096e-06" iyz="-2.20868e-15" izz="1.02599e-06"/>
+    </inertial>
+  </link>
+  <link name="l_leg_outer_rod_end">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_rod_end.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_rod_end.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.22703e-09 -5.16315e-09 -0.0156375"/>
+      <mass value="0.0537583"/>
+      <inertia ixx="1.9808e-05" ixy="-6.19838e-15" ixz="2.56861e-13" iyy="2.30793e-05" iyz="-1.08083e-12" izz="5.70676e-06"/>
+    </inertial>
+  </link>
+  <link name="l_leg_outer_rod_top">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_rod_top.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_rod_top.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="6.17569e-06 -1.29242e-05 -0.205435"/>
+      <mass value="0.118061"/>
+      <inertia ixx="0.000543519" ixy="3.43564e-09" ixz="3.50794e-08" iyy="0.000543542" iyz="-8.11026e-08" izz="9.31963e-06"/>
+    </inertial>
+  </link>
+  <link name="l_leg_outer_screw_housing">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_screw_housing.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_screw_housing.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.16641e-06 0.0620012 0.000360708"/>
+      <mass value="0.532486"/>
+      <inertia ixx="0.000745411" ixy="-3.96894e-08" ixz="-5.51723e-08" iyy="0.000186142" iyz="5.35695e-06" izz="0.000731811"/>
+    </inertial>
+  </link>
+  <link name="l_leg_outer_tu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_tu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_leg_outer_tu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000294298 0.00202915 -0.00033195200000000005"/>
+      <mass value="0.0535394"/>
+      <inertia ixx="8.58152e-06" ixy="5.46482e-08" ixz="5.22265e-09" iyy="1.06576e-05" iyz="-3.61069e-08" izz="3.61208e-06"/>
+    </inertial>
+  </link>
+  <link name="l_lower_elbow">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_elbow.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_elbow.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.029563500000000003 -0.0567177 -0.000618225"/>
+      <mass value="1.46237"/>
+      <inertia ixx="0.00358655" ixy="-0.000698465" ixz="2.09e-05" iyy="0.00222726" iyz="4.47e-05" izz="0.00346303"/>
+    </inertial>
+  </link>
+  <link name="l_lower_hip">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_hip.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_hip.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0077225900000000005 -0.006626890000000001 0.000197152"/>
+      <mass value="3.21998"/>
+      <inertia ixx="0.00799864" ixy="-0.000209798" ixz="1.05e-05" iyy="0.0085048" iyz="2.3e-05" izz="0.00545929"/>
+    </inertial>
+  </link>
+  <link name="l_lower_leg">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_leg.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_leg.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0186116 0.105955 -0.00317422"/>
+      <mass value="1.92104"/>
+      <inertia ixx="0.0349331" ixy="0.0010637" ixz="-1.63e-05" iyy="0.00421401" iyz="-0.000943808" izz="0.034514"/>
+    </inertial>
+  </link>
+  <link name="l_lower_shoulder">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_shoulder.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_lower_shoulder.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0931846 0.015694100000000002 0.00160216"/>
+      <mass value="3.54851"/>
+      <inertia ixx="0.00399894" ixy="-0.00305749" ixz="0.000346064" iyy="0.0260441" iyz="5.14e-05" izz="0.0268674"/>
+    </inertial>
+  </link>
+  <link name="l_mid_ankle">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_mid_ankle.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_mid_ankle.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0033513600000000003 0.005725920000000001 0.00203379"/>
+      <mass value="0.101839"/>
+      <inertia ixx="2.82437e-05" ixy="-1.47896e-06" ixz="6.94013e-07" iyy="4.01929e-05" iyz="1.18413e-06" izz="2.05205e-05"/>
+    </inertial>
+  </link>
+  <link name="l_mid_wrist">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_mid_wrist.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_mid_wrist.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00227322 0.017307700000000002 0.00352609"/>
+      <mass value="1.10598"/>
+      <inertia ixx="0.00151821" ixy="-0.000126304" ixz="1.8e-05" iyy="0.00115763" iyz="6.38e-05" izz="0.00188315"/>
+    </inertial>
+  </link>
+  <link name="l_upper_elbow">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_elbow.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_elbow.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0161096 0.00374485 0.17859899999999998"/>
+      <mass value="1.5824"/>
+      <inertia ixx="0.00184407" ixy="-7.23e-06" ixz="-0.000262217" iyy="0.00238945" iyz="-1.13e-05" izz="0.0017635"/>
+    </inertial>
+  </link>
+  <link name="l_upper_foot">
+    <visual>
+      <origin rpy="3.141592653589793 -1.5707963057214722 0.0" xyz="-0.047 0.0 0.15"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_foot.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="3.141592653589793 -1.5707963057214722 0.0" xyz="-0.047 0.0 0.15"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_foot.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0305821 1.38859e-05 0.0012689999999999924"/>
+      <mass value="1.06093"/>
+      <inertia ixx="0.000910993" ixy="-1.1e-07" ixz="4.49733e-05" iyy="0.00102729" iyz="3.6859e-08" izz="0.00063628"/>
+    </inertial>
+  </link>
+  <link name="l_upper_hip">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_hip.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_hip.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-8.6056e-07 0.00641862 0.0337281"/>
+      <mass value="0.799802"/>
+      <inertia ixx="0.00191864" ixy="2.82e-06" ixz="-2.94e-06" iyy="0.00398257" iyz="-0.000204141" izz="0.00468247"/>
+    </inertial>
+  </link>
+  <link name="l_upper_leg">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_leg.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_leg.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00025122699999999997 0.009400200000000001 -0.11117"/>
+      <mass value="7.34842"/>
+      <inertia ixx="0.0572686" ixy="-0.000660014" ixz="-0.000526328" iyy="0.0586047" iyz="0.00327417" izz="0.022338"/>
+    </inertial>
+  </link>
+  <link name="l_upper_shoulder">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_shoulder.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/l_upper_shoulder.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000878697 0.0119507 0.045620600000000004"/>
+      <mass value="0.876638"/>
+      <inertia ixx="0.00154587" ixy="-1.42e-05" ixz="-1.28e-05" iyy="0.0021158" iyz="-0.00026039" izz="0.00200123"/>
+    </inertial>
+  </link>
+  <link name="lower_back">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/lower_back.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/lower_back.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0119074 0.000305417 0.0348809"/>
+      <mass value="3.54115"/>
+      <inertia ixx="0.0072774" ixy="-2.11e-05" ixz="-0.000718707" iyy="0.0093042" iyz="8.73e-06" izz="0.0131419"/>
+    </inertial>
+  </link>
+  <link name="mid_back">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/mid_back.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/mid_back.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00586156 0.00795744 0.0018250900000000001"/>
+      <mass value="0.434106"/>
+      <inertia ixx="0.000186577" ixy="-0.000111244" ixz="4.58805e-06" iyy="0.000420367" iyz="6.27598e-06" izz="0.000453082"/>
+    </inertial>
+  </link>
+  <link name="pelvis">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/pelvis.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/pelvis.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00120271 2.25244e-05 0.0174045"/>
+      <mass value="7.0564"/>
+      <inertia ixx="0.0296262" ixy="4.6e-05" ixz="-0.000213402" iyy="0.0269016" iyz="-6.98e-06" izz="0.0303917"/>
+    </inertial>
+  </link>
+  <link name="r_ee_base">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_ee_base.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_ee_base.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.011465 -2.00782e-05 0.0034887700000000004"/>
+      <mass value="1.02173"/>
+      <inertia ixx="0.00064027" ixy="-1.86e-08" ixz="4.46e-05" iyy="0.000966193" iyz="3.52e-07" izz="0.000915083"/>
+    </inertial>
+  </link>
+  <link name="r_foot">
+    <collision>
+      <origin rpy="0 0 0" xyz="0.08075 0.0 -0.019000000000000003"/>
+      <geometry>
+        <box size="0.1785 0.092 0.02"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0085 0.0 -0.019000000000000003"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.046"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_foot.stl"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.050069499999999996 1.67589e-05 -0.0155558"/>
+      <mass value="0.33027"/>
+      <inertia ixx="0.000228993" ixy="2.65002e-07" ixz="1.3692e-05" iyy="0.00118045" iyz="-1.64636e-07" izz="0.00135256"/>
+    </inertial>
+  </link>
+  <link name="r_forearm">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_forearm.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_forearm.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.76471e-05 -0.006628230000000001 -0.0971638"/>
+      <mass value="0.399666"/>
+      <inertia ixx="0.000848008" ixy="-3.16e-07" ixz="1.48e-07" iyy="0.000412659" iyz="-5.41e-05" izz="0.000729089"/>
+    </inertial>
+  </link>
+  <link name="r_leg_inner_bu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_bu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_bu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 -0.00130901 0.0"/>
+      <mass value="0.026838"/>
+      <inertia ixx="1.57122e-06" ixy="-8.79511e-14" ixz="3.51829e-18" iyy="1.32096e-06" iyz="-2.20868e-15" izz="1.02599e-06"/>
+    </inertial>
+  </link>
+  <link name="r_leg_inner_rod_end">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_rod_end.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_rod_end.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.22703e-09 -5.16315e-09 -0.0156375"/>
+      <mass value="0.0537583"/>
+      <inertia ixx="1.9808e-05" ixy="-6.19838e-15" ixz="2.56861e-13" iyy="2.30793e-05" iyz="-1.08083e-12" izz="5.70676e-06"/>
+    </inertial>
+  </link>
+  <link name="r_leg_inner_rod_top">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_rod_top.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_rod_top.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="6.17569e-06 -1.29242e-05 -0.205435"/>
+      <mass value="0.118061"/>
+      <inertia ixx="0.000543519" ixy="3.43564e-09" ixz="3.50794e-08" iyy="0.000543542" iyz="-8.11026e-08" izz="9.31963e-06"/>
+    </inertial>
+  </link>
+  <link name="r_leg_inner_screw_housing">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_screw_housing.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_screw_housing.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.16641e-06 0.0620012 0.000360708"/>
+      <mass value="0.532486"/>
+      <inertia ixx="0.000745411" ixy="-3.96894e-08" ixz="-5.51723e-08" iyy="0.000186142" iyz="5.35695e-06" izz="0.000731811"/>
+    </inertial>
+  </link>
+  <link name="r_leg_inner_tu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_tu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_inner_tu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000294298 0.00202915 -0.00033195200000000005"/>
+      <mass value="0.0535394"/>
+      <inertia ixx="8.58152e-06" ixy="5.46482e-08" ixz="5.22265e-09" iyy="1.06576e-05" iyz="-3.61069e-08" izz="3.61208e-06"/>
+    </inertial>
+  </link>
+  <link name="r_leg_kn_conrod">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_kn_conrod.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_kn_conrod.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0269765 0.06432210000000001 -0.0"/>
+      <mass value="0.227858"/>
+      <inertia ixx="0.000702597" ixy="0.000283515" ixz="-8.3025e-24" iyy="0.000145495" iyz="-2.5469700000000003e-24" izz="0.000841459"/>
+    </inertial>
+  </link>
+  <link name="r_leg_kn_driver">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_kn_driver.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_kn_driver.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00234081 -0.0107188 -0.0302656"/>
+      <mass value="0.387673"/>
+      <inertia ixx="0.000482489" ixy="-4.72495e-05" ixz="4.12097e-06" iyy="0.000334784" iyz="3.76852e-05" izz="0.000552889"/>
+    </inertial>
+  </link>
+  <link name="r_leg_outer_bu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_bu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_bu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 -0.00130901 0.0"/>
+      <mass value="0.026838"/>
+      <inertia ixx="1.57122e-06" ixy="-8.79511e-14" ixz="3.51829e-18" iyy="1.32096e-06" iyz="-2.20868e-15" izz="1.02599e-06"/>
+    </inertial>
+  </link>
+  <link name="r_leg_outer_rod_end">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_rod_end.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_rod_end.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.22703e-09 -5.16315e-09 -0.0156375"/>
+      <mass value="0.0537583"/>
+      <inertia ixx="1.9808e-05" ixy="-6.19838e-15" ixz="2.56861e-13" iyy="2.30793e-05" iyz="-1.08083e-12" izz="5.70676e-06"/>
+    </inertial>
+  </link>
+  <link name="r_leg_outer_rod_top">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_rod_top.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_rod_top.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="6.17569e-06 -1.29242e-05 -0.205435"/>
+      <mass value="0.118061"/>
+      <inertia ixx="0.000543519" ixy="3.43564e-09" ixz="3.50794e-08" iyy="0.000543542" iyz="-8.11026e-08" izz="9.31963e-06"/>
+    </inertial>
+  </link>
+  <link name="r_leg_outer_screw_housing">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_screw_housing.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_screw_housing.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.16641e-06 0.0620012 0.000360708"/>
+      <mass value="0.532486"/>
+      <inertia ixx="0.000745411" ixy="-3.96894e-08" ixz="-5.51723e-08" iyy="0.000186142" iyz="5.35695e-06" izz="0.000731811"/>
+    </inertial>
+  </link>
+  <link name="r_leg_outer_tu">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_tu.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_leg_outer_tu.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000294298 0.00202915 -0.00033195200000000005"/>
+      <mass value="0.0535394"/>
+      <inertia ixx="8.58152e-06" ixy="5.46482e-08" ixz="5.22265e-09" iyy="1.06576e-05" iyz="-3.61069e-08" izz="3.61208e-06"/>
+    </inertial>
+  </link>
+  <link name="r_lower_elbow">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_elbow.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_elbow.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.029563500000000003 -0.0567177 0.000618225"/>
+      <mass value="1.46237"/>
+      <inertia ixx="0.00358655" ixy="-0.000698465" ixz="-2.09e-05" iyy="0.00222726" iyz="-4.47e-05" izz="0.00346303"/>
+    </inertial>
+  </link>
+  <link name="r_lower_hip">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_hip.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_hip.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0077225900000000005 -0.006626890000000001 -0.000197152"/>
+      <mass value="3.21998"/>
+      <inertia ixx="0.00799864" ixy="-0.000209798" ixz="-1.05e-05" iyy="0.0085048" iyz="-2.3e-05" izz="0.00545929"/>
+    </inertial>
+  </link>
+  <link name="r_lower_leg">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_leg.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_leg.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0186116 0.105955 0.00317422"/>
+      <mass value="1.92104"/>
+      <inertia ixx="0.0349331" ixy="0.0010637" ixz="1.63e-05" iyy="0.00421401" iyz="0.000943808" izz="0.034514"/>
+    </inertial>
+  </link>
+  <link name="r_lower_shoulder">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_shoulder.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_lower_shoulder.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0931846 0.015694100000000002 -0.00160216"/>
+      <mass value="3.54851"/>
+      <inertia ixx="0.00399894" ixy="-0.00305749" ixz="-0.000346064" iyy="0.0260441" iyz="-5.14e-05" izz="0.0268674"/>
+    </inertial>
+  </link>
+  <link name="r_mid_ankle">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_mid_ankle.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_mid_ankle.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0033513600000000003 0.005725920000000001 -0.00203379"/>
+      <mass value="0.101839"/>
+      <inertia ixx="2.82437e-05" ixy="-1.47896e-06" ixz="-6.94013e-07" iyy="4.01929e-05" iyz="-1.18413e-06" izz="2.05205e-05"/>
+    </inertial>
+  </link>
+  <link name="r_mid_wrist">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_mid_wrist.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_mid_wrist.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00227322 0.017307700000000002 -0.00352609"/>
+      <mass value="1.10598"/>
+      <inertia ixx="0.00151821" ixy="-0.000126304" ixz="-1.8e-05" iyy="0.00115763" iyz="-6.38e-05" izz="0.00188315"/>
+    </inertial>
+  </link>
+  <link name="r_upper_elbow">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_elbow.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_elbow.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0161096 0.00374485 -0.17859899999999998"/>
+      <mass value="1.5824"/>
+      <inertia ixx="0.00184407" ixy="-7.23e-06" ixz="0.000262217" iyy="0.00238945" iyz="1.13e-05" izz="0.0017635"/>
+    </inertial>
+  </link>
+  <link name="r_upper_foot">
+    <visual>
+      <origin rpy="-0.0 1.5707963057214722 0.0" xyz="-0.047 0.0 -0.15"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_foot.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="-0.0 1.5707963057214722 0.0" xyz="-0.047 0.0 -0.15"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_foot.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0305821 1.38859e-05 -0.0012689999999999924"/>
+      <mass value="1.06093"/>
+      <inertia ixx="0.000910993" ixy="-1.1e-07" ixz="-4.49733e-05" iyy="0.00102729" iyz="-3.6859e-08" izz="0.00063628"/>
+    </inertial>
+  </link>
+  <link name="r_upper_hip">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_hip.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_hip.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-8.6056e-07 0.00641862 -0.0337281"/>
+      <mass value="0.799802"/>
+      <inertia ixx="0.00191864" ixy="2.82e-06" ixz="2.94e-06" iyy="0.00398257" iyz="0.000204141" izz="0.00468247"/>
+    </inertial>
+  </link>
+  <link name="r_upper_leg">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_leg.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_leg.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00025122699999999997 0.009400200000000001 0.11117"/>
+      <mass value="7.34842"/>
+      <inertia ixx="0.0572686" ixy="-0.000660014" ixz="0.000526328" iyy="0.0586047" iyz="-0.00327417" izz="0.022338"/>
+    </inertial>
+  </link>
+  <link name="r_upper_shoulder">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_shoulder.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/r_upper_shoulder.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000878697 0.0119507 -0.045620600000000004"/>
+      <mass value="0.876638"/>
+      <inertia ixx="0.00154587" ixy="-1.42e-05" ixz="1.28e-05" iyy="0.0021158" iyz="0.00026039" izz="0.00200123"/>
+    </inertial>
+  </link>
+  <link name="torso">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/torso.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/r1/torso.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.048658 0.000174752 0.221477"/>
+      <mass value="30.4724"/>
+      <inertia ixx="0.566222" ixy="0.000235247" ixz="-0.00210774" iyy="0.470533" iyz="-0.000139326" izz="0.270508"/>
+    </inertial>
+  </link>
+  <joint name="back.bulx" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_l_bu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_l_rod_end"/>
+    <origin rpy="1.5707963267948966 0.0 1.5707963267948966" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="back.fakel" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_l_rod_end"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_l_rod_top"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="back.bkl" type="prismatic">
+    <limit effort="7084.291992" lower="-0.063631" upper="0.036369" velocity="inf"/>
+    <dynamics damping="4.01" friction="0.0"/>
+    <child link="back_l_rod_top"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_l_screw_housing"/>
+    <origin rpy="-1.5707963267948966 -1.5707963267948966 0.0" xyz="0.0 0.280881 0.0"/>
+  </joint>
+  <transmission name="back.bkl.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="back.bkl">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="back.bkl">
+      <mechanicalReduction>1570.796327</mechanicalReduction>
+      <motorInertia>33.556654972466994</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="back.tulx" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_l_screw_housing"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_l_tu"/>
+    <origin rpy="-0.0 1.5707963057214722 0.0" xyz="0.0 -0.0055 0.0"/>
+  </joint>
+  <joint name="back.tuly" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_l_tu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="torso"/>
+    <origin rpy="-1.5707963267948966 0.0209969138165631 0.0" xyz="0.045 0.045 0.254"/>
+  </joint>
+  <joint name="back.burx" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_r_bu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_r_rod_end"/>
+    <origin rpy="1.5707963267948966 0.0 1.5707963267948966" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="back.faker" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_r_rod_end"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_r_rod_top"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="back.bkr" type="prismatic">
+    <limit effort="7084.291992" lower="-0.063631" upper="0.036369" velocity="inf"/>
+    <dynamics damping="4.01" friction="0.0"/>
+    <child link="back_r_rod_top"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_r_screw_housing"/>
+    <origin rpy="-1.5707963267948966 -1.5707963267948966 0.0" xyz="0.0 0.280881 0.0"/>
+  </joint>
+  <transmission name="back.bkr.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="back.bkr">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="back.bkr">
+      <mechanicalReduction>1570.796327</mechanicalReduction>
+      <motorInertia>33.556654972466994</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="back.turx" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_r_screw_housing"/>
+    <axis xyz="0 0 1"/>
+    <parent link="back_r_tu"/>
+    <origin rpy="-0.0 1.5707963057214722 0.0" xyz="0.0 -0.0055 0.0"/>
+  </joint>
+  <joint name="back.tury" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="back_r_tu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="torso"/>
+    <origin rpy="-1.5707963267948966 0.0209969138165631 0.0" xyz="0.045 -0.045 0.254"/>
+  </joint>
+  <joint name="head.nkz" type="continuous">
+    <limit effort="69.12645" velocity="inf"/>
+    <dynamics damping="0.12" friction="0.0"/>
+    <child link="head"/>
+    <axis xyz="0 0 1"/>
+    <parent link="torso"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.05 0.0 0.474"/>
+  </joint>
+  <transmission name="head.nkz.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="head.nkz">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="head.nkz">
+      <mechanicalReduction>-31.9586</mechanicalReduction>
+      <motorInertia>0.00919216902564</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="larm.wbd" type="revolute">
+    <limit effort="69.12645" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="inf"/>
+    <dynamics damping="0.12" friction="0.0"/>
+    <child link="l_ee_base"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_mid_wrist"/>
+    <origin rpy="1.5707963267948966 0.0 1.5707963267948966" xyz="0.0 0.069 0.0"/>
+  </joint>
+  <transmission name="larm.wbd.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="larm.wbd">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="larm.wbd">
+      <mechanicalReduction>-31.9586</mechanicalReduction>
+      <motorInertia>0.00919216902564</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="l_foot_fixed_joint" type="fixed">
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_foot"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_upper_foot"/>
+    <origin rpy="3.141592653589793 -1.483668073919798 0.0" xyz="-0.053958 0.0 0.004742999999999997"/>
+  </joint>
+  <joint name="larm.ft" type="continuous">
+    <limit effort="69.12645" velocity="inf"/>
+    <dynamics damping="0.12" friction="0.0"/>
+    <child link="l_forearm"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_lower_elbow"/>
+    <origin rpy="1.5707963267948966 0.0 0.0" xyz="-0.038 -0.05 0.0"/>
+  </joint>
+  <transmission name="larm.ft.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="larm.ft">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="larm.ft">
+      <mechanicalReduction>-31.9586</mechanicalReduction>
+      <motorInertia>0.00919216902564</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.buxi" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_inner_bu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_inner_rod_end"/>
+    <origin rpy="-1.5707963267948966 -0.1404826283903977 -1.5707963267948966" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="lleg.fakei" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_inner_rod_end"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_inner_rod_top"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="lleg.aki" type="prismatic">
+    <limit effort="7084.291992" lower="-0.038123" upper="0.032877" velocity="inf"/>
+    <dynamics damping="4.01" friction="0.0"/>
+    <child link="l_leg_inner_rod_top"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_inner_screw_housing"/>
+    <origin rpy="-1.5707963267948963 -1.235443321301049 -3.373486736390522e-16" xyz="0.0 0.376123 -1e-06"/>
+  </joint>
+  <transmission name="lleg.aki.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lleg.aki">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lleg.aki">
+      <mechanicalReduction>1570.796327</mechanicalReduction>
+      <motorInertia>33.556654972466994</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.tuxi" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_inner_screw_housing"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_inner_tu"/>
+    <origin rpy="1.5707963267948966 1.5367754243518221 1.5707963267948966" xyz="0.0 0.0055 0.0"/>
+  </joint>
+  <joint name="lleg.tuyi" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_inner_tu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_lower_leg"/>
+    <origin rpy="0.0 0.0 0.23721748013377714" xyz="0.06 0.04 -0.031"/>
+  </joint>
+  <joint name="lleg.kn_act_pivot" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_kn_conrod"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_kn_driver"/>
+    <origin rpy="3.141592653589793 0.0 -2.792650826638911" xyz="-0.022171 -0.054676 0.0215"/>
+  </joint>
+  <joint name="lleg.kn_act_out" type="continuous">
+    <limit effort="250.0" velocity="inf"/>
+    <dynamics damping="0.49" friction="0.0"/>
+    <child link="l_leg_kn_driver"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_upper_leg"/>
+    <origin rpy="-1.5707963267948966 -0.34894182695088216 3.141592653589793" xyz="0.005 -0.002 -0.144728"/>
+  </joint>
+  <transmission name="lleg.kn_act_out.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lleg.kn_act_out">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lleg.kn_act_out">
+      <mechanicalReduction>-10.153846</mechanicalReduction>
+      <motorInertia>0.042271241322603556</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.buxo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_outer_bu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_outer_rod_end"/>
+    <origin rpy="-1.5707963267948966 0.1404826283903977 -1.5707963267948966" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="lleg.fakeo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_outer_rod_end"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_outer_rod_top"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="lleg.ako" type="prismatic">
+    <limit effort="7084.291992" lower="-0.038123" upper="0.032877" velocity="inf"/>
+    <dynamics damping="4.01" friction="0.0"/>
+    <child link="l_leg_outer_rod_top"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_outer_screw_housing"/>
+    <origin rpy="1.5707963267948966 -1.2354433213010492 3.141592653589793" xyz="0.0 0.376123 -1e-06"/>
+  </joint>
+  <transmission name="lleg.ako.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lleg.ako">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lleg.ako">
+      <mechanicalReduction>1570.796327</mechanicalReduction>
+      <motorInertia>33.556654972466994</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.tuxo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_outer_screw_housing"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_leg_outer_tu"/>
+    <origin rpy="-1.5707963267948966 1.5367754243518221 -1.5707963267948966" xyz="0.0 0.0055 0.0"/>
+  </joint>
+  <joint name="lleg.tuyo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_leg_outer_tu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_lower_leg"/>
+    <origin rpy="0.0 0.0 0.23721748013377714" xyz="0.06 0.04 0.031"/>
+  </joint>
+  <joint name="larm.el" type="revolute">
+    <limit effort="135.808411" lower="-0.17453292519943295" upper="2.6179938779914944" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="l_lower_elbow"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_upper_elbow"/>
+    <origin rpy="-1.5707963267948966 0.0 0.0" xyz="0.021 0.0 0.185"/>
+  </joint>
+  <transmission name="larm.el.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="larm.el">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="larm.el">
+      <mechanicalReduction>-24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.hpx" type="revolute">
+    <limit effort="271.616821" lower="-0.6981317007977318" upper="1.3089969389957472" velocity="inf"/>
+    <dynamics damping="0.3" friction="0.0"/>
+    <child link="l_lower_hip"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_upper_hip"/>
+    <origin rpy="-1.5707963267948966 0.2619549608053018 -1.5707963267948966" xyz="0.0 0.03 0.059"/>
+  </joint>
+  <transmission name="lleg.hpx.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lleg.hpx">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lleg.hpx">
+      <mechanicalReduction>-24.80519</mechanicalReduction>
+      <motorInertia>0.039994334310846494</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.kn" type="revolute">
+    <limit effort="0.0" lower="0.0" upper="2.6179938779914944" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_lower_leg"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_upper_leg"/>
+    <origin rpy="-1.5707963267948966 0.0951888417426272 0.0" xyz="-0.037536 0.0 -0.279159"/>
+  </joint>
+  <joint name="larm.shx" type="revolute">
+    <limit effort="135.808411" lower="-0.6108652381980153" upper="2.7576202181510405" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="l_lower_shoulder"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_upper_shoulder"/>
+    <origin rpy="1.5707963267948968 0.08712825287509718 1.5707963267948968" xyz="0.0 0.025 0.07025"/>
+  </joint>
+  <transmission name="larm.shx.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="larm.shx">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="larm.shx">
+      <mechanicalReduction>24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.aky" type="revolute">
+    <limit effort="0.0" lower="-0.9250245035569946" upper="1.2217304763960306" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_mid_ankle"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_lower_leg"/>
+    <origin rpy="0.0 0.0 0.026993441868287907" xyz="0.0 0.414 0.0"/>
+  </joint>
+  <joint name="larm.wbp" type="revolute">
+    <limit effort="69.12645" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="inf"/>
+    <dynamics damping="0.12" friction="0.0"/>
+    <child link="l_mid_wrist"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_forearm"/>
+    <origin rpy="1.5707963267948966 0.0 3.141592653589793" xyz="0.0 0.0 0.1172"/>
+  </joint>
+  <transmission name="larm.wbp.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="larm.wbp">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="larm.wbp">
+      <mechanicalReduction>31.9586</mechanicalReduction>
+      <motorInertia>0.00919216902564</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="larm.shz" type="continuous">
+    <limit effort="135.808411" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="l_upper_elbow"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_lower_shoulder"/>
+    <origin rpy="1.5707963267948963 -1.5007707299871638 1.5707963267948963" xyz="0.1 0.025 0.0"/>
+  </joint>
+  <transmission name="larm.shz.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="larm.shz">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="larm.shz">
+      <mechanicalReduction>-24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.akx" type="revolute">
+    <limit effort="0.0" lower="-0.6806784082777885" upper="0.6806784082777885" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="l_upper_foot"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_mid_ankle"/>
+    <origin rpy="-1.5707963267948966 0.0 -1.5707963267948966" xyz="0.0 0.01 0.0"/>
+  </joint>
+  <joint name="lleg.hpy" type="continuous">
+    <limit effort="250.0" velocity="inf"/>
+    <dynamics damping="0.49" friction="0.0"/>
+    <child link="l_upper_hip"/>
+    <axis xyz="0 0 1"/>
+    <parent link="pelvis"/>
+    <origin rpy="-1.8327512876001983 0.0 0.0" xyz="0.0 0.072 0.0"/>
+  </joint>
+  <transmission name="lleg.hpy.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lleg.hpy">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lleg.hpy">
+      <mechanicalReduction>-10.153846</mechanicalReduction>
+      <motorInertia>0.042271241322603556</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="lleg.hpz" type="continuous">
+    <limit effort="250.0" velocity="inf"/>
+    <dynamics damping="0.49" friction="0.0"/>
+    <child link="l_upper_leg"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_lower_hip"/>
+    <origin rpy="3.141592653589793 -1.5707963057214722 0.0" xyz="-0.084 -0.005 0.0"/>
+  </joint>
+  <transmission name="lleg.hpz.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lleg.hpz">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lleg.hpz">
+      <mechanicalReduction>10.153846</mechanicalReduction>
+      <motorInertia>0.042271241322603556</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="larm.shy" type="continuous">
+    <limit effort="135.808411" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="l_upper_shoulder"/>
+    <axis xyz="0 0 1"/>
+    <parent link="torso"/>
+    <origin rpy="-1.4837145452404683 -0.0003587681319874303 -0.06969678543253567" xyz="-0.047 0.1405 0.314"/>
+  </joint>
+  <transmission name="larm.shy.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="larm.shy">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="larm.shy">
+      <mechanicalReduction>-24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="back.bkx" type="revolute">
+    <limit effort="0.0" lower="-0.6181956210563916" upper="0.6181956210563916" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="lower_back"/>
+    <axis xyz="0 0 1"/>
+    <parent link="mid_back"/>
+    <origin rpy="-2.8274320862693685 -1.5707963267948966 0.0" xyz="-0.0037080000000000004 0.011413 0.0"/>
+  </joint>
+  <joint name="back.bky" type="revolute">
+    <limit effort="0.0" lower="-1.1725994579523904" upper="0.5918586026437971" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="mid_back"/>
+    <axis xyz="0 0 1"/>
+    <parent link="torso"/>
+    <origin rpy="-1.5707963267948966 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="back.bkz" type="continuous">
+    <limit effort="250.0" velocity="inf"/>
+    <dynamics damping="0.49" friction="0.0"/>
+    <child link="pelvis"/>
+    <axis xyz="0 0 1"/>
+    <parent link="lower_back"/>
+    <origin rpy="3.141592653589793 -1.2566357594744715 1.5707963267948966" xyz="0.0 -0.190399 0.024012000000000002"/>
+  </joint>
+  <transmission name="back.bkz.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="back.bkz">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="back.bkz">
+      <mechanicalReduction>10.153846</mechanicalReduction>
+      <motorInertia>0.042271241322603556</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rarm.wbd" type="revolute">
+    <limit effort="69.12645" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="inf"/>
+    <dynamics damping="0.12" friction="0.0"/>
+    <child link="r_ee_base"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_mid_wrist"/>
+    <origin rpy="-1.5707963267948966 0.0 1.5707963267948966" xyz="0.0 0.069 0.0"/>
+  </joint>
+  <transmission name="rarm.wbd.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rarm.wbd">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rarm.wbd">
+      <mechanicalReduction>-31.9586</mechanicalReduction>
+      <motorInertia>0.00919216902564</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="r_foot_fixed_joint" type="fixed">
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_foot"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_upper_foot"/>
+    <origin rpy="0.0 1.483668073919798 0.0" xyz="-0.053958 0.0 -0.004742999999999997"/>
+  </joint>
+  <joint name="rarm.ft" type="continuous">
+    <limit effort="69.12645" velocity="inf"/>
+    <dynamics damping="0.12" friction="0.0"/>
+    <child link="r_forearm"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_lower_elbow"/>
+    <origin rpy="-1.5707963267948966 0.0 0.0" xyz="-0.038 -0.05 0.0"/>
+  </joint>
+  <transmission name="rarm.ft.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rarm.ft">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rarm.ft">
+      <mechanicalReduction>31.9586</mechanicalReduction>
+      <motorInertia>0.00919216902564</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.buxi" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_inner_bu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_inner_rod_end"/>
+    <origin rpy="-1.5707963267948966 0.1404826283903977 -1.5707963267948966" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="rleg.fakei" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_inner_rod_end"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_inner_rod_top"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="rleg.aki" type="prismatic">
+    <limit effort="7084.291992" lower="-0.038123" upper="0.032877" velocity="inf"/>
+    <dynamics damping="4.01" friction="0.0"/>
+    <child link="r_leg_inner_rod_top"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_inner_screw_housing"/>
+    <origin rpy="1.5707963267948966 -1.2354433213010492 3.141592653589793" xyz="0.0 0.376123 -1e-06"/>
+  </joint>
+  <transmission name="rleg.aki.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rleg.aki">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rleg.aki">
+      <mechanicalReduction>1570.796327</mechanicalReduction>
+      <motorInertia>33.556654972466994</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.tuxi" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_inner_screw_housing"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_inner_tu"/>
+    <origin rpy="-1.5707963267948966 1.5367754243518221 -1.5707963267948966" xyz="0.0 0.0055 0.0"/>
+  </joint>
+  <joint name="rleg.tuyi" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_inner_tu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_lower_leg"/>
+    <origin rpy="0.0 0.0 0.23721748013377714" xyz="0.06 0.04 0.031"/>
+  </joint>
+  <joint name="rleg.kn_act_pivot" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_kn_conrod"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_kn_driver"/>
+    <origin rpy="3.141592653589793 0.0 -2.792650826638911" xyz="-0.022171 -0.054676 -0.0215"/>
+  </joint>
+  <joint name="rleg.kn_act_out" type="continuous">
+    <limit effort="250.0" velocity="inf"/>
+    <dynamics damping="0.49" friction="0.0"/>
+    <child link="r_leg_kn_driver"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_upper_leg"/>
+    <origin rpy="1.5707963267948966 0.3489418269508824 3.141592653589793" xyz="0.005 -0.002 0.144728"/>
+  </joint>
+  <transmission name="rleg.kn_act_out.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rleg.kn_act_out">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rleg.kn_act_out">
+      <mechanicalReduction>10.153846</mechanicalReduction>
+      <motorInertia>0.042271241322603556</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.buxo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_outer_bu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_outer_rod_end"/>
+    <origin rpy="-1.5707963267948966 -0.1404826283903977 -1.5707963267948966" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="rleg.fakeo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_outer_rod_end"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_outer_rod_top"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="rleg.ako" type="prismatic">
+    <limit effort="7084.291992" lower="-0.038123" upper="0.032877" velocity="inf"/>
+    <dynamics damping="4.01" friction="0.0"/>
+    <child link="r_leg_outer_rod_top"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_outer_screw_housing"/>
+    <origin rpy="-1.5707963267948963 -1.235443321301049 -3.373486736390522e-16" xyz="0.0 0.376123 -1e-06"/>
+  </joint>
+  <transmission name="rleg.ako.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rleg.ako">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rleg.ako">
+      <mechanicalReduction>1570.796327</mechanicalReduction>
+      <motorInertia>33.556654972466994</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.tuxo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_outer_screw_housing"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_leg_outer_tu"/>
+    <origin rpy="1.5707963267948966 1.5367754243518221 1.5707963267948966" xyz="0.0 0.0055 0.0"/>
+  </joint>
+  <joint name="rleg.tuyo" type="continuous">
+    <limit effort="0.0" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_leg_outer_tu"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_lower_leg"/>
+    <origin rpy="0.0 0.0 0.23721748013377714" xyz="0.06 0.04 -0.031"/>
+  </joint>
+  <joint name="rarm.el" type="revolute">
+    <limit effort="135.808411" lower="-0.17453292519943295" upper="2.6179938779914944" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="r_lower_elbow"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_upper_elbow"/>
+    <origin rpy="1.5707963267948966 0.0 0.0" xyz="0.021 0.0 -0.185"/>
+  </joint>
+  <transmission name="rarm.el.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rarm.el">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rarm.el">
+      <mechanicalReduction>-24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.hpx" type="revolute">
+    <limit effort="271.616821" lower="-0.6981317007977318" upper="1.3089969389957472" velocity="inf"/>
+    <dynamics damping="0.3" friction="0.0"/>
+    <child link="r_lower_hip"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_upper_hip"/>
+    <origin rpy="1.5707963267948966 -0.26195496080530156 -1.5707963267948966" xyz="0.0 0.03 -0.059"/>
+  </joint>
+  <transmission name="rleg.hpx.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rleg.hpx">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rleg.hpx">
+      <mechanicalReduction>-24.80519</mechanicalReduction>
+      <motorInertia>0.039994334310846494</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.kn" type="revolute">
+    <limit effort="0.0" lower="0.0" upper="2.6179938779914944" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_lower_leg"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_upper_leg"/>
+    <origin rpy="1.5707963267948966 -0.0951888417426272 0.0" xyz="-0.037536 0.0 0.279159"/>
+  </joint>
+  <joint name="rarm.shx" type="revolute">
+    <limit effort="135.808411" lower="-0.6108652381980153" upper="2.7576202181510405" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="r_lower_shoulder"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_upper_shoulder"/>
+    <origin rpy="-1.5707963267948968 -0.08712825287509696 1.5707963267948968" xyz="0.0 0.025 -0.07025"/>
+  </joint>
+  <transmission name="rarm.shx.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rarm.shx">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rarm.shx">
+      <mechanicalReduction>24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.aky" type="revolute">
+    <limit effort="0.0" lower="-0.9250245035569946" upper="1.2217304763960306" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_mid_ankle"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_lower_leg"/>
+    <origin rpy="0.0 0.0 0.026993441868287907" xyz="0.0 0.414 0.0"/>
+  </joint>
+  <joint name="rarm.wbp" type="revolute">
+    <limit effort="69.12645" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="inf"/>
+    <dynamics damping="0.12" friction="0.0"/>
+    <child link="r_mid_wrist"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_forearm"/>
+    <origin rpy="-1.5707963267948966 0.0 3.141592653589793" xyz="0.0 0.0 -0.1172"/>
+  </joint>
+  <transmission name="rarm.wbp.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rarm.wbp">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rarm.wbp">
+      <mechanicalReduction>-31.9586</mechanicalReduction>
+      <motorInertia>0.00919216902564</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rarm.shz" type="continuous">
+    <limit effort="135.808411" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="r_upper_elbow"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_lower_shoulder"/>
+    <origin rpy="-1.5707963267948963 1.5007707299871638 1.5707963267948963" xyz="0.1 0.025 0.0"/>
+  </joint>
+  <transmission name="rarm.shz.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rarm.shz">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rarm.shz">
+      <mechanicalReduction>24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.akx" type="revolute">
+    <limit effort="0.0" lower="-0.6806784082777885" upper="0.6806784082777885" velocity="inf"/>
+    <dynamics damping="0.0" friction="0.0"/>
+    <child link="r_upper_foot"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_mid_ankle"/>
+    <origin rpy="1.5707963267948966 0.0 -1.5707963267948966" xyz="0.0 0.01 0.0"/>
+  </joint>
+  <joint name="rleg.hpy" type="continuous">
+    <limit effort="250.0" velocity="inf"/>
+    <dynamics damping="0.49" friction="0.0"/>
+    <child link="r_upper_hip"/>
+    <axis xyz="0 0 1"/>
+    <parent link="pelvis"/>
+    <origin rpy="-1.308841365989595 0.0 0.0" xyz="0.0 -0.072 0.0"/>
+  </joint>
+  <transmission name="rleg.hpy.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rleg.hpy">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rleg.hpy">
+      <mechanicalReduction>10.153846</mechanicalReduction>
+      <motorInertia>0.042271241322603556</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rleg.hpz" type="continuous">
+    <limit effort="250.0" velocity="inf"/>
+    <dynamics damping="0.49" friction="0.0"/>
+    <child link="r_upper_leg"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_lower_hip"/>
+    <origin rpy="-3.141592653589793 1.5707963057214722 0.0" xyz="-0.084 -0.005 0.0"/>
+  </joint>
+  <transmission name="rleg.hpz.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rleg.hpz">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rleg.hpz">
+      <mechanicalReduction>-10.153846</mechanicalReduction>
+      <motorInertia>0.042271241322603556</motorInertia>
+    </actuator>
+  </transmission>
+  <joint name="rarm.shy" type="continuous">
+    <limit effort="135.808411" velocity="inf"/>
+    <dynamics damping="0.15" friction="0.0"/>
+    <child link="r_upper_shoulder"/>
+    <axis xyz="0 0 1"/>
+    <parent link="torso"/>
+    <origin rpy="-1.6578781083493253 -0.0003587681319874303 0.06969678543253564" xyz="-0.047 -0.1405 0.314"/>
+  </joint>
+  <transmission name="rarm.shy.transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rarm.shy">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rarm.shy">
+      <mechanicalReduction>24.80519</mechanicalReduction>
+      <motorInertia>0.019997167155423247</motorInertia>
+    </actuator>
+  </transmission>
+  <loop_joint name="l_foot_outer_loop_a" type="spherical">
+    <link1 link="l_leg_outer_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="-0.03 -0.0015 0.0"/>
+    <link2 link="l_upper_foot" rpy="-2.9664686250579706 -1.2652803839309614 -1.5711231695035217" xyz="0.005778989636732605 0.009675452477632681 -0.021118281221108336"/>
+  </loop_joint>
+  <loop_joint name="l_foot_outer_loop_b" type="spherical">
+    <link1 link="l_leg_outer_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="0.03 -0.0015 0.0"/>
+    <link2 link="l_upper_foot" rpy="-2.9664686250579706 -1.2652803839309614 -1.5711231695035217" xyz="0.0162210103632674 -0.046675452477632676 -0.03888171877889166"/>
+  </loop_joint>
+  <loop_joint name="l_foot_r_loop_a" type="spherical">
+    <link1 link="l_leg_inner_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="-0.03 -0.0015 0.0"/>
+    <link2 link="l_upper_foot" rpy="-0.17512402853182257 -1.2652803839309614 1.5711231695035217" xyz="0.0162210103632674 0.046675452477632676 -0.03888171877889166"/>
+  </loop_joint>
+  <loop_joint name="l_foot_r_loop_b" type="spherical">
+    <link1 link="l_leg_inner_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="0.03 -0.0015 0.0"/>
+    <link2 link="l_upper_foot" rpy="-0.17512402853182257 -1.2652803839309614 1.5711231695035217" xyz="0.005778989636732605 -0.009675452477632681 -0.021118281221108336"/>
+  </loop_joint>
+  <loop_joint name="lower_back_l_loop_a" type="spherical">
+    <link1 link="back_l_bu" rpy="0.0 -1.5707963057214722 0.0" xyz="0.03 0.004 0.0"/>
+    <link2 link="lower_back" rpy="1.5707963267948966 -1.277519087839573 1.5707963267948966" xyz="0.015 0.0 0.045"/>
+  </loop_joint>
+  <loop_joint name="lower_back_l_loop_b" type="spherical">
+    <link1 link="back_l_bu" rpy="0.0 -1.5707963057214722 0.0" xyz="-0.03 0.004 0.0"/>
+    <link2 link="lower_back" rpy="1.5707963267948966 -1.277519087839573 1.5707963267948966" xyz="0.075 0.0 0.045"/>
+  </loop_joint>
+  <loop_joint name="lower_back_r_loop_a" type="spherical">
+    <link1 link="back_r_bu" rpy="0.0 -1.5707963057214722 0.0" xyz="0.03 0.004 0.0"/>
+    <link2 link="lower_back" rpy="1.5707963267948966 -1.277519087839573 1.5707963267948966" xyz="-0.075 0.0 0.045"/>
+  </loop_joint>
+  <loop_joint name="lower_back_r_loop_b" type="spherical">
+    <link1 link="back_r_bu" rpy="0.0 -1.5707963057214722 0.0" xyz="-0.03 0.004 0.0"/>
+    <link2 link="lower_back" rpy="1.5707963267948966 -1.277519087839573 1.5707963267948966" xyz="-0.015 0.0 0.045"/>
+  </loop_joint>
+  <loop_joint name="l_kn_l_loop_a" type="spherical">
+    <link1 link="l_leg_kn_conrod" rpy="0.0 0.0 0.0" xyz="-0.053952 0.128645 -0.03"/>
+    <link2 link="l_lower_leg" rpy="0.0 0.0 -0.09518884174262723" xyz="0.023292 -0.052024 -0.0535"/>
+  </loop_joint>
+  <loop_joint name="l_kn_l_loop_b" type="spherical">
+    <link1 link="l_leg_kn_conrod" rpy="0.0 0.0 0.0" xyz="-0.053952 0.128645 0.03"/>
+    <link2 link="l_lower_leg" rpy="0.0 0.0 -0.09518884174262723" xyz="0.023292 -0.052024 0.006499999999999999"/>
+  </loop_joint>
+  <loop_joint name="r_foot_outer_loop_a" type="spherical">
+    <link1 link="r_leg_outer_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="-0.03 -0.0015 0.0"/>
+    <link2 link="r_upper_foot" rpy="2.9664686250579706 1.2652803839309614 -1.5711231695035217" xyz="0.0162210103632674 -0.046675452477632676 0.03888171877889166"/>
+  </loop_joint>
+  <loop_joint name="r_foot_outer_loop_b" type="spherical">
+    <link1 link="r_leg_outer_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="0.03 -0.0015 0.0"/>
+    <link2 link="r_upper_foot" rpy="2.9664686250579706 1.2652803839309614 -1.5711231695035217" xyz="0.005778989636732605 0.009675452477632681 0.021118281221108336"/>
+  </loop_joint>
+  <loop_joint name="r_foot_r_loop_a" type="spherical">
+    <link1 link="r_leg_inner_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="-0.03 -0.0015 0.0"/>
+    <link2 link="r_upper_foot" rpy="0.17512402853182257 1.2652803839309614 1.5711231695035217" xyz="0.005778989636732605 -0.009675452477632681 0.021118281221108336"/>
+  </loop_joint>
+  <loop_joint name="r_foot_r_loop_b" type="spherical">
+    <link1 link="r_leg_inner_bu" rpy="1.5707963267948966 -1.358306833920847 1.5707963267948966" xyz="0.03 -0.0015 0.0"/>
+    <link2 link="r_upper_foot" rpy="0.17512402853182257 1.2652803839309614 1.5711231695035217" xyz="0.0162210103632674 0.046675452477632676 0.03888171877889166"/>
+  </loop_joint>
+  <loop_joint name="r_kn_l_loop_a" type="spherical">
+    <link1 link="r_leg_kn_conrod" rpy="0.0 0.0 0.0" xyz="-0.053952 0.128645 -0.03"/>
+    <link2 link="r_lower_leg" rpy="0.0 0.0 -0.09518884174262723" xyz="0.023292 -0.052024 -0.006499999999999999"/>
+  </loop_joint>
+  <loop_joint name="r_kn_l_loop_b" type="spherical">
+    <link1 link="r_leg_kn_conrod" rpy="0.0 0.0 0.0" xyz="-0.053952 0.128645 0.03"/>
+    <link2 link="r_lower_leg" rpy="0.0 0.0 -0.09518884174262723" xyz="0.023292 -0.052024 0.0535"/>
+  </loop_joint>
+  <fixed_frame name="head_imu_frame">
+    <parent link="head"/>
+    <origin rpy="0.0 -0.9072978840284617 3.141592653589793" xyz="0.05 -0.0224 0.101"/>
+  </fixed_frame>
+  <!--Begin hardcoded wrist tip. Originating from xacro_writer.py-->
+  <!--Adding zero-mass link after physical wrist FT sensor to properly attach FT sensor-->
+  <link name="l_ee_hand"/>
+  <joint name="l_ee_hand_fixed_joint" type="fixed">
+    <child link="l_ee_hand"/>
+    <axis xyz="0 0 1"/>
+    <parent link="l_ee_base"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <fixed_frame name="l_ee_hand_wrench_sensor_frame">
+    <parent link="l_ee_hand"/>
+    <origin rpy="-0.0 1.5707963057214722 0.0" xyz="0.048748 0.0 0.0"/>
+  </fixed_frame>
+  <!--End hardcoded wrist tip. Originating from xacro_writer.py-->
+  <fixed_frame name="l_foot_inner_heel_frame">
+    <parent link="l_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="-0.0545 -0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="l_foot_inner_toe_frame">
+    <parent link="l_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="0.17 -0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="l_foot_outer_heel_frame">
+    <parent link="l_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="-0.0545 0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="l_foot_outer_toe_frame">
+    <parent link="l_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="0.17 0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="l_foot_patch_center_frame">
+    <parent link="l_foot"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.05775 0.0 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="l_foot_wrench_sensor_frame">
+    <parent link="l_foot"/>
+    <origin rpy="3.141592653589793 0.0 2.094407804564866" xyz="0.005874 0.0 -0.004582"/>
+  </fixed_frame>
+  <!--Begin hardcoded wrist tip. Originating from xacro_writer.py-->
+  <!--Adding zero-mass link after physical wrist FT sensor to properly attach FT sensor-->
+  <link name="r_ee_hand"/>
+  <joint name="r_ee_hand_fixed_joint" type="fixed">
+    <child link="r_ee_hand"/>
+    <axis xyz="0 0 1"/>
+    <parent link="r_ee_base"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <fixed_frame name="r_ee_hand_wrench_sensor_frame">
+    <parent link="r_ee_hand"/>
+    <origin rpy="-0.0 1.5707963057214722 0.0" xyz="0.048748 0.0 0.0"/>
+  </fixed_frame>
+  <!--End hardcoded wrist tip. Originating from xacro_writer.py-->
+  <fixed_frame name="r_foot_inner_heel_frame">
+    <parent link="r_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="-0.0545 0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="r_foot_inner_toe_frame">
+    <parent link="r_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="0.17 0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="r_foot_outer_heel_frame">
+    <parent link="r_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="-0.0545 -0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="r_foot_outer_toe_frame">
+    <parent link="r_foot"/>
+    <origin rpy="0.0 0.08712825287509696 0.0" xyz="0.17 -0.046 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="r_foot_patch_center_frame">
+    <parent link="r_foot"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.05775 0.0 -0.029"/>
+  </fixed_frame>
+  <fixed_frame name="r_foot_wrench_sensor_frame">
+    <parent link="r_foot"/>
+    <origin rpy="3.141592653589793 0.0 2.094407804564866" xyz="0.005874 0.0 -0.004582"/>
+  </fixed_frame>
+  <fixed_frame name="rgb0_frame">
+    <parent link="head"/>
+    <origin rpy="3.141592653589793 1.3786937973025921 3.141592653589793" xyz="0.095 -0.013 -0.0095"/>
+  </fixed_frame>
+  <mujoco_camera fovy="106.0" mode="fixed" name="rgb0_camera" resolution="640 474">
+    <parent link="head"/>
+    <origin rpy="3.141592653589793 1.3786937973025921 3.141592653589793" xyz="0.095 -0.013 -0.0095"/>
+  </mujoco_camera>
+  <fixed_frame name="rgb1_frame">
+    <parent link="head"/>
+    <origin rpy="-1.308841365989595 1.5707963267948966 0.0" xyz="0.033 0.084 0.063"/>
+  </fixed_frame>
+  <mujoco_camera fovy="106.0" mode="fixed" name="rgb1_camera" resolution="640 474">
+    <parent link="head"/>
+    <origin rpy="-1.308841365989595 1.5707963267948966 0.0" xyz="0.033 0.084 0.063"/>
+  </mujoco_camera>
+  <fixed_frame name="rgb2_frame">
+    <parent link="head"/>
+    <origin rpy="1.308841365989595 1.5707963267948966 0.0" xyz="0.033 -0.084 0.063"/>
+  </fixed_frame>
+  <mujoco_camera fovy="106.0" mode="fixed" name="rgb2_camera" resolution="640 474">
+    <parent link="head"/>
+    <origin rpy="1.308841365989595 1.5707963267948966 0.0" xyz="0.033 -0.084 0.063"/>
+  </mujoco_camera>
+  <fixed_frame name="stereo0_frame">
+    <parent link="head"/>
+    <origin rpy="2.4780942108233583 0.0 1.5707963267948966" xyz="0.1105 0.0 0.0505"/>
+  </fixed_frame>
+  <mujoco_camera fovy="58.0" mode="fixed" name="stereo0_camera" resolution="640 426">
+    <parent link="head"/>
+    <origin rpy="2.4780942108233583 0.0 1.5707963267948966" xyz="0.1105 0.0 0.0505"/>
+  </mujoco_camera>
+  <fixed_frame name="stereo0_left_frame">
+    <parent link="head"/>
+    <origin rpy="2.4780942108233583 0.0 1.5707963267948966" xyz="0.110235 -0.0475 0.050838999999999995"/>
+  </fixed_frame>
+  <fixed_frame name="stereo0_right_frame">
+    <parent link="head"/>
+    <origin rpy="2.4780942108233583 0.0 1.5707963267948966" xyz="0.110235 0.0475 0.050838999999999995"/>
+  </fixed_frame>
+  <fixed_frame name="stereo1_frame">
+    <parent link="head"/>
+    <origin rpy="1.5187912086912982 0.0 1.5707963267948966" xyz="0.1035 0.0 0.033"/>
+  </fixed_frame>
+  <mujoco_camera fovy="58.0" mode="fixed" name="stereo1_camera" resolution="640 426">
+    <parent link="head"/>
+    <origin rpy="1.5187912086912982 0.0 1.5707963267948966" xyz="0.1035 0.0 0.033"/>
+  </mujoco_camera>
+  <fixed_frame name="stereo1_left_frame">
+    <parent link="head"/>
+    <origin rpy="1.5187912086912982 0.0 1.5707963267948966" xyz="0.103071 -0.0475 0.032977"/>
+  </fixed_frame>
+  <fixed_frame name="stereo1_right_frame">
+    <parent link="head"/>
+    <origin rpy="1.5187912086912982 0.0 1.5707963267948966" xyz="0.103071 0.0475 0.032977"/>
+  </fixed_frame>
+  <fixed_frame name="tof0_frame">
+    <parent link="head"/>
+    <origin rpy="3.141592653589793 1.2566357594744715 3.141592653589793" xyz="0.0935 0.013 -0.0195"/>
+  </fixed_frame>
+  <mujoco_camera fovy="120.0" mode="fixed" name="tof0_camera" resolution="512 512">
+    <parent link="head"/>
+    <origin rpy="3.141592653589793 1.2566357594744715 3.141592653589793" xyz="0.0935 0.013 -0.0195"/>
+  </mujoco_camera>
+  <fixed_frame name="torso_imu_frame">
+    <parent link="torso"/>
+    <origin rpy="-0.0 1.5707963057214722 0.0" xyz="-0.1665 0.0225 0.254"/>
+  </fixed_frame>
+  <link name="l_gripper_base">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/nub_hand.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.05175"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0.01940625"/>
+      <mass value="0.453"/>
+      <inertia ixx="0.000485265" ixy="0" ixz="0" iyy="0.000485265" iyz="0" izz="0.000485265"/>
+    </inertial>
+  </link>
+  <link name="r_gripper_base">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/nub_hand.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.05175"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0.01940625"/>
+      <mass value="0.453"/>
+      <inertia ixx="0.000485265" ixy="0" ixz="0" iyy="0.000485265" iyz="0" izz="0.000485265"/>
+    </inertial>
+  </link>
+  <joint name="l_gripper_base" type="fixed">
+    <child link="l_gripper_base"/>
+    <parent link="l_ee_hand"/>
+    <origin rpy="-0.0 1.5707963057214722 0.0" xyz="0.0655 0.0 0.0"/>
+  </joint>
+  <joint name="r_gripper_base" type="fixed">
+    <child link="r_gripper_base"/>
+    <parent link="r_ee_hand"/>
+    <origin rpy="-0.0 1.5707963057214722 0.0" xyz="0.0655 0.0 0.0"/>
+  </joint>
+</robot>

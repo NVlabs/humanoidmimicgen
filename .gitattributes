@@ -1,1 +1,2 @@
 robocasa/models/assets/** -text -diff -merge -whitespace
+robosuite/models/assets/** -text -diff -merge -whitespace

@@ -58,6 +58,121 @@ Strict state equality can still report drift; use the generated video as the
 release sanity check unless the controller replay fidelity issue is being
 debugged directly.
 
+## Local-Only 9-Task Benchmark Run
+
+The local-only 9-task check that produced the 6/9 task-predicate result was
+run from tmux session `hmg-full-actions-localonly-demo1` with output directory
+`/tmp/hmg_full_actions_localonly_demo1`. The wrapper was:
+
+```bash
+#!/usr/bin/env bash
+set -u
+
+cd /tmp
+export PYTHONUNBUFFERED=1
+export MUJOCO_GL=egl
+
+OUT=/tmp/hmg_full_actions_localonly_demo1
+REPO=/home/linke/Projects/humanoidmimicgen
+SCRIPT=$REPO/scripts/playback_wbc_goals.py
+
+mkdir -p "$OUT"
+rm -f "$OUT/DONE"
+
+cat > "$OUT/expected_demo1_steps.txt" <<'EOF'
+01_box_lift_floor 952
+02_push_button 563
+03_box_lift 452
+04_push_shelf_forward 1285
+05_drill_lift 452
+06_drill_pnp 859
+07_box_table_to_shelf 689
+08_pick_drill_from_holder 495
+09_obstacle_aware_pick_drill 952
+EOF
+
+run_one() {
+  local label="$1"
+  local dataset="$2"
+  local video="$OUT/${label}_hmg_actions_demo1.mp4"
+  local log="$OUT/${label}.log"
+
+  echo "START $label $(date -Is)" | tee "$OUT/${label}.status"
+  rm -f "$video" "$OUT/${label}.rc" "$OUT/${label}.ffprobe"
+  set +e
+  mamba run -n humanoidmimicgen-wbc env PYTHONPATH="$REPO" python "$SCRIPT" \
+    "$dataset" \
+    --num-episodes 1 \
+    --video-path "$video" \
+    >"$log" 2>&1
+  local rc=$?
+  set -e
+  echo "$rc" > "$OUT/${label}.rc"
+  if [[ -f "$video" ]]; then
+    ffprobe -v error -select_streams v:0 \
+      -show_entries stream=width,height,r_frame_rate,nb_frames,duration \
+      -of default=noprint_wrappers=1 \
+      "$video" > "$OUT/${label}.ffprobe" 2>&1 || true
+  fi
+  echo "END $label rc=$rc $(date -Is)" | tee -a "$OUT/${label}.status"
+}
+
+set -e
+run_one 01_box_lift_floor /home/linke/Projects/gr00t/groot/dexmg/collected_demo/benchmark_dec_7_mid_conservative/G1_LMBoxLiftFloor/demo.hdf5
+run_one 02_push_button /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMPushButton_20260129_234556/demo.hdf5
+run_one 03_box_lift /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMBoxLift_20260129_230924/demo.hdf5
+run_one 04_push_shelf_forward /home/linke/Projects/gr00t/groot/dexmg/collected_demo/benchmark_dec_7_mid_conservative/G1_LMPushShelfForward/demo.hdf5
+run_one 05_drill_lift /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMDrillLift_20260129_231155/demo.hdf5
+run_one 06_drill_pnp /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMDrillPnP90_20260129_231446/demo.hdf5
+run_one 07_box_table_to_shelf /home/linke/Projects/gr00t/groot/dexmg/collected_demo/new_src_demos_jan_21/G1_LMBoxTableToShelfStaticIndustrial_Again/demo.hdf5
+run_one 08_pick_drill_from_holder /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMPickDrillFromHolderStandingEasyFar_20260416_090757/demo.hdf5
+run_one 09_obstacle_aware_pick_drill /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMDrillLiftObstacleDT_20260417_093010/demo.hdf5
+date -Is > "$OUT/DONE"
+```
+
+The first pass hit rc=1 on `09_obstacle_aware_pick_drill` because the trimmed
+local RoboCasa registration was missing `LMDrillLiftObstacleDT`. After adding
+that local env variant registration, only task `09` was rerun with the same
+`run_one` command and exited rc=0. The final output directory had `DONE`, rc=0
+for all nine tasks, and one MP4 per task.
+
+Final task-predicate result:
+
+```text
+01_box_lift_floor: True, 62/952 success steps, first success 890, final True
+02_push_button: False, 0/563 success steps, first success never, final False
+03_box_lift: True, 94/452 success steps, first success 347, final True
+04_push_shelf_forward: True, 4/1285 success steps, first success 1281, final True
+05_drill_lift: True, 58/452 success steps, first success 394, final True
+06_drill_pnp: False, 0/859 success steps, first success never, final False
+07_box_table_to_shelf: True, 82/689 success steps, first success 607, final True
+08_pick_drill_from_holder: True, 148/495 success steps, first success 327, final True
+09_obstacle_aware_pick_drill: False, 0/952 success steps, first success never, final False
+```
+
+Task-predicate failures were `02_push_button`, `06_drill_pnp`, and
+`09_obstacle_aware_pick_drill`, so the final task-predicate success rate was
+6/9. `03_box_lift` succeeded in this local-only run, unlike the previous 5/9
+contract, where `03` was expected to fail.
+
+Final MP4 metadata from the generated `.ffprobe` files:
+
+```text
+01_box_lift_floor: 640x480, 20 fps, 952 frames, 47.60s
+02_push_button: 640x480, 20 fps, 563 frames, 28.15s
+03_box_lift: 640x480, 20 fps, 452 frames, 22.60s
+04_push_shelf_forward: 640x480, 20 fps, 1285 frames, 64.25s
+05_drill_lift: 640x480, 20 fps, 452 frames, 22.60s
+06_drill_pnp: 640x480, 20 fps, 859 frames, 42.95s
+07_box_table_to_shelf: 640x480, 20 fps, 689 frames, 34.45s
+08_pick_drill_from_holder: 640x480, 20 fps, 495 frames, 24.75s
+09_obstacle_aware_pick_drill: 640x480, 20 fps, 952 frames, 47.60s
+```
+
+Every completed task log still ended with `Playback encountered an error`.
+Interpret this run as task-predicate success for generated videos, not as
+faithful replay success.
+
 ## Environment
 
 HumanoidMimicGen owns the WBC-goal replay driver, dataset reader, WBC runtime
@@ -72,22 +187,22 @@ mamba activate humanoidmimicgen-wbc
 python -m pip install -e ".[wbc-replay]"
 ```
 
-The WBC replay path imports `robocasa.wrappers.ik_wrapper`, which is not part
-of this trimmed release snapshot. Put a full RoboCasa checkout, a compatible
-RoboSuite checkout, and this repository on `PYTHONPATH`:
+The WBC replay path imports the vendored `robocasa` and `robosuite` packages
+from this repository, including `robocasa.wrappers.ik_wrapper`. Put this
+repository on `PYTHONPATH`:
 
 ```bash
-export PYTHONPATH=/path/to/full/robocasa:/path/to/compatible/robosuite:/path/to/humanoidmimicgen
+export PYTHONPATH=/path/to/humanoidmimicgen
 ```
 
 For the local GR00T workspace this is:
 
 ```bash
-export PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/Projects/humanoidmimicgen
+export PYTHONPATH=/home/linke/Projects/humanoidmimicgen
 ```
 
-Run the replay command from outside this repository, such as `/tmp`, so the
-trimmed bundled `robocasa` package does not shadow the full RoboCasa checkout.
+The demo datasets may still live under the GR00T workspace; only runtime
+imports should come from this repository.
 
 For headless Linux rendering, use EGL:
 
@@ -118,7 +233,7 @@ The command shape used in the local GR00T workspace is:
 ```bash
 cd /tmp
 MUJOCO_GL=egl mamba run -n humanoidmimicgen-wbc env \
-  PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/Projects/humanoidmimicgen \
+  PYTHONPATH=/home/linke/Projects/humanoidmimicgen \
   python /home/linke/Projects/humanoidmimicgen/scripts/playback_wbc_goals.py \
   /home/linke/Projects/gr00t/groot/dexmg/collected_demo/G1_LMDrillPnP90_20260129_231446 \
   --num-episodes 1 \

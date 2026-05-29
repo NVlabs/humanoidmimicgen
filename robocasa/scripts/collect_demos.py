@@ -1,0 +1,647 @@
+"""
+A script to collect a batch of human demonstrations that can be used
+to generate a learning curriculum (see `demo_learning_curriculum.py`).
+
+The demonstrations can be played back using the `playback_demonstrations_from_pkl.py`
+script.
+"""
+
+import argparse
+from copy import deepcopy
+import datetime
+import json
+import os
+import shutil
+import time
+from glob import glob
+
+import h5py
+import imageio
+import mujoco
+import numpy as np
+import robosuite
+
+# from robosuite import load_controller_config
+from robosuite.controllers import load_composite_controller_config
+from robosuite.environments.base import REGISTERED_ENVS
+from robosuite.wrappers import DataCollectionWrapper, VisualizationWrapper
+from termcolor import colored
+
+import robocasa
+from robocasa.environments.tabletop.tabletop import Tabletop
+from robocasa.environments.locomanipulation.base import LocoManipulationEnv
+import robocasa.macros as macros
+from robocasa.wrappers.ik_wrapper import IKWrapper
+from robocasa.environments.kitchen.kitchen import Kitchen
+from robocasa.models.fixtures import FixtureType
+from robocasa.utils.robomimic.robomimic_dataset_utils import convert_to_robomimic_format
+
+
+def is_empty_input_spacemouse(action_dict):
+    if (
+        ("left_delta" not in action_dict or np.all(action_dict["left_delta"] == 0))
+        and ("right_delta" not in action_dict or np.all(action_dict["right_delta"] == 0))
+        and action_dict["base_mode"] == -1
+        and np.all(action_dict["base"] == 0)
+    ):
+        return True
+    return False
+
+
+def collect_human_trajectory(
+    env,
+    device,
+    arm,
+    env_configuration,
+    mirror_actions,
+    render=True,
+    max_fr=None,
+    print_info=True,
+):
+    """
+    Use the device (keyboard or SpaceNav 3D mouse) to collect a demonstration.
+    The rollout trajectory is saved to files in npz format.
+    Modify the DataCollectionWrapper wrapper to add new fields or change data formats.
+
+    Args:
+        env (MujocoEnv): environment to control
+        device (Device): to receive controls from the device
+        arms (str): which arm to control (eg bimanual) 'right' or 'left'
+        env_configuration (str): specified environment configuration
+    """
+
+    env.reset()
+
+    ep_meta = env.get_ep_meta()
+    # print(json.dumps(ep_meta, indent=4))
+    lang = ep_meta.get("lang", None)
+    if print_info and lang is not None:
+        print(colored(f"Instruction: {lang}", "green"))
+
+    # degugging: code block here to quickly test and close env
+    # env.close()
+    # return None, True
+
+    if render:
+        # ID = 2 always corresponds to agentview
+        env.render()
+
+    task_completion_hold_count = -1  # counter to collect 10 timesteps after reaching goal
+    device.start_control()
+
+    nonzero_ac_seen = False
+
+    # Keep track of prev gripper actions when using since they are position-based and must be maintained when arms switched
+    all_prev_gripper_actions = [
+        {
+            f"{robot_arm}_gripper": np.repeat([0], robot.gripper[robot_arm].dof)
+            for robot_arm in robot.arms
+            if robot.gripper[robot_arm].dof > 0
+        }
+        for robot in env.robots
+    ]
+
+    zero_action = np.zeros(env.action_dim)
+    for _ in range(1):
+        # do a dummy step thru base env to initalize things, but don't record the step
+        if isinstance(env, DataCollectionWrapper):
+            env.env.step(zero_action)
+        else:
+            env.step(zero_action)
+
+    discard_traj = False
+
+    # Loop until we get a reset from the input or the task completes
+    while True:
+        start = time.time()
+
+        # Set active robot
+        active_robot = env.robots[device.active_robot]
+        active_arm = device.active_arm
+
+        # Get the newest action
+        input_ac_dict = device.input2action(mirror_actions=mirror_actions)
+
+        # If action is none, then this a reset so we should break
+        if input_ac_dict is None:
+            discard_traj = True
+            break
+
+        action_dict = deepcopy(input_ac_dict)
+
+        # set arm actions
+        for arm in active_robot.arms:
+            controller_input_type = active_robot.part_controllers[arm].input_type
+            if controller_input_type == "delta":
+                action_dict[arm] = input_ac_dict[f"{arm}_delta"]
+            elif controller_input_type == "absolute":
+                action_dict[arm] = input_ac_dict[f"{arm}_abs"]
+            else:
+                raise ValueError
+
+        if is_empty_input_spacemouse(action_dict):
+            if not nonzero_ac_seen:
+                if render:
+                    env.render()
+                continue
+        else:
+            nonzero_ac_seen = True
+
+        # Maintain gripper state for each robot but only update the active robot with action
+        env_action = [
+            robot.create_action_vector(all_prev_gripper_actions[i])
+            for i, robot in enumerate(env.robots)
+        ]
+        env_action[device.active_robot] = active_robot.create_action_vector(action_dict)
+        env_action = np.concatenate(env_action)
+
+        # Run environment step
+        obs, _, _, _ = env.step(env_action)
+        if render:
+            env.render()
+
+        # Also break if we complete the task
+        if task_completion_hold_count == 0:
+            break
+
+        # state machine to check for having a success for 10 consecutive timesteps
+        if env._check_success():
+            if task_completion_hold_count > 0:
+                task_completion_hold_count -= 1  # latched state, decrement count
+            else:
+                task_completion_hold_count = 15  # reset count on first success timestep
+        else:
+            task_completion_hold_count = -1  # null the counter if there's no success
+
+        # limit frame rate if necessary
+        if max_fr is not None:
+            elapsed = time.time() - start
+            diff = 1 / max_fr - elapsed
+            if diff > 0:
+                time.sleep(diff)
+
+        # with open("/home/soroushn/tmp/model.xml", "w") as f:
+        #     f.write(env.model.get_xml())
+        # exit()
+
+    if nonzero_ac_seen and hasattr(env, "ep_directory"):
+        ep_directory = env.ep_directory
+    else:
+        ep_directory = None
+
+    # cleanup for end of data collection episodes
+    env.close()
+
+    return ep_directory, discard_traj
+
+
+def gather_demonstrations_as_hdf5(directory, out_dir, env_info, excluded_episodes=None):
+    """
+    Gathers the demonstrations saved in @directory into a
+    single hdf5 file.
+    The strucure of the hdf5 file is as follows.
+    data (group)
+        date (attribute) - date of collection
+        time (attribute) - time of collection
+        repository_version (attribute) - repository version used during collection
+        env (attribute) - environment name on which demos were collected
+        demo1 (group) - every demonstration has a group
+            model_file (attribute) - model xml string for demonstration
+            states (dataset) - flattened mujoco states
+            actions (dataset) - actions applied during demonstration
+        demo2 (group)
+        ...
+    Args:
+        directory (str): Path to the directory containing raw demonstrations.
+        out_dir (str): Path to where to store the hdf5 file.
+        env_info (str): JSON-encoded string containing environment information,
+            including controller and robot info
+    """
+
+    hdf5_path = os.path.join(out_dir, "demo.hdf5")
+    print("Saving hdf5 to", hdf5_path)
+    f = h5py.File(hdf5_path, "w")
+
+    # store some metadata in the attributes of one group
+    grp = f.create_group("data")
+
+    num_eps = 0
+    env_name = None  # will get populated at some point
+
+    for ep_directory in os.listdir(directory):
+        # print("Processing {} ...".format(ep_directory))
+        if (excluded_episodes is not None) and (ep_directory in excluded_episodes):
+            # print("\tExcluding this episode!")
+            continue
+
+        state_paths = os.path.join(directory, ep_directory, "state_*.npz")
+        states = []
+        actions = []
+        actions_abs = []
+        # success = False
+
+        for state_file in sorted(glob(state_paths)):
+            dic = np.load(state_file, allow_pickle=True)
+            env_name = str(dic["env"])
+
+            states.extend(dic["states"])
+            for ai in dic["action_infos"]:
+                actions.append(ai["actions"])
+                if "actions_abs" in ai:
+                    actions_abs.append(ai["actions_abs"])
+            # success = success or dic["successful"]
+
+        if len(states) == 0:
+            continue
+
+        # # Add only the successful demonstration to dataset
+        # if success:
+
+        # print("Demonstration is successful and has been saved")
+        # Delete the last state. This is because when the DataCollector wrapper
+        # recorded the states and actions, the states were recorded AFTER playing that action,
+        # so we end up with an extra state at the end.
+        del states[-1]
+        assert len(states) == len(actions)
+
+        num_eps += 1
+        ep_data_grp = grp.create_group("demo_{}".format(num_eps))
+
+        # store model xml as an attribute
+        xml_path = os.path.join(directory, ep_directory, "model.xml")
+        with open(xml_path, "r") as f:
+            xml_str = f.read()
+        ep_data_grp.attrs["model_file"] = xml_str
+
+        # store ep meta as an attribute
+        ep_meta_path = os.path.join(directory, ep_directory, "ep_meta.json")
+        if os.path.exists(ep_meta_path):
+            with open(ep_meta_path, "r") as f:
+                ep_meta = f.read()
+            ep_data_grp.attrs["ep_meta"] = ep_meta
+
+        # write datasets for states and actions
+        ep_data_grp.create_dataset("states", data=np.array(states))
+        ep_data_grp.create_dataset("actions", data=np.array(actions))
+        if len(actions_abs) > 0:
+            print(np.array(actions_abs).shape)
+            ep_data_grp.create_dataset("actions_abs", data=np.array(actions_abs))
+
+        # else:
+        #     pass
+        #     # print("Demonstration is unsuccessful and has NOT been saved")
+
+    print("{} successful demos so far".format(num_eps))
+
+    if num_eps == 0:
+        f.close()
+        return
+
+    # write dataset attributes (metadata)
+    now = datetime.datetime.now()
+    grp.attrs["date"] = "{}-{}-{}".format(now.month, now.day, now.year)
+    grp.attrs["time"] = "{}:{}:{}".format(now.hour, now.minute, now.second)
+    grp.attrs["robocasa_version"] = robocasa.__version__
+    grp.attrs["robosuite_version"] = robosuite.__version__
+    grp.attrs["mujoco_version"] = mujoco.__version__
+    grp.attrs["env"] = env_name
+    grp.attrs["env_info"] = env_info
+
+    f.close()
+
+    return hdf5_path
+
+
+def init_env(args):
+    # Get controller config
+    # controller_config = load_controller_config(default_controller=args.controller)
+    controller_config = load_composite_controller_config(
+        controller=args.controller,
+        robot=args.robots if isinstance(args.robots, str) else args.robots[0],
+    )
+
+    if controller_config["type"] == "WHOLE_BODY_MINK_IK":
+        # mink-speicific import. requires installing mink
+        from robosuite.examples.third_party_controller.mink_controller import (
+            WholeBodyMinkIK,
+        )
+
+    env_name = args.environment
+
+    # Create argument configuration
+    config = {
+        "env_name": env_name,
+        "robots": args.robots,
+        "controller_configs": controller_config,
+    }
+
+    if args.generative_textures is True:
+        config["generative_textures"] = "100p"
+
+    # Check if we're using a multi-armed environment and use env_configuration argument if so
+    if "TwoArm" in env_name:
+        config["env_configuration"] = args.config
+
+    # Mirror actions if using a kitchen or tabletop environment
+    env_class = REGISTERED_ENVS[env_name]
+    if not (
+        issubclass(env_class, Kitchen)
+        or issubclass(env_class, Tabletop)
+        or issubclass(env_class, LocoManipulationEnv)
+    ):
+        if args.obj_groups is not None:
+            print("Specifying 'obj_groups' in non-kitchen environment does not have an effect.")
+        mirror_actions = False
+        if args.camera is None:
+            args.camera = "agentview"
+        # special logic: "free" camera corresponds to Null camera
+        elif args.camera == "free":
+            args.camera = None
+        config["translucent_robot"] = True
+    elif issubclass(env_class, LocoManipulationEnv):
+        mirror_actions = True
+        if args.camera is None:
+            args.camera = "agentview"
+        # special logic: "free" camera corresponds to Null camera
+        elif args.camera == "free":
+            args.camera = None
+        config["translucent_robot"] = False
+    else:
+        mirror_actions = True
+        config["layout_ids"] = args.layout
+        config["style_ids"] = args.style
+        ### update config for kitchen envs ###
+        if args.obj_groups is not None:
+            config.update({"obj_groups": args.obj_groups})
+        if args.camera is None:
+            args.camera = "robot0_frontview"
+        # special logic: "free" camera corresponds to Null camera
+        elif args.camera == "free":
+            args.camera = None
+        # by default use obj instance split A
+        config["obj_instance_split"] = "A"
+        # config["obj_instance_split"] = None
+        if args.obj_registries is not None:
+            config["obj_registries"] = args.obj_registries
+        config["prefer_leading_registry"] = args.prefer_leading_registry
+
+    config["render_camera"] = args.camera
+    # Create environment
+    env = robosuite.make(
+        **config,
+        has_renderer=True,
+        has_offscreen_renderer=False,
+        ignore_done=True,
+        use_camera_obs=False,
+        control_freq=args.control_freq,
+        renderer=args.renderer,
+    )
+
+    # Wrap this with visualization wrapper
+    if args.ik_indicator:
+        env = IKWrapper(env, ik_indicator=True)
+    else:
+        env = VisualizationWrapper(env)
+
+    # Grab reference to controller config and convert it to json-encoded string
+    env_info = json.dumps(config)
+
+    return env, env_info, mirror_actions
+
+
+def init_device(args, env):
+    # initialize device for upper-body teleoperation
+    if args.device == "keyboard":
+        from robosuite.devices import Keyboard
+
+        device = Keyboard(
+            env=env,
+            pos_sensitivity=args.pos_sensitivity,
+            rot_sensitivity=args.rot_sensitivity,
+        )
+    elif args.device == "spacemouse":
+        from robosuite.devices import SpaceMouse
+
+        device = SpaceMouse(
+            env=env,
+            pos_sensitivity=args.pos_sensitivity,
+            rot_sensitivity=args.rot_sensitivity,
+            vendor_id=macros.SPACEMOUSE_VENDOR_ID,
+            product_id=macros.SPACEMOUSE_PRODUCT_ID,
+        )
+    elif args.device == "leapmotion":
+        from robocasa.devices.leapmotion import LeapMotion
+
+        device = LeapMotion(
+            env=env,
+            finger_tracking=False,
+        )
+    elif args.device == "leapmotion_without_fingers":
+        from robocasa.devices.leapmotion import LeapMotion
+
+        device = LeapMotion(
+            env=env,
+            finger_tracking=False,
+        )
+    elif args.device == "leapmotion_with_fingers":
+        from robocasa.devices.leapmotion import LeapMotion
+
+        device = LeapMotion(
+            env=env,
+            finger_tracking=True,
+        )
+
+    elif args.device == "manus":
+        from robocasa.devices.manus import Manus
+
+        device = Manus(env=env)
+
+    elif args.device == "manuswithvive":
+        from robocasa.devices.manus_with_vive import ManusWithVive
+
+        device = ManusWithVive(env=env)
+    else:
+        raise ValueError
+
+    return device
+
+
+def get_args():
+    # Arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--directory",
+        type=str,
+        default=os.path.join(robocasa.models.assets_root, "demonstrations_private"),
+    )
+    parser.add_argument("--environment", type=str, default="Kitchen")
+    parser.add_argument(
+        "--robots",
+        nargs="+",
+        type=str,
+        default="PandaOmron",
+        help="Which robot(s) to use in the env",
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        default="single-arm-opposed",
+        help="Specified environment configuration if necessary",
+    )
+    parser.add_argument(
+        "--arm",
+        type=str,
+        default="right",
+        help="Which arm to control (eg bimanual) 'right' or 'left'",
+    )
+    parser.add_argument(
+        "--obj_groups",
+        type=str,
+        nargs="+",
+        default=None,
+        help="In kitchen environments, either the name of a group to sample object from or path to an .xml file",
+    )
+
+    parser.add_argument(
+        "--camera",
+        type=str,
+        nargs="+",
+        default=None,
+        help="Which camera to use for collecting demos",
+    )
+    parser.add_argument(
+        "--controller",
+        type=str,
+        default=None,
+        help="Choice of controller. Can be, eg. 'NONE' or 'WHOLE_BODY_IK', etc. Or path to controller json file",
+    )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default="spacemouse",
+        choices=[
+            "keyboard",
+            "keyboardmobile",
+            "spacemouse",
+            "leapmotion",
+            "leapmotion_with_fingers",
+            "leapmotion_without_fingers",
+            "manuswithvive",
+            "dummy",
+        ],
+    )
+    parser.add_argument(
+        "--pos-sensitivity",
+        type=float,
+        default=4.0,
+        help="How much to scale position user inputs",
+    )
+    parser.add_argument(
+        "--rot-sensitivity",
+        type=float,
+        default=4.0,
+        help="How much to scale rotation user inputs",
+    )
+
+    parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--renderer", type=str, default="mjviewer", choices=["mjviewer", "mujoco"])
+    parser.add_argument("--max_fr", default=30, type=int, help="If specified, limit the frame rate")
+
+    parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--layout", type=int, nargs="+", default=-1)
+    parser.add_argument("--style", type=int, nargs="+", default=[0, 1, 2, 3, 4, 5, 6, 7, 8, 11])
+    parser.add_argument("--generative_textures", action="store_true")
+    parser.add_argument(
+        "--obj_registries",
+        type=str,
+        nargs="+",
+        default=None,
+        help="(optional) object registries. choose among [objaverse, aigen, infinigen, sketchfab, lightwheel]",
+    )
+    parser.add_argument(
+        "--prefer_leading_registry",
+        action="store_true",
+        help="Prefer the first registry in obj_registries when sampling objects",
+    )
+    parser.add_argument(
+        "--ik_indicator",
+        action="store_true",
+        help="Render the indicator that receives input from the input device as input to the inverse kinetic solver",
+    )
+    parser.add_argument(
+        "--store_collected_demo",
+        action="store_true",
+        help="Store the demo into the parent directory",
+    )
+    parser.add_argument(
+        "--control_freq",
+        type=int,
+        default=20,
+        help="Control frequency",
+    )
+    args = parser.parse_args()
+    return args
+
+
+if __name__ == "__main__":
+    # Arguments
+    args = get_args()
+
+    env, env_info, mirror_actions = init_env(args)
+
+    device = init_device(args, env)
+
+    t_now = time.time()
+    time_str = datetime.datetime.fromtimestamp(t_now).strftime("%Y-%m-%d-%H-%M-%S")
+
+    if not args.debug:
+        # wrap the environment with data collection wrapper
+        tmp_directory = "/tmp/{}".format(time_str)
+        env = DataCollectionWrapper(env, tmp_directory)
+
+    # make a new timestamped directory
+    new_dir = os.path.join(args.directory, time_str)
+    os.makedirs(new_dir)
+
+    excluded_eps = []
+
+    # collect demonstrations
+    while True:
+        print()
+        if args.seed is not None:
+            print(colored("Using seed: {}".format(args.seed), "red"))
+            env.unwrapped.seed = args.seed
+            env.unwrapped.rng = np.random.default_rng(seed=args.seed)
+            args.seed += 1
+        ep_directory, discard_traj = collect_human_trajectory(
+            env,
+            device,
+            args.arm,
+            args.config,
+            mirror_actions,
+            render=(args.renderer != "mjviewer"),
+            max_fr=args.max_fr,
+        )
+
+        print("Keep traj?", not discard_traj)
+
+        if not args.debug:
+            if discard_traj and ep_directory is not None:
+                excluded_eps.append(ep_directory.split("/")[-1])
+            hdf5_path = gather_demonstrations_as_hdf5(
+                tmp_directory, new_dir, env_info, excluded_episodes=excluded_eps
+            )
+            # hdf5 file might be empty if no successful demos were collected
+            if hdf5_path is not None:
+                convert_to_robomimic_format(hdf5_path)
+                if args.store_collected_demo:
+                    final_path = os.path.join(
+                        os.path.dirname(__file__),
+                        "..",
+                        "..",
+                        "..",
+                        "collected_demo",
+                        f"{args.robots[0]}_{args.environment}.hdf5",
+                    )
+                    shutil.copy(hdf5_path, final_path)
+                    print("Saving hdf5 to", final_path)

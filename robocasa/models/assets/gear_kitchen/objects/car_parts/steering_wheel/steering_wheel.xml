@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="steering_wheel">
+  <compiler angle="radian" />
+  <asset>
+    <mesh name="SteeringWheel_visual" file="meshes/visual/SteeringWheel.obj" />
+    <mesh name="SteeringWheel_collision_000" file="meshes/convex_decomp/SteeringWheel_collision_000.obj" />
+    <mesh name="SteeringWheel_collision_001" file="meshes/convex_decomp/SteeringWheel_collision_001.obj" />
+    <mesh name="SteeringWheel_collision_002" file="meshes/convex_decomp/SteeringWheel_collision_002.obj" />
+    <mesh name="SteeringWheel_collision_003" file="meshes/convex_decomp/SteeringWheel_collision_003.obj" />
+    <mesh name="SteeringWheel_collision_004" file="meshes/convex_decomp/SteeringWheel_collision_004.obj" />
+    <mesh name="SteeringWheel_collision_005" file="meshes/convex_decomp/SteeringWheel_collision_005.obj" />
+    <mesh name="SteeringWheel_collision_006" file="meshes/convex_decomp/SteeringWheel_collision_006.obj" />
+    <mesh name="SteeringWheel_collision_007" file="meshes/convex_decomp/SteeringWheel_collision_007.obj" />
+    <mesh name="SteeringWheel_collision_008" file="meshes/convex_decomp/SteeringWheel_collision_008.obj" />
+    <mesh name="SteeringWheel_collision_009" file="meshes/convex_decomp/SteeringWheel_collision_009.obj" />
+    <mesh name="SteeringWheel_collision_010" file="meshes/convex_decomp/SteeringWheel_collision_010.obj" />
+    <mesh name="SteeringWheel_collision_011" file="meshes/convex_decomp/SteeringWheel_collision_011.obj" />
+    <mesh name="SteeringWheel_collision_012" file="meshes/convex_decomp/SteeringWheel_collision_012.obj" />
+    <mesh name="SteeringWheel_collision_013" file="meshes/convex_decomp/SteeringWheel_collision_013.obj" />
+    <mesh name="SteeringWheel_collision_014" file="meshes/convex_decomp/SteeringWheel_collision_014.obj" />
+    <mesh name="SteeringWheel_collision_015" file="meshes/convex_decomp/SteeringWheel_collision_015.obj" />
+    <mesh name="SteeringWheel_collision_016" file="meshes/convex_decomp/SteeringWheel_collision_016.obj" />
+    <mesh name="SteeringWheel_collision_017" file="meshes/convex_decomp/SteeringWheel_collision_017.obj" />
+    <mesh name="SteeringWheel_collision_018" file="meshes/convex_decomp/SteeringWheel_collision_018.obj" />
+    <mesh name="SteeringWheel_collision_019" file="meshes/convex_decomp/SteeringWheel_collision_019.obj" />
+    <mesh name="SteeringWheel_collision_020" file="meshes/convex_decomp/SteeringWheel_collision_020.obj" />
+    <mesh name="SteeringWheel_collision_021" file="meshes/convex_decomp/SteeringWheel_collision_021.obj" />
+    <mesh name="SteeringWheel_collision_022" file="meshes/convex_decomp/SteeringWheel_collision_022.obj" />
+    <mesh name="SteeringWheel_collision_023" file="meshes/convex_decomp/SteeringWheel_collision_023.obj" />
+    <mesh name="SteeringWheel_collision_024" file="meshes/convex_decomp/SteeringWheel_collision_024.obj" />
+    <mesh name="SteeringWheel_collision_025" file="meshes/convex_decomp/SteeringWheel_collision_025.obj" />
+    <mesh name="SteeringWheel_collision_026" file="meshes/convex_decomp/SteeringWheel_collision_026.obj" />
+    <mesh name="SteeringWheel_collision_027" file="meshes/convex_decomp/SteeringWheel_collision_027.obj" />
+    <mesh name="SteeringWheel_collision_028" file="meshes/convex_decomp/SteeringWheel_collision_028.obj" />
+    <mesh name="SteeringWheel_collision_029" file="meshes/convex_decomp/SteeringWheel_collision_029.obj" />
+    <mesh name="SteeringWheel_collision_030" file="meshes/convex_decomp/SteeringWheel_collision_030.obj" />
+    <mesh name="SteeringWheel_collision_031" file="meshes/convex_decomp/SteeringWheel_collision_031.obj" />
+  </asset>
+  <worldbody>
+    <body><body name="object" pos="0 0 0" quat="1.0 0.0 0.0 0.0"><body quat="0.8660 0.0 -0.5 0.0">
+      <inertial mass="1.0" pos="-0.012965605568427867 -9.422105265662918e-05 -0.02539482589840707" fullinertia="0.03277455250948166 0.016359309251504976 0.025347101805475652 -2.8274208730749396e-06 0.004375815690067291 1.1103505553011279e-05" />
+      <geom name="steering_wheel_mesh_000" group="0" type="mesh" mesh="SteeringWheel_collision_000" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_001" group="0" type="mesh" mesh="SteeringWheel_collision_001" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_002" group="0" type="mesh" mesh="SteeringWheel_collision_002" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_003" group="0" type="mesh" mesh="SteeringWheel_collision_003" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_004" group="0" type="mesh" mesh="SteeringWheel_collision_004" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_005" group="0" type="mesh" mesh="SteeringWheel_collision_005" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_006" group="0" type="mesh" mesh="SteeringWheel_collision_006" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_007" group="0" type="mesh" mesh="SteeringWheel_collision_007" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_008" group="0" type="mesh" mesh="SteeringWheel_collision_008" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_009" group="0" type="mesh" mesh="SteeringWheel_collision_009" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_010" group="0" type="mesh" mesh="SteeringWheel_collision_010" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_011" group="0" type="mesh" mesh="SteeringWheel_collision_011" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_012" group="0" type="mesh" mesh="SteeringWheel_collision_012" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_013" group="0" type="mesh" mesh="SteeringWheel_collision_013" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_014" group="0" type="mesh" mesh="SteeringWheel_collision_014" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_015" group="0" type="mesh" mesh="SteeringWheel_collision_015" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_016" group="0" type="mesh" mesh="SteeringWheel_collision_016" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_017" group="0" type="mesh" mesh="SteeringWheel_collision_017" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_018" group="0" type="mesh" mesh="SteeringWheel_collision_018" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_019" group="0" type="mesh" mesh="SteeringWheel_collision_019" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_020" group="0" type="mesh" mesh="SteeringWheel_collision_020" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_021" group="0" type="mesh" mesh="SteeringWheel_collision_021" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_022" group="0" type="mesh" mesh="SteeringWheel_collision_022" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_023" group="0" type="mesh" mesh="SteeringWheel_collision_023" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_024" group="0" type="mesh" mesh="SteeringWheel_collision_024" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_025" group="0" type="mesh" mesh="SteeringWheel_collision_025" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_026" group="0" type="mesh" mesh="SteeringWheel_collision_026" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_027" group="0" type="mesh" mesh="SteeringWheel_collision_027" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_028" group="0" type="mesh" mesh="SteeringWheel_collision_028" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_029" group="0" type="mesh" mesh="SteeringWheel_collision_029" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_030" group="0" type="mesh" mesh="SteeringWheel_collision_030" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+      <geom name="steering_wheel_mesh_031" group="0" type="mesh" mesh="SteeringWheel_collision_031" solref="0.001 1.0" solimp="0.998 0.998 0.001" />
+    <geom name="object_visual" type="mesh" mesh="SteeringWheel_visual" group="1" conaffinity="0" contype="0" solref="0.001 1.0" solimp="0.998 0.998 0.001" /></body></body>
+  <site name="bottom_site" pos="0.0 0.0 0.0" rgba="0 0 0 0" size="0.005" /><site name="top_site" pos="0.0 0.0 0.0" rgba="0 0 0 0" size="0.005" /><site name="horizontal_radius_site" pos="0.0 0.0 0.0" rgba="0 0 0 0" size="0.005" /></body></worldbody>
+</mujoco>

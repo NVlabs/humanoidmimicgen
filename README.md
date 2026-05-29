@@ -8,10 +8,9 @@ release.
 
 The planned release payload is the HumanoidMimicGen loco-manipulation
 environment code under [robocasa/environments/locomanipulation](robocasa/environments/locomanipulation),
-plus the minimal RoboCasa support modules under [robocasa/models](robocasa/models)
-and [robocasa/utils](robocasa/utils) needed to import and register those
-environments. The repository also includes the RoboCasa asset subset under
-[robocasa/models/assets](robocasa/models/assets) needed for the retained
+the vendored RoboCasa support tree under [robocasa](robocasa), and the
+compatible vendored RoboSuite tree under [robosuite](robosuite). The repository
+also includes the RoboCasa and RoboSuite assets needed for the retained
 loco-manipulation environments and playback rendering. See:
 
 - [LICENSE](LICENSE) for the Apache 2.0 license text.
@@ -24,11 +23,10 @@ loco-manipulation environments and playback rendering. See:
 # Overview
 
 This repository packages humanoid manipulation environments built on top of
-RoboCasa and robosuite. The included code focuses on simulation environment
+RoboCasa and RoboSuite. The included code focuses on simulation environment
 definitions used by the HumanoidMimicGen paper scans and the small support
 surface needed for import, registration, and rendering. Datasets, model
-weights, generated outputs, and unrelated large RoboCasa asset payloads are
-not included in this snapshot.
+weights, and generated outputs are not included in this snapshot.
 
 # Getting Started
 
@@ -55,28 +53,26 @@ mamba activate humanoidmimicgen-wbc
 python -m pip install -e ".[wbc-replay]"
 ```
 
-The WBC replay path uses RoboCasa wrappers that are not part of this trimmed
-release snapshot. Put a full RoboCasa checkout, a compatible RoboSuite checkout,
-and this repository on `PYTHONPATH` before running WBC replay:
+The WBC replay path uses the vendored `robocasa` and `robosuite` trees in this
+repository. Put this repository on `PYTHONPATH` before running WBC replay:
 
 ```bash
-export PYTHONPATH=/path/to/full/robocasa:/path/to/compatible/robosuite:/path/to/humanoidmimicgen
+export PYTHONPATH=/path/to/humanoidmimicgen
 ```
 
 For the local GR00T workspace this is:
 
 ```bash
-export PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/Projects/humanoidmimicgen
+export PYTHONPATH=/home/linke/Projects/humanoidmimicgen
 ```
 
-Run WBC replay from outside this repository, such as `/tmp`, so the trimmed
-bundled `robocasa` package does not shadow the full RoboCasa checkout.
+The LeRobot demo datasets may still live in the GR00T workspace; only the
+runtime package imports are local to this repository.
 
 # Requirements
 
 - Python 3.10 or newer.
-- MuJoCo and robosuite versions compatible with
-  [pyproject.toml](pyproject.toml).
+- MuJoCo compatible with [pyproject.toml](pyproject.toml).
 - `robosuite-models` is required for the G1 robot names used by the paper
   scan configurations.
 - Runtime dependencies declared in [pyproject.toml](pyproject.toml). Use the
