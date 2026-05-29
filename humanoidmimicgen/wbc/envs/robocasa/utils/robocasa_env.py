@@ -5,7 +5,6 @@ from gymnasium import spaces
 import mujoco
 import numpy as np
 import robocasa
-from robocasa.wrappers.ik_wrapper import IKWrapper
 import robosuite
 from robosuite.controllers import load_composite_controller_config
 from robosuite.controllers.composite.composite_controller import HybridMobileBase
@@ -206,6 +205,8 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
         )
 
         if ik_indicator:
+            from robocasa.wrappers.ik_wrapper import IKWrapper
+
             self.env = IKWrapper(self.env, ik_indicator=True)
 
         # ========= create converters first to get total DOFs =========

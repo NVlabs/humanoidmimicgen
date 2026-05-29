@@ -32,20 +32,20 @@ not included in this snapshot.
 
 # Getting Started
 
-For environment import, trajectory playback, and other non-WBC workflows:
+For environment import and other non-WBC workflows:
 
 ```bash
 git clone https://github.com/NVlabs/humanoidmimicgen.git
 cd humanoidmimicgen
 mamba create -n humanoidmimicgen python=3.12 -y
 mamba activate humanoidmimicgen
-python -m pip install -e ".[video]"
+python -m pip install -e .
 python -c "import robocasa; print('robocasa import OK')"
 ```
 
 The retained RoboCasa loco-manipulation assets are included at
-`robocasa/models/assets`, so the paper environments and trajectory playback
-do not require an external asset root by default.
+`robocasa/models/assets`, so the paper environments do not require an external
+asset root by default.
 
 For G1 LeRobot WBC-goal replay, use the replay extra:
 
@@ -66,7 +66,7 @@ export PYTHONPATH=/path/to/full/robocasa:/path/to/compatible/robosuite:/path/to/
 For the local GR00T workspace this is:
 
 ```bash
-export PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/humanoidmimicgen
+export PYTHONPATH=/home/linke/Projects/gr00t/groot/dexmg/grootrobocasa:/home/linke/Projects/gr00t/groot/dexmg/grootrobosuite:/home/linke/Projects/humanoidmimicgen
 ```
 
 Run WBC replay from outside this repository, such as `/tmp`, so the trimmed
@@ -88,61 +88,13 @@ Importing `robocasa` registers the included loco-manipulation environments
 with robosuite. Environment instantiation uses the bundled assets at
 `robocasa/models/assets` by default.
 
-Trajectory datasets stored in robosuite / robomimic-style HDF5 files can be
-inspected with the playback script:
-
-```bash
-python scripts/playback_trajectories.py /path/to/demo.hdf5
-```
-
-Action playback is the default. When recorded actions match the robosuite
-environment action space, the script uses `env.step`. For G1 whole-body demos
-whose `actions` are recorded 43-dof whole-body control outputs, the script uses
-the robot-control `step(action)` adapter over the saved episode XML, applying
-those controls to the MuJoCo actuators instead of setting every recorded state.
-If you have a compatible robosuite controller configuration, pass
-`--controller-config` with `--action-backend env` to replay through the
-robosuite environment itself. To compare action replay against recorded states:
-
-```bash
-python scripts/playback_trajectories.py /path/to/demo.hdf5 --check-drift
-```
-
-State playback remains available for dataset inspection:
-
-```bash
-python scripts/playback_trajectories.py /path/to/demo.hdf5 --mode state
-```
-
-For headless video export, pass `--video-path`:
-
-```bash
-python scripts/playback_trajectories.py /path/to/demo.hdf5 \
-  --video-path playback.mp4 \
-  --width 320 \
-  --height 240
-```
-
-Playback video export defaults to the `egoview` camera. Use `--camera` to
-choose a different render camera. For example, `--camera 3pv` aliases to a
-third-person `frontview` camera when the dataset XML uses standard RoboCasa
-camera names. MuJoCo site markers, including gripper / IK debug indicators,
-are hidden by default; pass `--show-sites` when those markers are useful for
-debugging.
-
-For G1 LeRobot datasets with saved WBC goals, use
-[scripts/playback_wbc_goals.py](scripts/playback_wbc_goals.py). That path
-replays the saved high-level WBC goal, including navigation command, through
-the bundled HumanoidMimicGen whole-body-controller runtime. See
+For G1 LeRobot datasets, use
+[scripts/playback_wbc_goals.py](scripts/playback_wbc_goals.py). By default it
+matches GR00T add-skillgen `--use-actions --use-wbc-goals` behavior by replaying
+stored WBC goals while the bundled HumanoidMimicGen whole-body-controller
+runtime generates the stabilizing lower-body / leg actions. See
 [docs/wbc_goal_replay.md](docs/wbc_goal_replay.md) for environment details and
 example commands. This sim replay path does not require ROS or `rclpy`.
-
-If you need to override the bundled asset tree, pass an alternate root
-explicitly:
-
-```bash
-python scripts/playback_trajectories.py /path/to/demo.hdf5 --assets-root /path/to/robocasa/models/assets
-```
 
 # Contribution Guidelines
 

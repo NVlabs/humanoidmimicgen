@@ -43,6 +43,8 @@ RETAINED_LOCOMANIPULATION_ENV_NAMES = (
     "LMDrillPnP90",
     "LMDrillPnP90Bi",
     "LMDrillLiftObstacleBi",
+    "LMDrillLiftObstacleDT",
+    "LMDrillLiftObstacleDTBi",
     "LMPickDrillFromHolderStanding",
     "LMPickDrillFromHolderStandingEasyFar",
     "LMPushButton",

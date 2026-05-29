@@ -175,7 +175,11 @@ class SyncSimPlaybackConfig:
             self.env_type = self.interface
         try:
             self.commit_id = (
-                subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
+                subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
+                )
+                .decode("utf-8")
+                .strip()
             )
         except (subprocess.CalledProcessError, FileNotFoundError, OSError):
             self.commit_id = ""
@@ -339,6 +343,20 @@ def capture_or_render_frame(env, onscreen: bool, config: SyncSimPlaybackConfig, 
         env.render()
 
 
+def get_task_success(sync_env) -> bool:
+    """Return the robocasa-style task success bit for the current replay state."""
+    success = sync_env.is_success()
+    if isinstance(success, dict):
+        return bool(success.get("task", False))
+    return bool(success)
+
+
+def get_video_fps(config: SyncSimPlaybackConfig) -> float:
+    # Match GR00T add-skillgen playback: videos are encoded at the dataset
+    # collection frequency, which is 20 Hz for the released G1 demos.
+    return float(config.data_collection_frequency)
+
+
 def playback_wbc_goals(
     sync_env,
     wbc_policy,
@@ -350,23 +368,68 @@ def playback_wbc_goals(
     video_writer,
     ep: str,
     end_steps: int,
-) -> bool:
+) -> tuple[bool, dict[str, int | bool | None]]:
     ret = True
+    task_success_steps = 0
+    first_task_success_step = None
+    last_task_success = False
     num_wbc_goals = len(wbc_goals) if end_steps == -1 else min(end_steps, len(wbc_goals))
 
     for jj in range(num_wbc_goals):
         obs = sync_env.observe()
         wbc_policy.set_observation(obs)
         wbc_policy.set_goal(wbc_goals[jj])
+        sync_env.overwrite_floating_base_action(
+            wbc_goals[jj].get("navigate_cmd", np.zeros(3)),
+            wbc_goals[jj].get("base_height_command", 0.0),
+        )
         sync_env.queue_action(wbc_policy.get_action())
         capture_or_render_frame(env, onscreen, config, video_writer)
+
+        task_success = get_task_success(sync_env)
+        if task_success:
+            task_success_steps += 1
+            if first_task_success_step is None:
+                first_task_success_step = jj
+        last_task_success = task_success
 
         if jj < len(states) - 1:
             state_playback = env.sim.get_state().flatten()
             if not validate_state(states[jj + 1], state_playback, ep, jj):
                 ret = False
 
-    return ret
+    return ret, {
+        "task_success": task_success_steps > 0,
+        "task_success_steps": task_success_steps,
+        "first_task_success_step": first_task_success_step,
+        "final_task_success": last_task_success,
+        "checked_steps": num_wbc_goals,
+    }
+
+
+def format_success_summary(ep: str, stats: dict[str, int | bool | None]) -> str:
+    first_step = stats["first_task_success_step"]
+    first_step_str = "never" if first_step is None else str(first_step)
+    return (
+        f"Episode {ep} task success: {stats['task_success']} "
+        f"(success_steps={stats['task_success_steps']}/{stats['checked_steps']}, "
+        f"first_success_step={first_step_str}, "
+        f"final_success={stats['final_task_success']})"
+    )
+
+
+def aggregate_success_stats(stats_by_episode: dict[str, dict[str, int | bool | None]]) -> dict:
+    episodes = len(stats_by_episode)
+    successes = sum(1 for stats in stats_by_episode.values() if stats["task_success"])
+    final_successes = sum(1 for stats in stats_by_episode.values() if stats["final_task_success"])
+    return {
+        "episodes": episodes,
+        "task_successes": successes,
+        "final_task_successes": final_successes,
+        "task_success_rate": successes / episodes if episodes else 0.0,
+        "final_task_success_rate": final_successes / episodes if episodes else 0.0,
+        "episodes_detail": stats_by_episode,
+    }
 
 
 def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
@@ -418,7 +481,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
         video_writer = cv2.VideoWriter(
             config.video_path,
             cv2.VideoWriter_fourcc(*"mp4v"),
-            20,
+            get_video_fps(config),
             (RS_VIEW_CAMERA_WIDTH, RS_VIEW_CAMERA_HEIGHT),
         )
 
@@ -428,6 +491,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
     print("demos:", demos, "\n\n")
 
     try:
+        task_success_by_episode = {}
         for episode_index, ep in enumerate(demos):
             print(f"Playing back episode: {ep}")
             seed = seeds[episode_index]
@@ -439,27 +503,31 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
                 config, robot_type, robot_model, activate_keyboard_listener=False
             )
             end_steps = 20 if config.ci_test else -1
-            ret = (
-                playback_wbc_goals(
-                    sync_env,
-                    wbc_policy,
-                    wbc_goals,
-                    states,
-                    env,
-                    onscreen,
-                    config,
-                    video_writer,
-                    ep,
-                    end_steps,
-                )
-                and ret
+            episode_ret, task_success_stats = playback_wbc_goals(
+                sync_env,
+                wbc_policy,
+                wbc_goals,
+                states,
+                env,
+                onscreen,
+                config,
+                video_writer,
+                ep,
+                end_steps,
             )
+            ret = episode_ret and ret
+            task_success_by_episode[ep] = task_success_stats
+            print(format_success_summary(ep, task_success_stats))
             print(f"Episode {ep} playback finished.\n\n")
     finally:
         sync_env.close()
         if video_writer is not None:
             video_writer.release()
             print(f"Video saved to: {config.video_path}")
+
+    task_success_summary = aggregate_success_stats(task_success_by_episode)
+    print("Task success summary:")
+    print(json.dumps(task_success_summary, indent=2))
 
     elapsed_time = time.time() - start_time
     print(
