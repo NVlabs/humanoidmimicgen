@@ -12,7 +12,6 @@ import subprocess
 import time
 from typing import Any, Literal
 
-import cv2
 import numpy as np
 from tqdm import tqdm
 import yaml
@@ -331,6 +330,8 @@ def capture_or_render_frame(env, onscreen: bool, config: SyncSimPlaybackConfig, 
     from humanoidmimicgen.wbc_constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
 
     if config.save_video:
+        import cv2
+
         img = env.sim.render(
             width=RS_VIEW_CAMERA_WIDTH,
             height=RS_VIEW_CAMERA_HEIGHT,
@@ -357,9 +358,29 @@ def get_video_fps(config: SyncSimPlaybackConfig) -> float:
     return float(config.data_collection_frequency)
 
 
+class WBCGoalEnv:
+    """Env facade that steps recorded WBC goals through a low-level sync env."""
+
+    def __init__(self, sync_env, wbc_policy) -> None:
+        self.sync_env = sync_env
+        self.wbc_policy = wbc_policy
+
+    def __getattr__(self, name: str):
+        return getattr(self.sync_env, name)
+
+    def step(self, wbc_goal: dict[str, Any]):
+        obs = self.sync_env.observe()
+        self.wbc_policy.set_observation(obs)
+        self.wbc_policy.set_goal(wbc_goal)
+        self.sync_env.overwrite_floating_base_action(
+            wbc_goal.get("navigate_cmd", np.zeros(3)),
+            wbc_goal.get("base_height_command", 0.0),
+        )
+        return self.sync_env.step(self.wbc_policy.get_action())
+
+
 def playback_wbc_goals(
-    sync_env,
-    wbc_policy,
+    wbc_env: WBCGoalEnv,
     wbc_goals,
     states,
     env,
@@ -376,17 +397,10 @@ def playback_wbc_goals(
     num_wbc_goals = len(wbc_goals) if end_steps == -1 else min(end_steps, len(wbc_goals))
 
     for jj in range(num_wbc_goals):
-        obs = sync_env.observe()
-        wbc_policy.set_observation(obs)
-        wbc_policy.set_goal(wbc_goals[jj])
-        sync_env.overwrite_floating_base_action(
-            wbc_goals[jj].get("navigate_cmd", np.zeros(3)),
-            wbc_goals[jj].get("base_height_command", 0.0),
-        )
-        sync_env.queue_action(wbc_policy.get_action())
+        wbc_env.step(wbc_goals[jj])
         capture_or_render_frame(env, onscreen, config, video_writer)
 
-        task_success = get_task_success(sync_env)
+        task_success = get_task_success(wbc_env)
         if task_success:
             task_success_steps += 1
             if first_task_success_step is None:
@@ -478,6 +492,8 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
 
     video_writer = None
     if config.save_video:
+        import cv2
+
         video_writer = cv2.VideoWriter(
             config.video_path,
             cv2.VideoWriter_fourcc(*"mp4v"),
@@ -502,10 +518,10 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
             wbc_policy, _, _ = get_policies(
                 config, robot_type, robot_model, activate_keyboard_listener=False
             )
+            wbc_env = WBCGoalEnv(sync_env, wbc_policy)
             end_steps = 20 if config.ci_test else -1
             episode_ret, task_success_stats = playback_wbc_goals(
-                sync_env,
-                wbc_policy,
+                wbc_env,
                 wbc_goals,
                 states,
                 env,
