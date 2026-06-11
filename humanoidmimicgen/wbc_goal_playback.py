@@ -506,40 +506,39 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
     print("seeds:", seeds)
     print("demos:", demos, "\n\n")
 
-    try:
-        task_success_by_episode = {}
-        for episode_index, ep in enumerate(demos):
-            print(f"Playing back episode: {ep}")
-            seed = seeds[episode_index]
-            sync_env.reset(seed=seed)
-            states = frames[f"data/{ep}/states"]
-            wbc_goals = frames[f"data/{ep}/wbc_goal"]
-            sync_env.reset_to({"states": states[0]})
-            wbc_policy, _, _ = get_policies(
-                config, robot_type, robot_model, activate_keyboard_listener=False
-            )
-            wbc_env = WBCGoalEnv(sync_env, wbc_policy)
-            end_steps = 20 if config.ci_test else -1
-            episode_ret, task_success_stats = playback_wbc_goals(
-                wbc_env,
-                wbc_goals,
-                states,
-                env,
-                onscreen,
-                config,
-                video_writer,
-                ep,
-                end_steps,
-            )
-            ret = episode_ret and ret
-            task_success_by_episode[ep] = task_success_stats
-            print(format_success_summary(ep, task_success_stats))
-            print(f"Episode {ep} playback finished.\n\n")
-    finally:
-        sync_env.close()
-        if video_writer is not None:
-            video_writer.release()
-            print(f"Video saved to: {config.video_path}")
+    wbc_policy, _, _ = get_policies(
+        config, robot_type, robot_model, activate_keyboard_listener=False
+    )
+    wbc_env = WBCGoalEnv(sync_env, wbc_policy)
+    task_success_by_episode = {}
+    for episode_index, ep in enumerate(demos):
+        print(f"Playing back episode: {ep}")
+        seed = seeds[episode_index]
+        sync_env.reset(seed=seed)
+        states = frames[f"data/{ep}/states"]
+        wbc_goals = frames[f"data/{ep}/wbc_goal"]
+        sync_env.reset_to({"states": states[0]})
+        end_steps = 20 if config.ci_test else -1
+        episode_ret, task_success_stats = playback_wbc_goals(
+            wbc_env,
+            wbc_goals,
+            states,
+            env,
+            onscreen,
+            config,
+            video_writer,
+            ep,
+            end_steps,
+        )
+        ret = episode_ret and ret
+        task_success_by_episode[ep] = task_success_stats
+        print(format_success_summary(ep, task_success_stats))
+        print(f"Episode {ep} playback finished.\n\n")
+
+    sync_env.close()
+    if video_writer is not None:
+        video_writer.release()
+        print(f"Video saved to: {config.video_path}")
 
     task_success_summary = aggregate_success_stats(task_success_by_episode)
     print("Task success summary:")
