@@ -379,48 +379,6 @@ class WBCGoalEnv:
         return self.sync_env.step(self.wbc_policy.get_action())
 
 
-def playback_wbc_goals(
-    wbc_env: WBCGoalEnv,
-    wbc_goals,
-    states,
-    env,
-    onscreen: bool,
-    config: SyncSimPlaybackConfig,
-    video_writer,
-    ep: str,
-    end_steps: int,
-) -> tuple[bool, dict[str, int | bool | None]]:
-    ret = True
-    task_success_steps = 0
-    first_task_success_step = None
-    last_task_success = False
-    num_wbc_goals = len(wbc_goals) if end_steps == -1 else min(end_steps, len(wbc_goals))
-
-    for jj in range(num_wbc_goals):
-        wbc_env.step(wbc_goals[jj])
-        capture_or_render_frame(env, onscreen, config, video_writer)
-
-        task_success = get_task_success(wbc_env)
-        if task_success:
-            task_success_steps += 1
-            if first_task_success_step is None:
-                first_task_success_step = jj
-        last_task_success = task_success
-
-        if jj < len(states) - 1:
-            state_playback = env.sim.get_state().flatten()
-            if not validate_state(states[jj + 1], state_playback, ep, jj):
-                ret = False
-
-    return ret, {
-        "task_success": task_success_steps > 0,
-        "task_success_steps": task_success_steps,
-        "first_task_success_step": first_task_success_step,
-        "final_task_success": last_task_success,
-        "checked_steps": num_wbc_goals,
-    }
-
-
 def format_success_summary(ep: str, stats: dict[str, int | bool | None]) -> str:
     first_step = stats["first_task_success_step"]
     first_step_str = "never" if first_step is None else str(first_step)
@@ -518,19 +476,34 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
         states = frames[f"data/{ep}/states"]
         wbc_goals = frames[f"data/{ep}/wbc_goal"]
         sync_env.reset_to({"states": states[0]})
-        end_steps = 20 if config.ci_test else -1
-        episode_ret, task_success_stats = playback_wbc_goals(
-            wbc_env,
-            wbc_goals,
-            states,
-            env,
-            onscreen,
-            config,
-            video_writer,
-            ep,
-            end_steps,
-        )
-        ret = episode_ret and ret
+        num_wbc_goals = min(20, len(wbc_goals)) if config.ci_test else len(wbc_goals)
+        task_success_steps = 0
+        first_task_success_step = None
+        last_task_success = False
+
+        for jj in range(num_wbc_goals):
+            wbc_env.step(wbc_goals[jj])
+            capture_or_render_frame(env, onscreen, config, video_writer)
+
+            task_success = get_task_success(wbc_env)
+            if task_success:
+                task_success_steps += 1
+                if first_task_success_step is None:
+                    first_task_success_step = jj
+            last_task_success = task_success
+
+            if jj < len(states) - 1:
+                state_playback = env.sim.get_state().flatten()
+                if not validate_state(states[jj + 1], state_playback, ep, jj):
+                    ret = False
+
+        task_success_stats = {
+            "task_success": task_success_steps > 0,
+            "task_success_steps": task_success_steps,
+            "first_task_success_step": first_task_success_step,
+            "final_task_success": last_task_success,
+            "checked_steps": num_wbc_goals,
+        }
         task_success_by_episode[ep] = task_success_stats
         print(format_success_summary(ep, task_success_stats))
         print(f"Episode {ep} playback finished.\n\n")
