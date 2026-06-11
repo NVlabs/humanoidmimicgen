@@ -77,13 +77,21 @@ python -m pip install -e ".[wbc-replay]"
 
 DATA_ROOT=/home/linke/Projects/gr00t/groot/dexmg/collected_demo \
 OUT=/tmp/hmg_wbc_goal_benchmark \
+EPISODES=1 \
+MAKE_GRID=1 \
 scripts/run_wbc_goal_benchmark.sh
 ```
 
-The wrapper sets `PYTHONPATH` to the checkout, uses `--num-episodes 1`, writes
-one raw MP4 and one low-resolution MP4 per task, records per-task `.log`, `.rc`,
-and `.ffprobe` files, writes `summary.txt`, and creates a 3x3 preview grid at
-`$OUT/wbc_goal_benchmark_grid_320w.mp4`.
+This is the same command shape used for the Slack MP4 reproduction run, with a
+timestamped `OUT` directory when preserving artifacts, for example
+`OUT=/tmp/hmg_wbc_goal_repro_20260611135925`.
+
+The wrapper sets `PYTHONPATH` to the checkout and runs the retained nine G1
+loco-manipulation datasets through `scripts/playback_wbc_goals.py`. With the
+default `EPISODES=1`, it passes `--num-episodes 1`, replays `demo_1` from each
+dataset, writes one raw MP4 and one low-resolution MP4 per task, records
+per-task `.log`, `.rc`, and `.ffprobe` files, writes `summary.txt`, and creates
+a 3x3 preview grid at `$OUT/wbc_goal_benchmark_grid_320w.mp4`.
 
 To replay every available demo in each dataset instead of only `demo_1`, set
 `EPISODES=all`:

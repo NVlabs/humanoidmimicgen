@@ -77,11 +77,16 @@ mirror:
 ```bash
 DATA_ROOT=/home/linke/Projects/gr00t/groot/dexmg/collected_demo \
 OUT=/tmp/hmg_wbc_goal_benchmark \
+EPISODES=1 \
+MAKE_GRID=1 \
 scripts/run_wbc_goal_benchmark.sh
 ```
 
-Set `EPISODES=all` to replay every available demo in each retained benchmark
-dataset instead of only `demo_1`.
+This runs the retained nine G1 loco-manipulation datasets through
+`scripts/playback_wbc_goals.py`, one demo per dataset by default. It writes raw
+MP4s, low-resolution MP4s, `.log`, `.rc`, `.ffprobe`, `summary.txt`, and a 3x3
+grid preview under `OUT`. Set `EPISODES=all` to replay every available demo in
+each retained benchmark dataset instead of only `demo_1`.
 
 # Requirements
 
