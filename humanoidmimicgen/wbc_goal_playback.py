@@ -553,5 +553,8 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
     if ret:
         print(f"{GREEN_BOLD}Playback completed successfully in {elapsed_time:.2f} seconds!{RESET}")
     else:
-        print(f"{RED_BOLD}Playback encountered an error in {elapsed_time:.2f} seconds!{RESET}")
+        print(
+            f"{RED_BOLD}Playback completed with state divergence in "
+            f"{elapsed_time:.2f} seconds!{RESET}"
+        )
     return ret
