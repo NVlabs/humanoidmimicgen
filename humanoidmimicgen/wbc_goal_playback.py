@@ -151,14 +151,9 @@ class SyncSimPlaybackConfig:
     manual_control: bool = False
     binary_hand_ik: bool = True
     dataset: str | None = None
-    use_actions: bool = True
-    use_wbc_goals: bool = True
-    use_teleop_cmd: bool = False
     save_video: bool = True
-    save_lerobot: bool = False
     video_path: str | None = None
     num_episodes: int | None = None
-    intervention: bool = False
 
     def __post_init__(self) -> None:
         if self.gravity_compensation_joints is None:
@@ -218,16 +213,6 @@ class SyncSimPlaybackConfig:
 
     def get(self, key: str, default: Any = None) -> Any:
         return getattr(self, key) if hasattr(self, key) else default
-
-    def validate_args(self) -> None:
-        if not self.use_actions or not self.use_wbc_goals:
-            raise ValueError("HumanoidMimicGen WBC-goal replay requires actions and WBC goals.")
-        if self.use_teleop_cmd:
-            raise ValueError("HumanoidMimicGen WBC-goal replay does not support teleop-cmd mode.")
-        if self.save_img_obs and not self.save_lerobot:
-            raise ValueError("save_img_obs is only supported with save_lerobot")
-        if self.intervention and not self.save_video:
-            raise ValueError("intervention requires save_video")
 
     def load_wbc_yaml(self) -> dict:
         config_root = Path(__file__).resolve().parent / "configs" / "wbc"
@@ -325,22 +310,19 @@ def validate_state(recorded_state, playback_state, ep, step, tolerance=1e-5) -> 
     return True
 
 
-def capture_or_render_frame(env, onscreen: bool, config: SyncSimPlaybackConfig, video_writer):
+def write_video_frame(env, video_writer) -> None:
     from humanoidmimicgen.wbc_constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
 
-    if config.save_video:
-        import cv2
+    import cv2
 
-        img = env.sim.render(
-            width=RS_VIEW_CAMERA_WIDTH,
-            height=RS_VIEW_CAMERA_HEIGHT,
-            camera_name=env.render_camera[0],
-        )
-        img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        img_bgr = np.flipud(img_bgr)
-        video_writer.write(img_bgr)
-    elif onscreen:
-        env.render()
+    img = env.sim.render(
+        width=RS_VIEW_CAMERA_WIDTH,
+        height=RS_VIEW_CAMERA_HEIGHT,
+        camera_name=env.render_camera[0],
+    )
+    img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    img_bgr = np.flipud(img_bgr)
+    video_writer.write(img_bgr)
 
 
 def get_task_success(sync_env) -> bool:
@@ -432,8 +414,6 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
             "gravity_compensation_joints",
         ],
     )
-    config.validate_args()
-
     robot_type, robot_model = get_robot_type_and_model(config.robot, config.enable_waist)
     onscreen = False if config.save_video else config.enable_onscreen
     offscreen = True if config.save_video else config.enable_offscreen
@@ -445,7 +425,10 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
         print(f"Video recording enabled. Output: {config.video_path}")
 
     sync_env = get_env(config, onscreen=onscreen, offscreen=offscreen)
-    env = sync_env.base_env
+    wbc_policy, _, _ = get_policies(
+        config, robot_type, robot_model, activate_keyboard_listener=False
+    )
+    env = WBCGoalEnv(sync_env, wbc_policy)
 
     video_writer = None
     if config.save_video:
@@ -463,28 +446,27 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
     print("seeds:", seeds)
     print("demos:", demos, "\n\n")
 
-    wbc_policy, _, _ = get_policies(
-        config, robot_type, robot_model, activate_keyboard_listener=False
-    )
-    wbc_env = WBCGoalEnv(sync_env, wbc_policy)
     task_success_by_episode = {}
     for episode_index, ep in enumerate(demos):
         print(f"Playing back episode: {ep}")
         seed = seeds[episode_index]
-        sync_env.reset(seed=seed)
+        env.reset(seed=seed)
         states = frames[f"data/{ep}/states"]
         wbc_goals = frames[f"data/{ep}/wbc_goal"]
-        sync_env.reset_to({"states": states[0]})
+        env.reset_to({"states": states[0]})
         num_wbc_goals = min(20, len(wbc_goals)) if config.debug else len(wbc_goals)
         task_success_steps = 0
         first_task_success_step = None
         last_task_success = False
 
         for jj in range(num_wbc_goals):
-            wbc_env.step(wbc_goals[jj])
-            capture_or_render_frame(env, onscreen, config, video_writer)
+            env.step(wbc_goals[jj])
+            if video_writer is not None:
+                write_video_frame(env, video_writer)
+            elif onscreen:
+                env.render()
 
-            task_success = get_task_success(wbc_env)
+            task_success = get_task_success(env)
             if task_success:
                 task_success_steps += 1
                 if first_task_success_step is None:
@@ -507,7 +489,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
         print(format_success_summary(ep, task_success_stats))
         print(f"Episode {ep} playback finished.\n\n")
 
-    sync_env.close()
+    env.close()
     if video_writer is not None:
         video_writer.release()
         print(f"Video saved to: {config.video_path}")
@@ -519,7 +501,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
     elapsed_time = time.time() - start_time
     print(
         f"{GREEN_BOLD}Playback with WBC version: {config.wbc_version}, {config.wbc_model_path}, "
-        f"{config.wbc_policy_class}, use_wbc_goals: True{RESET}"
+        f"{config.wbc_policy_class}{RESET}"
     )
     if ret:
         print(f"{GREEN_BOLD}Playback completed successfully in {elapsed_time:.2f} seconds!{RESET}")

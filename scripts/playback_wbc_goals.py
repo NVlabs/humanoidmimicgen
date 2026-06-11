@@ -115,9 +115,6 @@ def main() -> int:
 
     config = SyncSimPlaybackConfig()
     config.dataset = str(dataset)
-    config.use_actions = True
-    config.use_wbc_goals = True
-    config.use_teleop_cmd = False
     config.save_video = True
     config.video_path = str(args.video_path)
     config.enable_offscreen = True
