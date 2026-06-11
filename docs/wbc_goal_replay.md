@@ -219,7 +219,7 @@ python scripts/playback_wbc_goals.py \
 ```
 
 To render exactly one complete episode, add `--num-episodes 1`. The default is
-to render every episode in the dataset. Use `--ci-test` only for a 20-step
+to render every episode in the dataset. Use `--debug` only for a 20-step
 smoke test. Use `--strict` only when you want the process to exit nonzero on
 state drift; leave it off for video generation.
 

@@ -147,8 +147,7 @@ class SyncSimPlaybackConfig:
     renderer: Literal["mjviewer", "mujoco", "rerun"] = "mjviewer"
     replay_data_path: str | None = None
     replay_speed: float = 2.5
-    ci_test: bool = False
-    ci_test_mode: Literal["unit", "pre_merge"] = "pre_merge"
+    debug: bool = False
     manual_control: bool = False
     binary_hand_ik: bool = True
     dataset: str | None = None
@@ -476,7 +475,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
         states = frames[f"data/{ep}/states"]
         wbc_goals = frames[f"data/{ep}/wbc_goal"]
         sync_env.reset_to({"states": states[0]})
-        num_wbc_goals = min(20, len(wbc_goals)) if config.ci_test else len(wbc_goals)
+        num_wbc_goals = min(20, len(wbc_goals)) if config.debug else len(wbc_goals)
         task_success_steps = 0
         first_task_success_step = None
         last_task_success = False
