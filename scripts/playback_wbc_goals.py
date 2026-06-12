@@ -48,7 +48,7 @@ def parse_args() -> argparse.Namespace:
         type=int,
         help="Optional number of complete episodes to replay. Defaults to all episodes.",
     )
-    parser.add_argument("--ci-test", action="store_true", help="Run only the first 20 steps.")
+    parser.add_argument("--debug", action="store_true", help="Run only the first 20 steps.")
     parser.add_argument("--mujoco-gl", default="egl", help="MUJOCO_GL backend. Use egl for headless Linux.")
     parser.add_argument(
         "--strict",
@@ -115,14 +115,11 @@ def main() -> int:
 
     config = SyncSimPlaybackConfig()
     config.dataset = str(dataset)
-    config.use_actions = True
-    config.use_wbc_goals = True
-    config.use_teleop_cmd = False
     config.save_video = True
     config.video_path = str(args.video_path)
     config.enable_offscreen = True
     config.enable_onscreen = False
-    config.ci_test = args.ci_test
+    config.debug = args.debug
     config.num_episodes = args.num_episodes
     ok = bool(playback_wbc_goal_dataset(config))
 
