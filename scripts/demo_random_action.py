@@ -41,7 +41,6 @@ def parse_args() -> argparse.Namespace:
         "--wbc_version",
         dest="wbc_version",
         choices=(
-            "homie",
             "homie_v2",
             "homie_v2_grav_comp",
             "homie_v2_grav_comp_tuned",
