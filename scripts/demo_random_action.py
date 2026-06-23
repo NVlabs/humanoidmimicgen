@@ -199,8 +199,8 @@ def main() -> int:
     os.environ.setdefault("MUJOCO_GL", args.mujoco_gl)
 
     from humanoidmimicgen.wbc_goal_playback import (
+        ActionEnv,
         SyncSimPlaybackConfig,
-        WBCGoalEnv as ActionEnv,
     )
     from humanoidmimicgen.wbc_runtime import get_env, get_policies, get_robot_type_and_model
 

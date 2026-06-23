@@ -344,8 +344,8 @@ def get_video_fps(config: SyncSimPlaybackConfig) -> float:
     return float(config.data_collection_frequency)
 
 
-class WBCGoalEnv:
-    """Env facade that steps recorded WBC goals through a low-level sync env."""
+class ActionEnv:
+    """Env facade that steps high-level actions through a low-level sync env."""
 
     def __init__(
         self,
@@ -360,15 +360,18 @@ class WBCGoalEnv:
     def __getattr__(self, name: str):
         return getattr(self.sync_env, name)
 
-    def step(self, wbc_goal: dict[str, Any]):
+    def step(self, action: dict[str, Any]):
         obs = self.sync_env.observe()
         self.wbc_policy.set_observation(obs)
-        self.wbc_policy.set_goal(wbc_goal)
+        self.wbc_policy.set_goal(action)
         self.sync_env.overwrite_floating_base_action(
-            wbc_goal.get("navigate_cmd", np.zeros(3)),
-            wbc_goal.get("base_height_command", self.default_base_height),
+            action.get("navigate_cmd", np.zeros(3)),
+            action.get("base_height_command", self.default_base_height),
         )
         return self.sync_env.step(self.wbc_policy.get_action())
+
+
+WBCGoalEnv = ActionEnv
 
 
 def format_success_summary(ep: str, stats: dict[str, int | bool | None]) -> str:
@@ -439,7 +442,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
     wbc_policy, _, _ = get_policies(
         config, robot_type, robot_model, activate_keyboard_listener=False
     )
-    env = WBCGoalEnv(
+    env = ActionEnv(
         sync_env,
         wbc_policy,
         default_base_height=config.controller_initial_base_height,
@@ -467,15 +470,15 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
         seed = seeds[episode_index]
         env.reset(seed=seed)
         states = frames[f"data/{ep}/states"]
-        wbc_goals = frames[f"data/{ep}/wbc_goal"]
+        actions = frames[f"data/{ep}/wbc_goal"]
         env.reset_to({"states": states[0]})
-        num_wbc_goals = min(20, len(wbc_goals)) if config.debug else len(wbc_goals)
+        num_actions = min(20, len(actions)) if config.debug else len(actions)
         task_success_steps = 0
         first_task_success_step = None
         last_task_success = False
 
-        for jj in range(num_wbc_goals):
-            env.step(wbc_goals[jj])
+        for jj in range(num_actions):
+            env.step(actions[jj])
             if video_writer is not None:
                 write_video_frame(env, video_writer)
             elif onscreen:
@@ -498,7 +501,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
             "task_success_steps": task_success_steps,
             "first_task_success_step": first_task_success_step,
             "final_task_success": last_task_success,
-            "checked_steps": num_wbc_goals,
+            "checked_steps": num_actions,
         }
         task_success_by_episode[ep] = task_success_stats
         print(format_success_summary(ep, task_success_stats))

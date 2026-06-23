@@ -1,6 +1,6 @@
 import numpy as np
 
-from humanoidmimicgen.wbc_goal_playback import WBCGoalEnv
+from humanoidmimicgen.wbc_goal_playback import ActionEnv
 
 
 class FakeSyncEnv:
@@ -38,43 +38,43 @@ class FakePolicy:
         return {"q": np.array([1.0, 2.0])}
 
 
-def test_wbc_goal_env_steps_goal_through_policy_and_sync_env():
+def test_action_env_steps_action_through_policy_and_sync_env():
     sync_env = FakeSyncEnv()
     policy = FakePolicy()
-    wbc_env = WBCGoalEnv(sync_env, policy)
-    goal = {
+    action_env = ActionEnv(sync_env, policy)
+    action = {
         "navigate_cmd": np.array([0.1, 0.2, 0.3]),
         "base_height_command": 0.74,
     }
 
-    result = wbc_env.step(goal)
+    result = action_env.step(action)
 
     assert result == ("obs", 1.0, False, False, {"ok": True})
     assert policy.observations == [sync_env.observation]
-    assert policy.goals == [goal]
+    assert policy.goals == [action]
     assert len(sync_env.actions) == 1
     np.testing.assert_allclose(sync_env.actions[0]["q"], np.array([1.0, 2.0]))
-    np.testing.assert_allclose(sync_env.base_commands[0][0], goal["navigate_cmd"])
-    assert sync_env.base_commands[0][1] == goal["base_height_command"]
+    np.testing.assert_allclose(sync_env.base_commands[0][0], action["navigate_cmd"])
+    assert sync_env.base_commands[0][1] == action["base_height_command"]
 
 
-def test_wbc_goal_env_defaults_base_command_when_goal_omits_it():
+def test_action_env_defaults_base_command_when_action_omits_it():
     sync_env = FakeSyncEnv()
     policy = FakePolicy()
-    wbc_env = WBCGoalEnv(sync_env, policy)
+    action_env = ActionEnv(sync_env, policy)
 
-    wbc_env.step({})
+    action_env.step({})
 
     np.testing.assert_allclose(sync_env.base_commands[0][0], np.zeros(3))
     assert sync_env.base_commands[0][1] == 0.74
-    assert wbc_env.is_success() == {"task": True}
+    assert action_env.is_success() == {"task": True}
 
 
-def test_wbc_goal_env_uses_configured_default_base_height():
+def test_action_env_uses_configured_default_base_height():
     sync_env = FakeSyncEnv()
     policy = FakePolicy()
-    wbc_env = WBCGoalEnv(sync_env, policy, default_base_height=0.8)
+    action_env = ActionEnv(sync_env, policy, default_base_height=0.8)
 
-    wbc_env.step({})
+    action_env.step({})
 
     assert sync_env.base_commands[0][1] == 0.8
