@@ -16,6 +16,8 @@ import numpy as np
 from tqdm import tqdm
 import yaml
 
+from humanoidmimicgen.wbc.main.constants import DEFAULT_BASE_HEIGHT
+
 CONTROL_NODE_NAME = "humanoidmimicgen_playback_node"
 GREEN_BOLD = "\033[1;32m"
 RED_BOLD = "\033[1;31m"
@@ -95,7 +97,7 @@ class SyncSimPlaybackConfig:
     keyboard_dispatcher_type: str = "raw"
     enable_gravity_compensation: bool = False
     use_dual_wbc_env: bool = False
-    controller_initial_base_height: float = 0.74
+    controller_initial_base_height: float = DEFAULT_BASE_HEIGHT
     controller_min_base_height: float = 0.3
     controller_max_base_height: float = 1.1
     use_raised_arm_pose: bool = False
@@ -315,10 +317,13 @@ def write_video_frame(env, video_writer) -> None:
 
     import cv2
 
-    img = env.sim.render(
+    base_env = env.base_env if hasattr(env, "base_env") else env
+    render_camera = getattr(base_env, "render_camera", ["frontview"])
+    camera_name = render_camera[0] if isinstance(render_camera, list) else render_camera
+    img = base_env.sim.render(
         width=RS_VIEW_CAMERA_WIDTH,
         height=RS_VIEW_CAMERA_HEIGHT,
-        camera_name=env.render_camera[0],
+        camera_name=camera_name,
     )
     img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     img_bgr = np.flipud(img_bgr)
@@ -342,9 +347,15 @@ def get_video_fps(config: SyncSimPlaybackConfig) -> float:
 class WBCGoalEnv:
     """Env facade that steps recorded WBC goals through a low-level sync env."""
 
-    def __init__(self, sync_env, wbc_policy) -> None:
+    def __init__(
+        self,
+        sync_env,
+        wbc_policy,
+        default_base_height: float = DEFAULT_BASE_HEIGHT,
+    ) -> None:
         self.sync_env = sync_env
         self.wbc_policy = wbc_policy
+        self.default_base_height = default_base_height
 
     def __getattr__(self, name: str):
         return getattr(self.sync_env, name)
@@ -355,7 +366,7 @@ class WBCGoalEnv:
         self.wbc_policy.set_goal(wbc_goal)
         self.sync_env.overwrite_floating_base_action(
             wbc_goal.get("navigate_cmd", np.zeros(3)),
-            wbc_goal.get("base_height_command", 0.0),
+            wbc_goal.get("base_height_command", self.default_base_height),
         )
         return self.sync_env.step(self.wbc_policy.get_action())
 
@@ -428,7 +439,11 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
     wbc_policy, _, _ = get_policies(
         config, robot_type, robot_model, activate_keyboard_listener=False
     )
-    env = WBCGoalEnv(sync_env, wbc_policy)
+    env = WBCGoalEnv(
+        sync_env,
+        wbc_policy,
+        default_base_height=config.controller_initial_base_height,
+    )
 
     video_writer = None
     if config.save_video:
@@ -474,7 +489,7 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
             last_task_success = task_success
 
             if jj < len(states) - 1:
-                state_playback = env.sim.get_state().flatten()
+                state_playback = env.base_env.sim.get_state().flatten()
                 if not validate_state(states[jj + 1], state_playback, ep, jj):
                     ret = False
 

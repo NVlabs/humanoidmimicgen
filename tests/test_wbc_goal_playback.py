@@ -66,5 +66,15 @@ def test_wbc_goal_env_defaults_base_command_when_goal_omits_it():
     wbc_env.step({})
 
     np.testing.assert_allclose(sync_env.base_commands[0][0], np.zeros(3))
-    assert sync_env.base_commands[0][1] == 0.0
+    assert sync_env.base_commands[0][1] == 0.74
     assert wbc_env.is_success() == {"task": True}
+
+
+def test_wbc_goal_env_uses_configured_default_base_height():
+    sync_env = FakeSyncEnv()
+    policy = FakePolicy()
+    wbc_env = WBCGoalEnv(sync_env, policy, default_base_height=0.8)
+
+    wbc_env.step({})
+
+    assert sync_env.base_commands[0][1] == 0.8
