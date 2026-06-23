@@ -55,7 +55,6 @@ def get_policies(config, robot_type: str, robot_model, activate_keyboard_listene
     from humanoidmimicgen.wbc.policy.wbc_policy_factory import get_wbc_policy
 
     wbc_config = config.load_wbc_yaml()
-    wbc_config["upper_body_policy_type"] = "identity"
     wbc_policy = get_wbc_policy(robot_type, robot_model, wbc_config, init_time=0.0)
     wbc_policy.activate_policy()
     return wbc_policy, None, None
