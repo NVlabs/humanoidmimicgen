@@ -44,6 +44,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--lowres-width", type=int, default=320, help="Width for --lowres-video-path.")
     parser.add_argument(
+        "--sim-frequency",
+        type=int,
+        default=400,
+        help="MuJoCo/WBC simulation frequency in Hz. Defaults to 400.",
+    )
+    parser.add_argument(
         "--num-episodes",
         type=int,
         help="Optional number of complete episodes to replay. Defaults to all episodes.",
@@ -98,6 +104,7 @@ def maybe_downscale(video_path: Path, lowres_video_path: Path | None, width: int
 def main() -> int:
     args = parse_args()
     os.environ.setdefault("MUJOCO_GL", args.mujoco_gl)
+    os.environ["HMG_SIMULATION_TIMESTEP"] = str(1.0 / float(args.sim_frequency))
     dataset = resolve_dataset(args.dataset)
     args.video_path = args.video_path.expanduser().resolve()
     args.video_path.parent.mkdir(parents=True, exist_ok=True)
@@ -121,6 +128,7 @@ def main() -> int:
     config.enable_onscreen = False
     config.debug = args.debug
     config.num_episodes = args.num_episodes
+    config.sim_frequency = args.sim_frequency
     ok = bool(playback_wbc_goal_dataset(config))
 
     maybe_downscale(args.video_path, args.lowres_video_path, args.lowres_width)

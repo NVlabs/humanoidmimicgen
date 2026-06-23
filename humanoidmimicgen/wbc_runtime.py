@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import os
+
 
 def get_robot_type_and_model(robot: str, enable_waist_ik: bool = False):
     from humanoidmimicgen.wbc.robot_model.instantiation import get_robot_type_and_model
@@ -12,10 +14,16 @@ def get_robot_type_and_model(robot: str, enable_waist_ik: bool = False):
 
 
 def get_env(config, **kwargs):
+    sim_timestep = 1.0 / float(config.sim_frequency)
+    os.environ["HMG_SIMULATION_TIMESTEP"] = str(sim_timestep)
+
     from humanoidmimicgen.wbc.envs.robocasa.sync_env import G1SyncEnv
+    from humanoidmimicgen.wbc.envs.robocasa.utils import robocasa_env
     from humanoidmimicgen.wbc.envs.robocasa.utils.controller_utils import (
         update_robosuite_controller_configs,
     )
+
+    robocasa_env.macros.SIMULATION_TIMESTEP = sim_timestep
 
     robot_type, _ = get_robot_type_and_model(config.robot, enable_waist_ik=config.enable_waist)
     env_name = f"groot2_{robot_type}/{config.task_name}_{config.robot}_Env"

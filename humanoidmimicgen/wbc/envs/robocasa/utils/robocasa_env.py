@@ -18,7 +18,7 @@ try:
     import robosuite.macros_private as macros
 except ImportError:
     import robosuite.macros as macros
-macros.SIMULATION_TIMESTEP = 0.005  # 200hz
+macros.SIMULATION_TIMESTEP = float(os.environ.get("HMG_SIMULATION_TIMESTEP", "0.0025"))
 
 
 def create_env_robosuite(

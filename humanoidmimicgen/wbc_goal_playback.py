@@ -82,7 +82,7 @@ class SyncSimPlaybackConfig:
     simulator: str = "mujoco"
     sim_sync_mode: bool = False
     control_frequency: int = 50
-    sim_frequency: int = 200
+    sim_frequency: int = 400
     enable_waist: bool = True
     with_hands: bool = True
     high_elbow_pose: bool = False

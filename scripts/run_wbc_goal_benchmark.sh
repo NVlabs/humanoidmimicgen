@@ -8,6 +8,7 @@ ENV_NAME=${ENV_NAME:-humanoidmimicgen-wbc}
 EPISODES=${EPISODES:-1}
 LOWRES_WIDTH=${LOWRES_WIDTH:-320}
 MAKE_GRID=${MAKE_GRID:-1}
+SIM_FREQUENCY=${SIM_FREQUENCY:-400}
 
 export MUJOCO_GL=${MUJOCO_GL:-egl}
 export PYTHONUNBUFFERED=${PYTHONUNBUFFERED:-1}
@@ -57,6 +58,7 @@ run_one() {
     --video-path "$video" \
     --lowres-video-path "$lowres" \
     --lowres-width "$LOWRES_WIDTH" \
+    --sim-frequency "$SIM_FREQUENCY" \
     >"$log" 2>&1
   local rc=$?
   set -e
@@ -92,6 +94,7 @@ run_one 09_obstacle_aware_pick_drill G1_LMDrillLiftObstacleDT_20260417_093010/de
   echo "Output: $OUT"
   echo "Repo: $REPO"
   echo "Data root: $DATA_ROOT"
+  echo "Sim frequency: $SIM_FREQUENCY"
   echo
   for rc_file in "$OUT"/*.rc; do
     label=$(basename "$rc_file" .rc)
