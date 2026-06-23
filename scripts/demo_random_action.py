@@ -158,19 +158,10 @@ def write_video_frame(env, writer, args: argparse.Namespace) -> None:
     writer.write(cv2.cvtColor(np.flipud(frame), cv2.COLOR_RGB2BGR))
 
 
-def target_slots(robot_model, joint_group: str) -> list[int]:
-    upper_body_ids = robot_model.get_joint_group_indices("upper_body")
-    upper_body_slots = {joint_id: slot for slot, joint_id in enumerate(upper_body_ids)}
-    return [
-        upper_body_slots[joint_id]
-        for joint_id in robot_model.get_joint_group_indices(joint_group)
-        if joint_id in upper_body_slots
-    ]
-
-
 def make_wbc_goal(
     reset_upper_body_pose: np.ndarray,
-    slots: list[int],
+    robot_model,
+    joint_group: str,
     rng: np.random.Generator,
     arm_mode: str,
     scale: float,
@@ -179,10 +170,18 @@ def make_wbc_goal(
     control_freq: int,
 ):
     target = reset_upper_body_pose.copy()
-    if arm_mode == "random":
-        target[slots] += rng.uniform(-scale, scale, size=len(slots))
-    elif arm_mode == "zero":
-        target[slots] = 0.0
+    target_joint_ids = set(robot_model.get_joint_group_indices(joint_group))
+    matched_joints = 0
+    for target_index, joint_id in enumerate(robot_model.get_joint_group_indices("upper_body")):
+        if joint_id not in target_joint_ids:
+            continue
+        matched_joints += 1
+        if arm_mode == "random":
+            target[target_index] += rng.uniform(-scale, scale)
+        elif arm_mode == "zero":
+            target[target_index] = 0.0
+    if matched_joints == 0:
+        raise ValueError(f"{joint_group!r} has no joints in the WBC upper-body goal")
     target_time = time.monotonic()
     return {
         "target_time": target_time,
@@ -261,16 +260,14 @@ def main() -> int:
         reset_upper_body_pose = obs["q"][
             robot_model.get_joint_group_indices("upper_body")
         ].copy()
-        slots = target_slots(robot_model, args.joint_group)
-        if not slots:
-            raise ValueError(f"{args.joint_group!r} has no joints in the WBC upper-body goal")
 
         for step in range(args.steps):
             start = time.time()
             if step % args.action_repeat == 0:
                 action = make_wbc_goal(
                     reset_upper_body_pose,
-                    slots,
+                    robot_model,
+                    args.joint_group,
                     rng,
                     args.arm_mode,
                     args.arm_scale,
