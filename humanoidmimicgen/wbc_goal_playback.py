@@ -8,7 +8,6 @@ from dataclasses import asdict, dataclass
 import json
 import os
 from pathlib import Path
-import subprocess
 import time
 from typing import Any, Literal
 
@@ -18,50 +17,15 @@ import yaml
 
 from humanoidmimicgen.wbc.main.constants import DEFAULT_BASE_HEIGHT
 
-CONTROL_NODE_NAME = "humanoidmimicgen_playback_node"
 GREEN_BOLD = "\033[1;32m"
 RED_BOLD = "\033[1;31m"
 RESET = "\033[0m"
 
 
-def override_wbc_config(
-    wbc_config: dict, config: "SyncSimPlaybackConfig", missed_keys_only: bool = False
-) -> dict:
-    """Override WBC YAML values with local playback config values."""
-    key_to_value = {
-        "INTERFACE": config.interface,
-        "ENV_TYPE": config.env_type,
-        "VERSION": config.wbc_version,
-        "SIMULATOR": config.simulator,
-        "SIMULATE_DT": 1 / float(config.sim_frequency),
-        "ENABLE_OFFSCREEN": config.enable_offscreen,
-        "ENABLE_ONSCREEN": config.enable_onscreen,
-        "model_path": config.wbc_model_path,
-        "enable_waist": config.enable_waist,
-        "with_hands": config.with_hands,
-        "verbose": config.verbose,
-        "verbose_timing": config.verbose_timing,
-        "upper_body_max_joint_speed": config.upper_body_joint_speed,
-        "keyboard_dispatcher_type": config.keyboard_dispatcher_type,
-        "enable_gravity_compensation": config.enable_gravity_compensation,
-        "gravity_compensation_joints": config.gravity_compensation_joints,
-        "high_elbow_pose": config.high_elbow_pose,
-        "joint_safety_mode": config.joint_safety_mode,
-        "arm_velocity_limit": config.arm_velocity_limit,
-        "hand_velocity_limit": config.hand_velocity_limit,
-        "lower_body_velocity_limit": config.lower_body_velocity_limit,
-        "waist_pitch_limit": config.waist_pitch_limit,
-        "hand_torque_limit": config.hand_torque_limit,
-        "enable_natural_walk": config.enable_natural_walk,
-    }
-
-    for key, value in key_to_value.items():
-        if not missed_keys_only or key not in wbc_config:
-            wbc_config[key] = value
-
-    if config.env_type == "real":
-        wbc_config["MOTOR_KD"][14] = wbc_config["MOTOR_KD"][14] - 10
-
+def override_wbc_config(wbc_config: dict, config: "SyncSimPlaybackConfig") -> dict:
+    """Apply local playback overrides used by the WBC policy factory."""
+    wbc_config["VERSION"] = config.wbc_version
+    wbc_config["model_path"] = config.wbc_model_path
     return wbc_config
 
 
@@ -73,111 +37,25 @@ class SyncSimPlaybackConfig:
     local runtime facade and the WBC policy factory.
     """
 
-    dataset_version: str = "v1"
     wbc_version: str = "homie_v2"
     wbc_model_path: str = "policy/stand.onnx,policy/walk.onnx"
     wbc_policy_class: str = "G1DecoupledWholeBodyPolicy"
-    interface: str = "sim"
-    env_type: str = "sim"
-    simulator: str = "mujoco"
-    sim_sync_mode: bool = False
     control_frequency: int = 50
     sim_frequency: int = 400
     enable_waist: bool = True
-    with_hands: bool = True
-    high_elbow_pose: bool = False
-    verbose: bool = True
     enable_offscreen: bool = False
     enable_onscreen: bool = True
-    enable_teleop_evaluator: bool = False
-    upper_body_joint_speed: float = 1000
-    env_name: str = "default"
     ik_indicator: bool = False
-    verbose_timing: bool = False
-    keyboard_dispatcher_type: str = "raw"
-    enable_gravity_compensation: bool = False
-    use_dual_wbc_env: bool = False
     controller_initial_base_height: float = DEFAULT_BASE_HEIGHT
-    controller_min_base_height: float = 0.3
-    controller_max_base_height: float = 1.1
-    use_raised_arm_pose: bool = False
-    gravity_compensation_joints: list[str] | None = None
-    joint_safety_mode: Literal["kill", "freeze"] = "kill"
-    arm_velocity_limit: float = 25.0
-    hand_velocity_limit: float = 1000.0
-    lower_body_velocity_limit: float = 20.0
-    waist_pitch_limit: float = 15.0
-    hand_torque_limit: float = 0.1
-    enable_natural_walk: bool = False
-    body_control_device: str = "dummy"
-    hand_control_device: str | None = "dummy"
-    hand_type: Literal["dex3", "gripper"] = "dex3"
-    body_streamer_ip: str = "10.112.210.229"
-    body_streamer_keyword: str = "knee"
-    enable_visualization: bool = False
-    enable_real_device: bool = False
-    teleop_frequency: int = 20
-    teleop_replay_path: str | None = None
-    robot_ip: str = "192.168.123.164"
-    data_collection: bool = True
     data_collection_frequency: int = 20
-    root_output_dir: str = "outputs"
-    offline_dc: bool = False
-    enable_upper_body_operation: bool = True
-    upper_body_operation_mode: Literal["teleop", "inference"] = "teleop"
-    inference_host: str = "localhost"
-    inference_port: int = 5550
-    inference_on_osmo: bool = False
-    inference_prompt: str = "Pick up apple from table to plate"
-    inference_action_horizon: int = 16
-    inference_control_freq: int = 20
-    inference_rate: float = 2.5
-    state_delay: float = 0.0
-    proprio_hist_budget: int = 0
-    inference_plot_rerun: bool = False
-    inference_push_evals: bool = True
-    inference_publish_single_action: bool = False
-    commit_id: str = ""
-    enable_mode_switch: bool = False
-    initial_mode: str = "idle"
     robot: str = "G1"
     task_name: str = "GroundOnly"
-    remove_existing_dir: bool = False
-    hardcode_teleop_cmd: bool = False
-    save_img_obs: bool = False
-    success_hold_steps: int = 50
     renderer: Literal["mjviewer", "mujoco", "rerun"] = "mjviewer"
-    replay_data_path: str | None = None
-    replay_speed: float = 2.5
     debug: bool = False
-    manual_control: bool = False
-    binary_hand_ik: bool = True
     dataset: str | None = None
     save_video: bool = True
     video_path: str | None = None
     num_episodes: int | None = None
-
-    def __post_init__(self) -> None:
-        if self.gravity_compensation_joints is None:
-            self.gravity_compensation_joints = ["arms"]
-        if self.interface in {"sim", "real"}:
-            self.env_type = self.interface
-        elif self.interface.startswith("sim"):
-            self.interface, self.env_type = "sim", "sim"
-        elif self.interface.startswith("real"):
-            self.interface, self.env_type = "real", "real"
-        else:
-            self.env_type = self.interface
-        try:
-            self.commit_id = (
-                subprocess.check_output(
-                    ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
-                )
-                .decode("utf-8")
-                .strip()
-            )
-        except (subprocess.CalledProcessError, FileNotFoundError, OSError):
-            self.commit_id = ""
 
     def update(
         self,
@@ -408,14 +286,9 @@ def playback_wbc_goal_dataset(config: SyncSimPlaybackConfig) -> bool:
             "wbc_policy_class",
             "control_frequency",
             "enable_waist",
-            "with_hands",
-            "env_name",
             "robot",
             "task_name",
-            "teleop_frequency",
             "data_collection_frequency",
-            "enable_gravity_compensation",
-            "gravity_compensation_joints",
         ],
     )
     robot_type, robot_model = get_robot_type_and_model(config.robot, config.enable_waist)

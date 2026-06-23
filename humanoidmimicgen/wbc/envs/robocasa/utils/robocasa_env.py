@@ -101,36 +101,6 @@ class RoboCasaEnv:
         return self
 
 
-def get_body_pose(
-    data: mujoco.MjData, model: mujoco.MjModel, body_name: str
-) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    Get the position of a specified body in the model.
-
-    Args:
-        data (MjData): The MuJoCo data object.
-        model (MjModel): The MuJoCo model object.
-        body_name (str): Name of the body to get position for.
-
-    Returns:
-        Tuple[np.ndarray, np.ndarray]: The [x, y, z] position and [w, x, y, z] quaternion orientation.
-    """
-    body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, body_name)
-    # Retrieve the joint type
-    joint_id = model.body_jntadr[body_id]
-    if joint_id >= 0 and model.jnt_type[joint_id] == 0:  # type 0 indicates a free joint
-        # Get qpos for free joint: [pos_x, pos_y, pos_z, quat_w, quat_x, quat_y, quat_z]
-        qpos_start = model.jnt_qposadr[joint_id]
-        pos_xyz = data.qpos[qpos_start : qpos_start + 3]
-        quat_wxyz = data.qpos[qpos_start + 3 : qpos_start + 7]
-        return pos_xyz, quat_wxyz
-    else:
-        # Body with non-free joint, use world coordinates
-        pos_xyz = data.xpos[body_id].copy()  # World position
-        quat_wxyz = data.xquat[body_id].copy()  # World quaternion (already in w,x,y,z format)
-        return pos_xyz, quat_wxyz
-
-
 class Groot2RoboCasaEnv(RoboCasaEnv):
     def __init__(
         self,
@@ -143,9 +113,6 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
         camera_widths: List[int] | None = None,
         onscreen: bool = False,
         offscreen: bool = False,
-        dump_rollout_dataset_dir: str | None = None,
-        rollout_hdf5: str | None = None,
-        rollout_trainset: int | None = None,
         controller_configs: str | None = None,
         ik_indicator: bool = False,
         **kwargs,
@@ -232,20 +199,6 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
         self.enable_render = offscreen
         self.render_obs_key = f"{camera_names[0]}_image"
         self.render_cache = None
-
-        self.dump_rollout_dataset_dir = dump_rollout_dataset_dir
-        self.groot_exporter = None
-        self.np_exporter = None
-
-        self.rollout_hdf5 = rollout_hdf5
-        self.rollout_trainset = rollout_trainset
-        self.rollout_initial_state = {}
-
-        self.verbose = False
-        for k, v in self.observation_space.items():
-            self.verbose and print("{OBS}", k, v)
-        for k, v in self.action_space.items():
-            self.verbose and print("{ACTION}", k, v)
 
         self.overridden_floating_base_action = None
 
@@ -343,9 +296,6 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
         self, action: Dict[str, Any]
     ) -> Tuple[Dict[str, Any], float, bool, bool, Dict[str, Any]]:
         # action={"q": xxx}
-        for k, v in action.items():
-            self.verbose and print("<ACTION>", k, v)
-
         joint_actoin_vec = action["q"]
         action_dict = {}
         for ii, robot in enumerate(self.env.robots):
@@ -359,36 +309,7 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
         raw_obs, reward, terminated, truncated, info = super().step(action_dict)
         obs = self.get_groot_observation(raw_obs)
 
-        for k, v in obs.items():
-            self.verbose and print("<OBS>", k, v.shape if k.startswith("video.") else v)
-        self.verbose = False
-
         return obs, reward, terminated, truncated, info
-
-    def step_only_kinematics(
-        self, action: Dict[str, Any]
-    ) -> Tuple[Dict[str, Any], float, bool, bool, Dict[str, Any]]:
-        joint_actoin_vec = action["q"]
-        for ii, robot in enumerate(self.env.robots):
-            joint_names = np.array(self.env.sim.model.joint_names)[robot._ref_joint_indexes]
-            body_q = self.obs_action_converter[ii].groot_to_robocasa_joint_order(
-                joint_names, joint_actoin_vec
-            )
-            self.env.sim.data.qpos[robot._ref_joint_pos_indexes] = body_q
-
-            for side in ["left", "right"]:
-                joint_names = np.array(self.env.sim.model.joint_names)[
-                    robot._ref_joints_indexes_dict[side + "_gripper"]
-                ]
-                gripper_q = self.obs_action_converter[ii].groot_to_robocasa_joint_order(
-                    joint_names, joint_actoin_vec
-                )
-                self.env.sim.data.qpos[robot._ref_gripper_joint_pos_indexes[side]] = gripper_q
-
-        mujoco.mj_forward(self.env.sim.model._model, self.env.sim.data._data)
-
-        obs = self.force_update_observation()
-        return obs, 0, False, False, {"success": False}
 
     def force_update_observation(self):
         raw_obs = self.env._get_observations(force_update=True)
@@ -457,9 +378,6 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
             actuated_joint_names, tau, side + "_gripper"
         )
         return actuated_tau
-
-    def get_body_pose(self, body_name: str) -> Tuple[np.ndarray, np.ndarray]:
-        return get_body_pose(self.env.sim.data._data, self.env.sim.model._model, body_name)
 
     def get_groot_observation(self, raw_obs: Dict[str, Any]) -> Dict[str, Any]:
         obs = {}

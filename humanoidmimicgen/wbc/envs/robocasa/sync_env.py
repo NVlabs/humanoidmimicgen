@@ -8,7 +8,6 @@ from humanoidmimicgen.wbc.envs.robocasa.utils.robocasa_env import Groot2RoboCasa
 from humanoidmimicgen.wbc.robot_model.instantiation import get_robot_type_and_model
 from humanoidmimicgen.wbc_constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
 from robosuite.environments.robot_env import RobotEnv
-from humanoidmimicgen.wbc.envs.robocasa.utils.randomization import randomize_appearances
 
 
 def add_eval_observation_keys(robot_model, obs: dict) -> dict:
@@ -121,109 +120,6 @@ class SyncEnv(gym.Env):
         navigate_cmd_vel = np.clip(np.array([dx, dy, dyaw]) * 1 / dt, -max_vel, max_vel)
         return navigate_cmd_vel
 
-    def get_base_pos_from_vel_target(
-        self, current_xy_yaw: np.ndarray, navigate_cmd_vel: np.ndarray, dt: float
-    ) -> np.ndarray:
-        dx, dy, dyaw = navigate_cmd_vel
-        target_xy_yaw = current_xy_yaw + np.array([dx, dy, dyaw]) * dt
-        return target_xy_yaw
-
-    def get_base_vel_from_pd_control(
-        self,
-        current_xy_yaw: np.ndarray,
-        target_xy_yaw: np.ndarray,
-        current_vel_xy_yaw: np.ndarray,
-        target_vel_xy_yaw: np.ndarray = None,
-        kp: np.ndarray = None,
-        kd: np.ndarray = None,
-        max_vel: float = 1.0,
-        max_accel: float = 2.0,
-        dt: float = 0.02,
-    ) -> np.ndarray:
-        """
-        Compute navigation command velocity using PD control.
-        Note that the current_xy_yaw, target_xy_yaw, current_vel_xy_yaw are all in the world frame,
-        while the target_vel_xy_yaw is in the robot base frame. The output navigate_cmd_vel is in the robot base frame.
-
-        Args:
-            current_xy_yaw: Current position [x, y, yaw] in meters and radians in the world frame
-            target_xy_yaw: Target position [x, y, yaw] in meters and radians in the world frame
-            current_vel_xy_yaw: Current velocity [vx, vy, vyaw] in the world frame
-            target_vel_xy_yaw: Target velocity [vx, vy, vyaw] in the robot base frame (optional, defaults to zero)
-            kp: Proportional gains [kp_x, kp_y, kp_yaw] (optional, defaults to [2.0, 2.0, 2.0])
-            kd: Derivative gains [kd_x, kd_y, kd_yaw] (optional, defaults to [0.5, 0.5, 0.5])
-            max_vel: Maximum velocity magnitude
-            max_accel: Maximum acceleration magnitude
-            dt: Time step
-
-        Returns:
-            navigate_cmd_vel: Command velocity [vx, vy, vyaw] in the robot base frame
-        """
-        # Default PD gains if not provided
-        if kp is None:
-            kp = np.array([2.0, 2.0, 0.5])
-        if kd is None:
-            kd = np.array([0.2, 0.2, 0.05]) * 0.0
-
-        # Default velocities to zero if not provided
-        if target_vel_xy_yaw is None:
-            target_vel_xy_yaw = np.zeros(3)
-
-        # Extract current yaw angle
-        theta = current_xy_yaw[2]
-        c = np.cos(theta)
-        s = np.sin(theta)
-
-        # World to body rotation matrix
-        # Rwb = [[ cos(θ),  sin(θ)],
-        #        [-sin(θ),  cos(θ)]]
-
-        # --- Transform position error from world to body frame ---
-        pos_error_world = target_xy_yaw - current_xy_yaw
-        pos_error_world[2] = np.arctan2(
-            np.sin(pos_error_world[2]), np.cos(pos_error_world[2])
-        )  # Wrap angle
-
-        ex_world = pos_error_world[0]
-        ey_world = pos_error_world[1]
-        ex_body = c * ex_world + s * ey_world
-        ey_body = -s * ex_world + c * ey_world
-        eth = pos_error_world[2]  # Angular error is frame-invariant
-
-        # --- Transform current velocity from world to body frame ---
-        vx_world = current_vel_xy_yaw[0]
-        vy_world = current_vel_xy_yaw[1]
-        vx_body = c * vx_world + s * vy_world
-        vy_body = -s * vx_world + c * vy_world
-        vyaw_body = current_vel_xy_yaw[2]  # Angular velocity is frame-invariant
-
-        # --- Target velocity is already in body frame ---
-        vxd_body = target_vel_xy_yaw[0]
-        vyd_body = target_vel_xy_yaw[1]
-        vyawd_body = target_vel_xy_yaw[2]
-
-        # --- PD control in body frame (with feedforward) ---
-        vx_cmd = vxd_body + kp[0] * ex_body + kd[0] * (vxd_body - vx_body)
-        vy_cmd = vyd_body + kp[1] * ey_body + kd[1] * (vyd_body - vy_body)
-        vyaw_cmd = vyawd_body + kp[2] * eth + kd[2] * (vyawd_body - vyaw_body)
-
-        navigate_cmd_vel = np.array([vx_cmd, vy_cmd, vyaw_cmd])
-
-        # Apply acceleration limits (change in velocity)
-        # if max_accel > 0:
-        #     # Current velocity in body frame for acceleration limiting
-        #     current_vel_body = np.array([vx_body, vy_body, vyaw_body])
-        #     vel_change = navigate_cmd_vel - current_vel_body
-        #     vel_change_norm = np.linalg.norm(vel_change)
-        #     if vel_change_norm > max_accel * dt:
-        #         vel_change = vel_change * (max_accel * dt / vel_change_norm)
-        #     navigate_cmd_vel = current_vel_body + vel_change
-
-        # Apply velocity limits
-        navigate_cmd_vel = np.clip(navigate_cmd_vel, -max_vel, max_vel)
-
-        return navigate_cmd_vel
-
     def get_mujoco_state_info(self):
         mujoco_state = self.base_env.sim.get_state().flatten()
         assert len(mujoco_state) < SyncEnv.MAX_MUJOCO_STATE_LEN
@@ -236,7 +132,7 @@ class SyncEnv(gym.Env):
         mujoco_state = padded_mujoco_state.copy()
         return max_mujoco_state_len, mujoco_state_len, mujoco_state
 
-    def reset_to(self, state: Dict[str, Any], do_visual_domain_randomization: bool = False) -> Dict[str, Any] | None:
+    def reset_to(self, state: Dict[str, Any]) -> Dict[str, Any] | None:
         if hasattr(self.base_env, "reset_to"):
             result = self.base_env.reset_to(state)
         else:
@@ -246,19 +142,6 @@ class SyncEnv(gym.Env):
                 xml = env.edit_model_xml(state["model_file"])
                 env.reset_from_xml_string(xml)
                 env.sim.reset()
-                if do_visual_domain_randomization:
-                    randomize_appearances(
-                        env,
-                        seed=None,                  # or pass a seed for reproducibility
-                        geom_include=None,          # or a subset: ["mug", "table", ...]
-                        color_jitter=0.25,
-                        light_pos_jitter=0.2,
-                        light_rgb_jitter=0.25,
-                        brightness=0.20,
-                        contrast=0.20,
-                        noise=0.05,
-                    )
-                    env.sim.forward()
             if "states" in state:
                 try:
                     env.sim.set_state_from_flattened(state["states"])
@@ -272,23 +155,9 @@ class SyncEnv(gym.Env):
                     padded_state = np.zeros(full_state_len, dtype=legacy_state.dtype)
                     padded_state[: legacy_state.shape[0]] = legacy_state
                     env.sim.set_state_from_flattened(padded_state)
-                if do_visual_domain_randomization:
-                    randomize_appearances(
-                        env,
-                        seed=None,                  # or pass a seed for reproducibility
-                        geom_include=None,          # or a subset: ["mug", "table", ...]
-                        color_jitter=0.25,
-                        light_pos_jitter=0.2,
-                        light_rgb_jitter=0.25,
-                        brightness=0.20,
-                        contrast=0.20,
-                        noise=0.05,
-                    )
                 env.sim.forward()
             result = None
 
-        # Follow the same observation processing pipeline as step_only_kinematics
-        # Note that this will make playback diverge
         obs = self.env.force_update_observation()
         self.cache["obs"] = obs
 
@@ -423,14 +292,6 @@ class SyncEnv(gym.Env):
 
         return whole_q
 
-    def set_ik_indicator(self, teleop_cmd):
-        """Set the IK indicators for the simulator"""
-        if "left_wrist" in teleop_cmd and "right_wrist" in teleop_cmd:
-            left_wrist_input_pose = teleop_cmd["left_wrist"]
-            right_wrist_input_pose = teleop_cmd["right_wrist"]
-            ik_wrapper = self.base_env
-            ik_wrapper.set_target_poses_outside_env([left_wrist_input_pose, right_wrist_input_pose])
-
     def render(self):
         if self.base_env.viewer is not None:
             self.base_env.viewer.update()
@@ -441,18 +302,6 @@ class SyncEnv(gym.Env):
         # action is in pinocchio joint order, we need to convert it to actuator order
         action_q = self.convert_q_to_actuated_joint_order(action["q"])
         obs, reward, terminated, truncated, info = self.env.step({"q": action_q})
-        self.cache["obs"] = obs
-        self.cache["reward"] = reward
-        self.cache["terminated"] = terminated
-        self.cache["truncated"] = truncated
-        self.cache["info"] = info
-
-    def queue_state(self, state: Dict[str, any]):
-        # This function is for debugging or cross-playback between sim and real only.
-        state_q = self.convert_q_to_actuated_joint_order(state["q"])
-        obs, reward, terminated, truncated, info = self.env.unwrapped.step_only_kinematics(
-            {"q": state_q}
-        )
         self.cache["obs"] = obs
         self.cache["reward"] = reward
         self.cache["terminated"] = terminated
@@ -504,11 +353,6 @@ class SyncEnv(gym.Env):
 
         return obs_space
 
-    def reset_obj_pos(self):
-        # For Tairan's goal-reaching task, a hacky way to reset the object position is needed.
-        if hasattr(self.base_env, "reset_obj_pos"):
-            self.base_env.reset_obj_pos()
-
     @property
     def action_space(self) -> gym.Space:
         return self.env.action_space
@@ -522,69 +366,6 @@ class SyncEnv(gym.Env):
             f"            observation_space={self.observation_space}, \n"
             f"            action_space={self.action_space})"
         )
-
-    def get_joint_gains(self):
-        controller = self.base_env.robots[0].composite_controller
-
-        gains = {}
-        key_mapping = {
-            "left": "left_arm",
-            "right": "right_arm",
-            "legs": "legs",
-            "torso": "waist",
-            "head": "neck",
-        }
-        for k in controller.part_controllers.keys():
-            if hasattr(controller.part_controllers[k], "kp"):
-                if k in key_mapping:
-                    gains[key_mapping[k]] = controller.part_controllers[k].kp
-                else:
-                    gains[k] = controller.part_controllers[k].kp
-        gains.update(
-            {
-                "left_hand": self.base_env.sim.model.actuator_gainprm[
-                    self.base_env.robots[0]._ref_actuators_indexes_dict["left_gripper"], 0
-                ],
-                "right_hand": self.base_env.sim.model.actuator_gainprm[
-                    self.base_env.robots[0]._ref_actuators_indexes_dict["right_gripper"], 0
-                ],
-            }
-        )
-        joint_gains = np.zeros(self.robot_model.num_dofs)
-        for k in gains.keys():
-            joint_gains[self.robot_model.get_joint_group_indices(k)] = gains[k]
-        return joint_gains
-
-    def get_joint_damping(self):
-        controller = self.base_env.robots[0].composite_controller
-        damping = {}
-        key_mapping = {
-            "left": "left_arm",
-            "right": "right_arm",
-            "legs": "legs",
-            "torso": "waist",
-            "head": "neck",
-        }
-        for k in controller.part_controllers.keys():
-            if hasattr(controller.part_controllers[k], "kd"):
-                if k in key_mapping:
-                    damping[key_mapping[k]] = controller.part_controllers[k].kd
-                else:
-                    damping[k] = controller.part_controllers[k].kd
-        damping.update(
-            {
-                "left_hand": -self.base_env.sim.model.actuator_biasprm[
-                    self.base_env.robots[0]._ref_actuators_indexes_dict["left_gripper"], 2
-                ],
-                "right_hand": -self.base_env.sim.model.actuator_biasprm[
-                    self.base_env.robots[0]._ref_actuators_indexes_dict["right_gripper"], 2
-                ],
-            }
-        )
-        joint_damping = np.zeros(self.robot_model.num_dofs)
-        for k in damping.keys():
-            joint_damping[self.robot_model.get_joint_group_indices(k)] = damping[k]
-        return joint_damping
 
     def get_eef_obs(self, q: np.ndarray) -> Dict[str, np.ndarray]:
         self.robot_model.cache_forward_kinematics(q)

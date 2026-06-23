@@ -39,8 +39,6 @@ def get_env(config, **kwargs):
             "renderer": config.renderer,
             "controller_configs": controller_configs,
             "enable_waist": config.enable_waist,
-            "enable_gravity_compensation": config.enable_gravity_compensation,
-            "gravity_compensation_joints": config.gravity_compensation_joints,
         }
     )
     if robot_type != "g1":
