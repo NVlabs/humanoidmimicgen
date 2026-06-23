@@ -138,16 +138,8 @@ class Groot2ObsActionConverter:
         }
         self.groot_to_robocasa_actuator_indices = self._get_actuator_mapping()
 
-        if self.robot_key == "GR1_Fourier":
-            self.joint_multiplier = (
-                lambda x: np.array([-1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1]) * x
-            )
-            self.actuator_multiplier = (
-                lambda x: np.array([-1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1]) * x
-            )
-        else:
-            self.joint_multiplier = lambda x: x
-            self.actuator_multiplier = lambda x: x
+        self.joint_multiplier = lambda x: x
+        self.actuator_multiplier = lambda x: x
 
         # Store DOF counts directly
         self.body_dof = len(self.groot_joint_info.body_actuated_joint_names)

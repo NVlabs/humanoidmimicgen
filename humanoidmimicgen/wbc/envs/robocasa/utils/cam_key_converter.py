@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Dict, Optional, Tuple
 
-from humanoidmimicgen.wbc.data.constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
+from humanoidmimicgen.wbc_constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
 
 
 @dataclass
@@ -19,10 +19,7 @@ class CameraKeyMapper:
 
         # Camera key mapping with custom dimensions
         self.camera_configs: Dict[str, CameraConfig] = {
-            # GR1
-            "egoview": CameraConfig(self.default_width, self.default_height, "ego_view"),
             "frontview": CameraConfig(self.default_width, self.default_height, "front_view"),
-            # G1
             "robot0_rs_egoview": CameraConfig(self.default_width, self.default_height, "ego_view"),
             "robot0_rs_tppview": CameraConfig(self.default_width, self.default_height, "tpp_view"),
             "robot0_oak_egoview": CameraConfig(self.default_width, self.default_height, "ego_view"),
@@ -54,26 +51,3 @@ class CameraKeyMapper:
         if config is None:
             return None
         return config.mapped_key, config.width, config.height
-
-    def add_camera_config(
-        self, key: str, mapped_key: str, width: int = 256, height: int = 256
-    ) -> None:
-        """
-        Add a new camera configuration or update an existing one.
-
-        Args:
-            key: The camera key to add/update
-            mapped_key: The actual camera key to map to
-            width: Camera width in pixels
-            height: Camera height in pixels
-        """
-        self.camera_configs[key.lower()] = CameraConfig(width, height, mapped_key)
-
-    def get_all_camera_keys(self) -> list:
-        """
-        Get all available camera keys.
-
-        Returns:
-            List of all camera keys
-        """
-        return list(self.camera_configs.keys())

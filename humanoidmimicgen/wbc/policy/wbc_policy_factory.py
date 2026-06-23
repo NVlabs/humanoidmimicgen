@@ -10,7 +10,12 @@ from humanoidmimicgen.wbc.policy.interpolation_policy import InterpolationPolicy
 
 from .g1_decoupled_whole_body_policy import G1DecoupledWholeBodyPolicy
 
-WBC_VERSIONS = ["v1", "v2", "homie", "homie_v2", "homie_v2_grav_comp", "homie_v2_grav_comp_tuned", "homie_v2_grav_comp_tuned_legs", "locomotion_z", "local_tracking"]
+WBC_VERSIONS = [
+    "homie_v2",
+    "homie_v2_grav_comp",
+    "homie_v2_grav_comp_tuned",
+    "homie_v2_grav_comp_tuned_legs",
+]
 
 
 def get_wbc_policy(

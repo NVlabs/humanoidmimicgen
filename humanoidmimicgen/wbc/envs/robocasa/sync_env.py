@@ -1,21 +1,44 @@
-import sys
 from typing import Any, Dict, Tuple
 
 import gymnasium as gym
-from gymnasium.envs.registration import register
 import numpy as np
-from robocasa.models.robots import GROOT2_ENVS_ROBOTS
-from robosuite.environments.base import REGISTERED_ENVS
 from scipy.spatial.transform import Rotation as R
 
-from humanoidmimicgen.wbc.envs.robocasa.utils.controller_utils import update_robosuite_controller_configs
 from humanoidmimicgen.wbc.envs.robocasa.utils.robocasa_env import Groot2RoboCasaEnv  # noqa: F401
-from humanoidmimicgen.wbc.policy.wbc_policy_factory import WBC_VERSIONS
 from humanoidmimicgen.wbc.robot_model.instantiation import get_robot_type_and_model
-from humanoidmimicgen.wbc.teleop.util import prepare_gym_space_for_eval, prepare_observation_for_eval
-from humanoidmimicgen.wbc.data.constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
+from humanoidmimicgen.wbc_constants import RS_VIEW_CAMERA_HEIGHT, RS_VIEW_CAMERA_WIDTH
 from robosuite.environments.robot_env import RobotEnv
 from humanoidmimicgen.wbc.envs.robocasa.utils.randomization import randomize_appearances
+
+
+def add_eval_observation_keys(robot_model, obs: dict) -> dict:
+    whole_q = obs["q"]
+    obs["state.left_arm"] = whole_q[..., robot_model.get_joint_group_indices("left_arm")]
+    obs["state.right_arm"] = whole_q[..., robot_model.get_joint_group_indices("right_arm")]
+    obs["state.waist"] = whole_q[..., robot_model.get_joint_group_indices("waist")]
+    obs["state.left_leg"] = whole_q[..., robot_model.get_joint_group_indices("left_leg")]
+    obs["state.right_leg"] = whole_q[..., robot_model.get_joint_group_indices("right_leg")]
+    obs["state.left_hand"] = whole_q[..., robot_model.get_joint_group_indices("left_hand")]
+    obs["state.right_hand"] = whole_q[..., robot_model.get_joint_group_indices("right_hand")]
+    return obs
+
+
+def add_eval_space_keys(robot_model, obs_space: gym.spaces.Dict) -> gym.spaces.Dict:
+    for name in (
+        "left_arm",
+        "right_arm",
+        "waist",
+        "left_leg",
+        "right_leg",
+        "left_hand",
+        "right_hand",
+    ):
+        obs_space[f"state.{name}"] = gym.spaces.Box(
+            low=-np.inf,
+            high=np.inf,
+            shape=(len(robot_model.get_joint_group_indices(name)),),
+        )
+    return obs_space
 
 
 
@@ -357,7 +380,7 @@ class SyncEnv(gym.Env):
         }
 
         # Add state keys for model input
-        obs = prepare_observation_for_eval(self.robot_model, obs)
+        obs = add_eval_observation_keys(self.robot_model, obs)
 
         if hasattr(self.base_env, "get_privileged_obs_keys"):
             for key in self.base_env.get_privileged_obs_keys():
@@ -461,7 +484,7 @@ class SyncEnv(gym.Env):
             }
         )
 
-        obs_space = prepare_gym_space_for_eval(self.robot_model, obs_space)
+        obs_space = add_eval_space_keys(self.robot_model, obs_space)
 
         if hasattr(self.base_env, "get_privileged_obs_keys"):
             for key, shape in self.base_env.get_privileged_obs_keys().items():
@@ -646,96 +669,3 @@ class G1SyncEnv(SyncEnv):
         obs["torso_quat"] = self.cache["obs"]["secondary_imu_quat"]
         obs["torso_ang_vel"] = self.cache["obs"]["secondary_imu_vel"][3:6]
         return obs
-
-
-class GR1SyncEnv(SyncEnv):
-    def __init__(
-        self,
-        env_name,
-        **kwargs,
-    ):
-        env_kwargs = {
-            "onscreen": kwargs.get("onscreen", True),
-            "offscreen": kwargs.get("offscreen", False),
-            "renderer": kwargs.get("renderer", "mjviewer"),
-            "render_camera": kwargs.get("render_camera", "egoview"),
-            "camera_names": kwargs.get("camera_names", ["egoview"]),
-            "camera_heights": kwargs.get("camera_heights", [RS_VIEW_CAMERA_HEIGHT]),
-            "camera_widths": kwargs.get("camera_widths", [RS_VIEW_CAMERA_WIDTH]),
-            "control_freq": kwargs.get("control_freq", 50),
-            "controller_configs": kwargs[
-                "controller_configs"
-            ],  # must be provided by calling get_env()
-            "translucent_robot": kwargs.get("translucent_robot", True),
-            "ik_indicator": kwargs.get("ik_indicator", False),
-        }
-        super().__init__(env_name=env_name, **env_kwargs)
-
-
-def create_gym_sync_env_class(env, robot, robot_alias, wbc_version):
-    class_name = f"{env}_{robot}_{wbc_version}"
-    id_name = f"groot2_{robot_alias}/{class_name}"
-
-    if robot_alias.startswith("g1"):
-        env_class_type = G1SyncEnv
-    elif robot_alias.startswith("gr1"):
-        env_class_type = GR1SyncEnv
-    else:
-        env_class_type = SyncEnv
-
-    controller_configs = update_robosuite_controller_configs(
-        robot=robot,
-        wbc_version=wbc_version,
-    )
-
-    env_class_type = type(
-        class_name,
-        (env_class_type,),
-        {
-            "__init__": lambda self, **kwargs: super(self.__class__, self).__init__(
-                env_name=id_name,
-                controller_configs=controller_configs,
-                **kwargs,
-            )
-        },
-    )
-
-    current_module = sys.modules["humanoidmimicgen.wbc.envs.robocasa.sync_env"]
-    setattr(current_module, class_name, env_class_type)
-    register(
-        id=id_name,  # Unique ID for the environment
-        entry_point=f"humanoidmimicgen.wbc.envs.robocasa.sync_env:{class_name}",
-    )
-
-    if robot_alias.startswith("gr1"):
-        id_name = f"groot2_gr1/{class_name}"
-        register(
-            id=id_name,  # Unique ID for the environment
-            entry_point=f"humanoidmimicgen.wbc.envs.robocasa.sync_env:{class_name}",
-        )
-
-
-for ENV in REGISTERED_ENVS:
-    for ROBOT, ROBOT_ALIAS in GROOT2_ENVS_ROBOTS.items():
-        for WBC_VERSION in WBC_VERSIONS:
-            create_gym_sync_env_class(ENV, ROBOT, ROBOT_ALIAS, WBC_VERSION)
-
-
-if __name__ == "__main__":
-
-    env = SyncEnv(
-        env_name="groot2_g1/PnPBottle_G1_homie",
-        camera_names=["egoview"],
-        camera_heights=[600],
-        camera_widths=[600],
-        render_camera="egoview",
-        onscreen=False,
-        offscreen=True,
-        # env_name="groot2_gr1_unified/PosttrainPnPNovelFromPlacematToPlateSplitA_GR1ArmsAndWaistFourierHands_Env",
-        # camera_names=["egoview"],
-        # camera_heights=[600],
-        # camera_widths=[600],
-        # render_camera="egoview",
-        # onscreen=False,
-        # offscreen=True,
-    )

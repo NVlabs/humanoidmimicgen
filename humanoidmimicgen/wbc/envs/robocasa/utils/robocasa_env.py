@@ -18,7 +18,7 @@ try:
     import robosuite.macros_private as macros
 except ImportError:
     import robosuite.macros as macros
-macros.SIMULATION_TIMESTEP = float(os.environ.get("HMG_SIMULATION_TIMESTEP", "0.0025"))
+macros.SIMULATION_TIMESTEP = 0.005  # 200hz
 
 
 def create_env_robosuite(
@@ -155,10 +155,6 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
             if "G1" in robots_name:
                 controller_configs = (
                     "robocasa/examples/third_party_controller/default_mink_ik_g1_wbc.json"
-                )
-            elif "GR1" in robots_name:
-                controller_configs = (
-                    "robocasa/examples/third_party_controller/default_mink_ik_gr1_smallkd.json"
                 )
             else:
                 assert False, f"Unsupported robot name: {robots_name}"

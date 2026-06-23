@@ -218,18 +218,8 @@ class SyncSimPlaybackConfig:
 
     def load_wbc_yaml(self) -> dict:
         config_root = Path(__file__).resolve().parent / "configs" / "wbc"
-        if self.wbc_version == "v1":
-            config_path = config_root / "g1_43dof_hist.yaml"
-        elif self.wbc_version == "v2":
-            config_path = config_root / "g1_29dof_waist_stand_height_history_fixed3dex.yaml"
-        elif self.wbc_version == "homie":
-            config_path = config_root / "g1_29dof_homie.yaml"
-        elif self.wbc_version == "homie_v2" or self.wbc_version.startswith("homie_v2_"):
+        if self.wbc_version == "homie_v2" or self.wbc_version.startswith("homie_v2_"):
             config_path = config_root / "g1_29dof_homie_v2.yaml"
-        elif self.wbc_version == "locomotion_z":
-            config_path = config_root / "g1_29dof_locomotion_z.yaml"
-        elif self.wbc_version == "local_tracking":
-            config_path = config_root / "g1_29dof_local_tracking.yaml"
         else:
             raise ValueError(f"Invalid wbc_version: {self.wbc_version}")
 
