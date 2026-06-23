@@ -50,7 +50,7 @@ def get_env(config, **kwargs):
 
 
 def get_policies(config, robot_type: str, robot_model, activate_keyboard_listener: bool = True):
-    from humanoidmimicgen.wbc.policy.wbc_policy_factory import get_wbc_policy
+    from humanoidmimicgen.wbc.policy import get_wbc_policy
 
     wbc_config = config.load_wbc_yaml()
     wbc_policy = get_wbc_policy(robot_type, robot_model, wbc_config, init_time=0.0)
