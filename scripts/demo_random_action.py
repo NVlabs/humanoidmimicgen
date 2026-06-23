@@ -171,17 +171,19 @@ def make_wbc_goal(
 ):
     target = reset_upper_body_pose.copy()
     target_joint_ids = set(robot_model.get_joint_group_indices(joint_group))
-    matched_joints = 0
-    for target_index, joint_id in enumerate(robot_model.get_joint_group_indices("upper_body")):
-        if joint_id not in target_joint_ids:
-            continue
-        matched_joints += 1
-        if arm_mode == "random":
-            target[target_index] += rng.uniform(-scale, scale)
-        elif arm_mode == "zero":
-            target[target_index] = 0.0
-    if matched_joints == 0:
+    target_indices = [
+        target_index
+        for target_index, joint_id in enumerate(
+            robot_model.get_joint_group_indices("upper_body")
+        )
+        if joint_id in target_joint_ids
+    ]
+    if len(target_indices) == 0:
         raise ValueError(f"{joint_group!r} has no joints in the WBC upper-body goal")
+    if arm_mode == "random":
+        target[target_indices] += rng.uniform(-scale, scale, size=len(target_indices))
+    elif arm_mode == "zero":
+        target[target_indices] = 0.0
     target_time = time.monotonic()
     return {
         "target_time": target_time,
