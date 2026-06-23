@@ -207,8 +207,7 @@ def get_task_success(sync_env) -> bool:
 
 
 def get_video_fps(config: SyncSimPlaybackConfig) -> float:
-    # Match GR00T add-skillgen playback: videos are encoded at the dataset
-    # collection frequency, which is 20 Hz for the released G1 demos.
+    # Encode videos at the dataset collection frequency used by the G1 demos.
     return float(config.data_collection_frequency)
 
 

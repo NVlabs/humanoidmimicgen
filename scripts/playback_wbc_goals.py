@@ -116,8 +116,8 @@ def main() -> int:
         )
     except ImportError as exc:
         raise ImportError(
-            "WBC-goal playback requires HumanoidMimicGen and the WBC controller runtime "
-            "on PYTHONPATH. Install this repo plus the controller runtime checkout."
+            "WBC-goal playback requires HumanoidMimicGen with the wbc-replay extra. "
+            'Install with: python -m pip install -e ".[wbc-replay]"'
         ) from exc
 
     config = SyncSimPlaybackConfig()

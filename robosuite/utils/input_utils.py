@@ -7,7 +7,6 @@ import numpy as np
 import robosuite as suite
 import robosuite.utils.transform_utils as T
 
-# from robosuite.devices import *
 from robosuite.models.robots import *
 from robosuite.robots import *
 

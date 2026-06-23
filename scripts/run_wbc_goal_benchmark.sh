@@ -2,7 +2,6 @@
 set -euo pipefail
 
 REPO=${REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}
-DATA_ROOT=${DATA_ROOT:-/home/linke/Projects/gr00t/groot/dexmg/collected_demo}
 OUT=${OUT:-/tmp/hmg_wbc_goal_benchmark}
 ENV_NAME=${ENV_NAME:-humanoidmimicgen-wbc}
 EPISODES=${EPISODES:-1}
@@ -12,6 +11,11 @@ SIM_FREQUENCY=${SIM_FREQUENCY:-400}
 
 export MUJOCO_GL=${MUJOCO_GL:-egl}
 export PYTHONUNBUFFERED=${PYTHONUNBUFFERED:-1}
+
+if [[ -z "${DATA_ROOT:-}" ]]; then
+  echo "Set DATA_ROOT to the local directory containing the retained LeRobot datasets." >&2
+  exit 2
+fi
 
 mkdir -p "$OUT"
 rm -f "$OUT/DONE" "$OUT"/summary.txt "$OUT"/grid_inputs.txt
@@ -52,7 +56,7 @@ run_one() {
     episode_args=(--num-episodes "$EPISODES")
   fi
 
-  mamba run -n "$ENV_NAME" env PYTHONPATH="$REPO" python "$SCRIPT" \
+  mamba run -n "$ENV_NAME" python "$SCRIPT" \
     "$dataset" \
     "${episode_args[@]}" \
     --video-path "$video" \
