@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-"""Run random WBC-goal actions in a HumanoidMimicGen WBC RoboCasa env."""
+"""Run random actions in a HumanoidMimicGen WBC RoboCasa env."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ from humanoidmimicgen.wbc.main.constants import DEFAULT_BASE_HEIGHT
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run random upper-body WBC goals with explicit base navigation velocities."
+        description="Run random upper-body actions with explicit base navigation velocities."
     )
     parser.add_argument(
         "--task",
@@ -101,7 +101,7 @@ def parse_args() -> argparse.Namespace:
         "--action-repeat",
         type=int,
         default=5,
-        help="Hold each sampled WBC goal for this many env steps.",
+        help="Hold each sampled action for this many env steps.",
     )
     parser.add_argument(
         "--base-height",
@@ -158,7 +158,7 @@ def write_video_frame(env, writer, args: argparse.Namespace) -> None:
     writer.write(cv2.cvtColor(np.flipud(frame), cv2.COLOR_RGB2BGR))
 
 
-def make_wbc_goal(
+def make_action(
     reset_upper_body_pose: np.ndarray,
     robot_model,
     joint_group: str,
@@ -179,7 +179,7 @@ def make_wbc_goal(
         if joint_id in target_joint_ids
     ]
     if len(target_indices) == 0:
-        raise ValueError(f"{joint_group!r} has no joints in the WBC upper-body goal")
+        raise ValueError(f"{joint_group!r} has no joints in the upper-body action")
     if arm_mode == "random":
         target[target_indices] += rng.uniform(-scale, scale, size=len(target_indices))
     elif arm_mode == "zero":
@@ -198,7 +198,10 @@ def main() -> int:
     args = parse_args()
     os.environ.setdefault("MUJOCO_GL", args.mujoco_gl)
 
-    from humanoidmimicgen.wbc_goal_playback import SyncSimPlaybackConfig, WBCGoalEnv
+    from humanoidmimicgen.wbc_goal_playback import (
+        SyncSimPlaybackConfig,
+        WBCGoalEnv as ActionEnv,
+    )
     from humanoidmimicgen.wbc_runtime import get_env, get_policies, get_robot_type_and_model
 
     rng = np.random.default_rng(args.seed)
@@ -239,7 +242,7 @@ def main() -> int:
     print("Navigation command [vx, vy, vyaw]:", navigate_cmd)
     print("Arm mode:", args.arm_mode)
     print("Base height command:", args.base_height)
-    env = WBCGoalEnv(sync_env, wbc_policy, default_base_height=args.base_height)
+    env = ActionEnv(sync_env, wbc_policy, default_base_height=args.base_height)
 
     writer = None
     start_base_xyz = None
@@ -266,7 +269,7 @@ def main() -> int:
         for step in range(args.steps):
             start = time.time()
             if step % args.action_repeat == 0:
-                action = make_wbc_goal(
+                action = make_action(
                     reset_upper_body_pose,
                     robot_model,
                     args.joint_group,
