@@ -119,10 +119,17 @@ Run the retained 9-task benchmark if the local LeRobot datasets are available:
 ```bash
 DATA_ROOT=/path/to/collected_demo \
 OUT=/tmp/hmg_wbc_goal_benchmark \
-EPISODES=all \
 MAKE_GRID=1 \
 scripts/run_wbc_goal_benchmark.sh
 ```
+
+This is the full 17-episode playback regression and should be run before
+merging packaging, asset, replay, or repository-structure changes. Compare the
+`TOTAL` row in `success_summary.tsv` with the last accepted `main` result to
+catch task-predicate success degradation. A lower total should block the merge
+until the affected per-task logs are inspected or rerun, because the predicates
+are drift-sensitive near the end of some episodes. Set `EPISODES=1` only for a
+faster one-demo-per-task smoke.
 
 ## Requirements
 

@@ -83,17 +83,22 @@ when the retained LeRobot datasets are available locally:
 ```bash
 DATA_ROOT=/path/to/collected_demo \
 OUT=/tmp/hmg_wbc_goal_benchmark \
-EPISODES=all \
 MAKE_GRID=1 \
 scripts/run_wbc_goal_benchmark.sh
 ```
 
-The wrapper replays the retained 9-task benchmark set, writes per-task raw and
-low-resolution MP4s, records `.log`, `.rc`, and `.ffprobe` files, writes
-`summary.txt`, and optionally creates a grid preview MP4.
+The wrapper defaults to the full 17-episode regression across the retained
+9-task benchmark set. It writes per-task raw and low-resolution MP4s, records
+`.log`, `.rc`, and `.ffprobe` files, writes `summary.txt` and
+`success_summary.tsv`, and optionally creates a grid preview MP4.
 
-`EPISODES=1` replays only `demo_1` for each task. `EPISODES=all` replays every
-episode present in each retained dataset.
+Check the `TOTAL` row in `success_summary.tsv` against the last accepted
+`main` run before merging packaging, asset, replay, or repository-structure
+changes. `EPISODES=1` replays only `demo_1` for each task when a faster smoke is
+enough. A lower total should block the merge until the affected per-task logs
+are inspected or rerun, because the task predicates are drift-sensitive near
+the end of some episodes. `EPISODES=all` replays every episode present in each
+retained dataset and is the default.
 
 ## Interpreting Success
 
