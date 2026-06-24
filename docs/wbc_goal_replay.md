@@ -62,7 +62,7 @@ invokes `ffmpeg` to write a downscaled MP4.
 ## Random-Action Smoke
 
 Use [scripts/demo_random_action.py](../scripts/demo_random_action.py) to build a
-WBC RoboCasa environment and run random upper-body actions:
+WBC loco-manipulation environment and run random upper-body actions:
 
 ```bash
 python scripts/demo_random_action.py \
@@ -105,7 +105,7 @@ retained dataset and is the default.
 The replay driver reports two notions of success:
 
 - Process success: the dataset process exits `rc=0` and writes the MP4 outputs.
-- Task-predicate success: the RoboCasa task success predicate becomes true
+- Task-predicate success: the environment task success predicate becomes true
   during replay, and whether it is true on the final frame.
 
 Task predicates can be sensitive to small replay drift. Use process success and

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "humanoidmimicgen"
 version = "0.1.0"
-description = "Humanoid loco-manipulation environments built on RoboCasa."
+description = "Humanoid loco-manipulation environments and WBC replay utilities."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
@@ -45,12 +45,12 @@ visualization = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["robocasa*", "humanoidmimicgen*"]
+include = ["humanoidmimicgen*"]
 
 [tool.setuptools.package-data]
-"robocasa" = ["examples/third_party_controller/*.json"]
-"robocasa.models" = ["assets/**/*"]
 "humanoidmimicgen" = ["configs/wbc/*.yaml"]
+"humanoidmimicgen.locomanipulation" = ["examples/third_party_controller/*.json"]
+"humanoidmimicgen.locomanipulation.models" = ["assets/**/*"]
 "humanoidmimicgen.wbc" = [
     "**/*.json",
     "**/*.md",

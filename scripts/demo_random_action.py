@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-"""Run random actions in a HumanoidMimicGen WBC RoboCasa env."""
+"""Run random actions in a HumanoidMimicGen WBC loco-manipulation env."""
 
 from __future__ import annotations
 

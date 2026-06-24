@@ -1,18 +1,18 @@
 # Retained Environments
 
 HumanoidMimicGen retains the humanoid loco-manipulation environments needed by
-the public simulation and WBC replay paths. Importing `robocasa` registers these
-tasks with RoboSuite.
+the public simulation and WBC replay paths. Importing
+`humanoidmimicgen.locomanipulation` registers these tasks with RoboSuite.
 
 The source modules live in
-[robocasa/environments/locomanipulation](../robocasa/environments/locomanipulation)
-because they build on RoboCasa scene and object helpers while registering as
-RoboSuite environments.
+[humanoidmimicgen/locomanipulation/envs](../humanoidmimicgen/locomanipulation/envs).
+The environment base subclasses RoboSuite's manipulation environment and uses
+local scene, object, and success-criteria helpers retained for these tasks.
 
 ## Environment Names
 
 The retained environment names are defined in
-[`robocasa/environments/locomanipulation/base.py`](../robocasa/environments/locomanipulation/base.py):
+[`humanoidmimicgen/locomanipulation/envs/base.py`](../humanoidmimicgen/locomanipulation/envs/base.py):
 
 - `LMDrillLift`
 - `LMDrillLiftBi`

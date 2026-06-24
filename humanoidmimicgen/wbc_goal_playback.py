@@ -199,7 +199,7 @@ def write_video_frame(env, video_writer) -> None:
 
 
 def get_task_success(sync_env) -> bool:
-    """Return the robocasa-style task success bit for the current replay state."""
+    """Return the task success bit for the current replay state."""
     success = sync_env.is_success()
     if isinstance(success, dict):
         return bool(success.get("task", False))
