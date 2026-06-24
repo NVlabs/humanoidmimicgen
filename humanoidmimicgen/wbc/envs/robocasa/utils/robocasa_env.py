@@ -76,6 +76,9 @@ def create_env_robosuite(
 
 class RoboCasaEnv:
     def reset(self, seed=None, options=None):
+        if seed is not None and hasattr(self.env, "rng"):
+            self.env.seed = seed
+            self.env.rng = np.random.default_rng(seed)
         raw_obs = self.env.reset()
         return self.get_basic_observation(raw_obs), {}
 

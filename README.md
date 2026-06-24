@@ -46,9 +46,9 @@ the retained humanoid loco-manipulation tasks.
 The retained humanoid tasks depend on local RoboCasa changes for G1 robot
 registration, controller configs, MJCF assets, object placement, and
 task-success predicates. Public `robosuite==1.5.1` provides the core MuJoCo
-runtime, while `robocasa.utils.robosuite_compat` installs the small controller,
-base, sensor, and timestep compatibility patches needed by the retained replay
-configs.
+runtime, while `robocasa.utils.robosuite_compat` installs only the WBC/JPos,
+NullBase, and sensor cleanup compatibility patches exercised by the retained G1
+replay configs.
 
 Only the source surface needed by the retained loco-manipulation and WBC replay
 paths is intended to remain here.

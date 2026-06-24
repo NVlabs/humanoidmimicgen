@@ -19,6 +19,15 @@ class MJCFObject(MujocoXMLObject):
     Blender object with support for changing the scaling
     """
 
+    @staticmethod
+    def _iter_elements(root, element_type, _parent=None):
+        elem_pairs = []
+        if _parent is not None and root.tag == element_type:
+            elem_pairs.append((_parent, root))
+        for child in root:
+            elem_pairs += MJCFObject._iter_elements(child, element_type, _parent=root)
+        return elem_pairs
+
     def __init__(
         self,
         name,
@@ -77,6 +86,7 @@ class MJCFObject(MujocoXMLObject):
             duplicate_collision_geoms=False,
             scale=scale,
         )
+        self._get_geoms(self.worldbody)
 
         self.spawns = []
         self._disabled_spawns = set()
@@ -136,7 +146,10 @@ class MJCFObject(MujocoXMLObject):
         Returns:
             list: array of (parent, child) tuples where the child element is a geom type
         """
-        geom_pairs = super(MJCFObject, self)._get_geoms(root=root, _parent=_parent)
+        if hasattr(super(MJCFObject, self), "_get_geoms"):
+            geom_pairs = super(MJCFObject, self)._get_geoms(root=root, _parent=_parent)
+        else:
+            geom_pairs = self._iter_elements(root, "geom", _parent=_parent)
 
         # modify geoms according to the attributes
         for i, (parent, element) in enumerate(geom_pairs):
