@@ -139,7 +139,7 @@ class Groot2LocoManipEnv(LocoManipEnv):
             if "G1" in robots_name:
                 controller_configs = update_robosuite_controller_configs(
                     robot=robots_name,
-                    wbc_version="homie_v2",
+                    wbc_version="homie_v2_grav_comp_tuned",
                 )
             else:
                 assert False, f"Unsupported robot name: {robots_name}"

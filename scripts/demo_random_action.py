@@ -40,12 +40,7 @@ def parse_args() -> argparse.Namespace:
         "--wbc-version",
         "--wbc_version",
         dest="wbc_version",
-        choices=(
-            "homie_v2",
-            "homie_v2_grav_comp",
-            "homie_v2_grav_comp_tuned",
-            "homie_v2_grav_comp_tuned_legs",
-        ),
+        choices=("homie_v2_grav_comp_tuned",),
         help="Optional WBC/controller preset override. Defaults to SyncSimPlaybackConfig.",
     )
     parser.add_argument(

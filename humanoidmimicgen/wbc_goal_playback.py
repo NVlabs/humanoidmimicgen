@@ -37,7 +37,7 @@ class SyncSimPlaybackConfig:
     local runtime facade and the WBC policy factory.
     """
 
-    wbc_version: str = "homie_v2"
+    wbc_version: str = "homie_v2_grav_comp_tuned"
     wbc_model_path: str = "policy/stand.onnx,policy/walk.onnx"
     wbc_policy_class: str = "G1DecoupledWholeBodyPolicy"
     control_frequency: int = 50
@@ -96,7 +96,7 @@ class SyncSimPlaybackConfig:
 
     def load_wbc_yaml(self) -> dict:
         config_root = Path(__file__).resolve().parent / "configs" / "wbc"
-        if self.wbc_version == "homie_v2" or self.wbc_version.startswith("homie_v2_"):
+        if self.wbc_version == "homie_v2_grav_comp_tuned":
             config_path = config_root / "g1_29dof_homie_v2.yaml"
         else:
             raise ValueError(f"Invalid wbc_version: {self.wbc_version}")

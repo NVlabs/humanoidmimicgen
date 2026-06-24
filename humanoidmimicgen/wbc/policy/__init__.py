@@ -8,12 +8,7 @@ from pinocchio import rpy
 from humanoidmimicgen.wbc.base.policy import Policy
 from humanoidmimicgen.wbc_constants import DEFAULT_BASE_HEIGHT
 
-WBC_VERSIONS = [
-    "homie_v2",
-    "homie_v2_grav_comp",
-    "homie_v2_grav_comp_tuned",
-    "homie_v2_grav_comp_tuned_legs",
-]
+SUPPORTED_WBC_VERSION = "homie_v2_grav_comp_tuned"
 
 
 class IdentityPolicy(Policy):
@@ -116,7 +111,7 @@ def get_wbc_policy(
         raise ValueError(f"Unsupported robot type for local replay: {robot_type}")
 
     lower_body_policy_type = wbc_config.get("VERSION", "default")
-    if lower_body_policy_type not in WBC_VERSIONS:
+    if lower_body_policy_type != SUPPORTED_WBC_VERSION:
         raise ValueError(f"Unsupported WBC version for local replay: {lower_body_policy_type}")
 
     upper_body_policy = IdentityPolicy(
