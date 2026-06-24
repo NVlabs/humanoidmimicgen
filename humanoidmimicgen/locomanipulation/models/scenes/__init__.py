@@ -4,6 +4,5 @@
 
 from .factory_arena import FactoryArena
 from .ground_arena import GroundArena
-from .lab_arena import LabArena, LabArenaPlane
 
-__all__ = ["FactoryArena", "GroundArena", "LabArena", "LabArenaPlane"]
+__all__ = ["FactoryArena", "GroundArena"]

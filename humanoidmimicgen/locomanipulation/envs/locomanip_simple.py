@@ -15,7 +15,6 @@
 
 import numpy as np
 
-from humanoidmimicgen.locomanipulation.envs.base import RobotPoseRandomizer
 from humanoidmimicgen.locomanipulation.envs.locomanip import LMFactoryEnv
 from humanoidmimicgen.locomanipulation.utils.dexmg_utils import DexMGConfigHelper
 from humanoidmimicgen.locomanipulation.utils.scene.configs import (
@@ -27,34 +26,8 @@ from humanoidmimicgen.locomanipulation.utils.scene.configs import (
 from humanoidmimicgen.locomanipulation.utils.scene.scene import SceneObject
 from humanoidmimicgen.locomanipulation.utils.scene.success_criteria import (
     IsJointQposInRange,
-    IsRobotInRange,
     SuccessCriteria,
 )
-
-
-class LMWalkToTarget(LMFactoryEnv):
-    SCENE_SCALE = SceneScaleConfig(planar_scale=(2, 0))
-
-    def _get_objects(self) -> list[SceneObject]:
-        self.target = SceneObject(
-            ObjectConfig(
-                name="target",
-                mjcf_path="objects/omniverse/locomanip/target_zone/model.xml",
-                static=True,
-                sampler_config=SamplingConfig(
-                    x_range=np.array([-0.5, 0.5]),
-                    y_range=np.array([-0.5, 0.5]),
-                    reference_pos=np.array([1, 1, 0]),
-                ),
-            )
-        )
-        return [self.target]
-
-    def _get_success_criteria(self) -> SuccessCriteria:
-        return IsRobotInRange(self.target, 0.5, True)
-
-    def _get_instruction(self) -> str:
-        return "Move to the marked area."
 
 
 class LMPushButton(LMFactoryEnv, DexMGConfigHelper):
@@ -102,8 +75,7 @@ class LMPushButton(LMFactoryEnv, DexMGConfigHelper):
         )
 
     def get_subtask_term_signals(self):
-        signals = dict()
-        return signals
+        return dict()
 
     @staticmethod
     def task_config():
@@ -131,84 +103,3 @@ class LMPushButton(LMFactoryEnv, DexMGConfigHelper):
             apply_noise_during_interpolation=False,
         )
         return task.to_dict()
-
-
-class LMPushButtonStatic(LMPushButton):
-    def _get_objects(self) -> list[SceneObject]:
-        self.control_box = SceneObject(
-            ObjectConfig(
-                name="control_box",
-                mjcf_path="objects/omniverse/locomanip/control_box/model.xml",
-                static=True,
-                sampler_config=SamplingConfig(
-                    x_range=np.array([-1.2, -1.2]),
-                    y_range=np.array([-1, -1]),
-                    reference_pos=np.array([1, 1, 0]),
-                    rotation=np.array([np.pi / 2, np.pi / 2]),
-                ),
-            )
-        )
-        self.control_panel = SceneObject(
-            ObjectConfig(
-                name="control_panel",
-                mjcf_path="objects/omniverse/locomanip/control_conveyorbelt_a08/model.xml",
-                static=True,
-                sampler_config=SamplingConfig(
-                    x_range=np.array([-0.3, -0.3]),
-                    y_range=np.array([-0.38, -0.38]),
-                    rotation=np.array([np.pi / 2, np.pi / 2]),
-                    z_offset=1,
-                    reference=ReferenceConfig(
-                        obj=self.control_box,
-                        on_top=False,
-                    ),
-                ),
-            )
-        )
-        return [self.control_box, self.control_panel]
-
-
-class LMPushButtonLow(LMPushButton):
-    SCENE_SCALE = SceneScaleConfig(planar_scale=(2, 1), vertical_scale=0.5)
-
-
-class LMPushButtonHigh(LMPushButton):
-    SCENE_SCALE = SceneScaleConfig(planar_scale=(2, 1), vertical_scale=1.1)
-
-
-class LMNavPushButton(LMPushButton):
-    def _get_objects(self) -> list[SceneObject]:
-        self.control_box = SceneObject(
-            ObjectConfig(
-                name="control_box",
-                mjcf_path="objects/omniverse/locomanip/control_box/model.xml",
-                static=True,
-                sampler_config=SamplingConfig(
-                    x_range=np.array([0, 0]),
-                    y_range=np.array([0, 0]),
-                    reference_pos=np.array([0.6, 0.3, 0]),
-                    rotation=np.array([np.pi / 2, np.pi / 2]),
-                ),
-            )
-        )
-        self.control_panel = SceneObject(
-            ObjectConfig(
-                name="control_panel",
-                mjcf_path="objects/omniverse/locomanip/control_conveyorbelt_a08/model.xml",
-                static=True,
-                sampler_config=SamplingConfig(
-                    x_range=np.array([-0.3, -0.3]),
-                    y_range=np.array([-0.4, -0.4]),
-                    rotation=np.array([np.pi / 2, np.pi / 2]),
-                    z_offset=1,
-                    reference=ReferenceConfig(obj=self.control_box, on_top=False),
-                ),
-            )
-        )
-        return [self.control_box, self.control_panel]
-
-    def _reset_internal(self):
-        super()._reset_internal()
-
-        if not self.deterministic_reset:
-            RobotPoseRandomizer.set_pose(self, (-0.4, -0.2), (-0.2, 0.2), (-np.pi / 6, np.pi / 6))

@@ -11,30 +11,18 @@ local scene, object, and success-criteria helpers retained for these tasks.
 
 ## Environment Names
 
-The retained environment names are defined in
+The retained paper environment names are defined in
 [`humanoidmimicgen/locomanipulation/envs/base.py`](../humanoidmimicgen/locomanipulation/envs/base.py):
 
-- `LMDrillLift`
-- `LMDrillLiftBi`
-- `LMDrillPnP90`
-- `LMDrillPnP90Bi`
-- `LMDrillLiftObstacleBi`
-- `LMDrillLiftObstacle`
-- `LMDrillPnPCloser`
-- `LMPickDrillFromHolder`
-- `LMPickDrillFromHolderHigh`
-- `LMPickDrillFromHolderStanding`
-- `LMPickDrillFromHolderStandingEasyFar`
+- `LMBoxLiftFloor`
 - `LMPushButton`
 - `LMBoxLift`
-- `LMBoxLiftStatic`
-- `LMBoxLiftFloor`
-- `LMBoxTableToCartStaticDT`
-- `LMBoxTableToShelfStaticIndustrial`
-- `LMBoxTableToShelfStaticIndustrialStartBack`
-- `LMBottleLiftLowShelf`
-- `LMTargetPnPBottleStatic`
 - `LMPushShelfForward`
+- `LMDrillLift`
+- `LMDrillPnP90`
+- `LMBoxTableToShelfStaticIndustrial`
+- `LMPickDrillFromHolderStandingEasyFar`
+- `LMDrillLiftObstacle`
 
 ## Benchmark Task Set
 

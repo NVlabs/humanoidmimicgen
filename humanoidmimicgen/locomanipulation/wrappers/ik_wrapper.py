@@ -63,7 +63,6 @@ class IKWrapper(VisualizationWrapper):
                 pass
             elif composite_controller.name in [
                 "WHOLE_BODY_MINK_IK",
-                "WHOLE_BODY_EXTERNAL_IK",
                 "HYBRID_WHOLE_BODY_MINK_IK",
             ]:
                 assert composite_controller.joint_action_policy.input_ref_frame == "base"
