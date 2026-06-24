@@ -4,6 +4,11 @@ HumanoidMimicGen packages humanoid loco-manipulation simulation
 environments, G1 whole-body-controller replay utilities, and the RoboSuite
 compatibility code needed to run them from this repository.
 
+This repository accompanies the HumanoidMimicGen project:
+
+- Website: [humanoidmimicgen.github.io](https://humanoidmimicgen.github.io/)
+- Paper: [arXiv:2605.27724](https://arxiv.org/abs/2605.27724)
+
 The repository is intentionally focused on simulation and replay. It does not
 include training datasets, generated experiment outputs, or policy checkpoints
 except for the small bundled G1 lower-body ONNX policies used by WBC replay.
@@ -163,6 +168,22 @@ include a Developer Certificate of Origin sign-off.
 ## Security
 
 See [SECURITY.md](SECURITY.md). Do not file public issues for security reports.
+
+## Citation
+
+If you use HumanoidMimicGen in your work, please cite:
+
+```bibtex
+@misc{lin2026humanoidmimicgendatagenerationlocomanipulation,
+  title={HumanoidMimicGen: Data Generation for Loco-Manipulation via Whole-Body Planning},
+  author={Kevin Lin and Ajay Mandlekar and Caelan Reed Garrett and Nikita Chernyadev and Yu Fang and Runyu Ding and Yuqi Xie and Justin Tran and Linxi Fan and Yuke Zhu},
+  year={2026},
+  eprint={2605.27724},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO},
+  url={https://arxiv.org/abs/2605.27724},
+}
+```
 
 ## License
 

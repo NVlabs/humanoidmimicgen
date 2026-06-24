@@ -9,7 +9,6 @@ import mujoco
 import mujoco.viewer
 import numpy as np
 from mink.configuration import Configuration
-from mink.tasks.exceptions import TargetNotSet
 from mink.tasks.frame_task import FrameTask
 
 import robosuite.utils.transform_utils as T
@@ -21,6 +20,11 @@ from robosuite.models.grippers.gripper_model import GripperModel
 from robosuite.models.robots.robot_model import RobotModel
 from robosuite.utils.binding_utils import MjSim
 from robosuite.utils.log_utils import ROBOSUITE_DEFAULT_LOGGER
+
+try:
+    from mink.tasks.exceptions import TargetNotSet
+except ModuleNotFoundError:  # PyPI mink==0.0.13 exposes task errors here.
+    from mink.exceptions import TargetNotSet
 
 
 def update(self, q: Optional[np.ndarray] = None, update_idxs: Optional[np.ndarray] = None) -> None:

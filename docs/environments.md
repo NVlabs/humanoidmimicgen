@@ -19,8 +19,6 @@ The retained environment names are defined in
 - `LMDrillPnP90`
 - `LMDrillPnP90Bi`
 - `LMDrillLiftObstacleBi`
-- `LMDrillLiftObstacleDT`
-- `LMDrillLiftObstacleDTBi`
 - `LMDrillLiftObstacle`
 - `LMDrillPnPCloser`
 - `LMPickDrillFromHolder`
