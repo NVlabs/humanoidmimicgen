@@ -17,7 +17,7 @@ except for the small bundled G1 lower-body ONNX policies used by WBC replay.
 
 - Humanoid loco-manipulation task definitions in
   [humanoidmimicgen/locomanipulation/envs](humanoidmimicgen/locomanipulation/envs).
-- MJCF scenes, objects, fixtures, and G1 robot assets under
+- Retained MJCF arena, object, and G1 robot assets under
   [humanoidmimicgen/locomanipulation/models/assets](humanoidmimicgen/locomanipulation/models/assets).
 - A retained loco-manipulation support layer for object placement, scene configs,
   task success checks, and G1 robot registration.
