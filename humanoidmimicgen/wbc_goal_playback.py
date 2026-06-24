@@ -15,7 +15,7 @@ import numpy as np
 from tqdm import tqdm
 import yaml
 
-from humanoidmimicgen.wbc.main.constants import DEFAULT_BASE_HEIGHT
+from humanoidmimicgen.wbc_constants import DEFAULT_BASE_HEIGHT
 
 GREEN_BOLD = "\033[1;32m"
 RED_BOLD = "\033[1;31m"

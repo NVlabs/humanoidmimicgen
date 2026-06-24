@@ -49,7 +49,7 @@ include = ["humanoidmimicgen*"]
 
 [tool.setuptools.package-data]
 "humanoidmimicgen" = ["configs/wbc/*.yaml"]
-"humanoidmimicgen.locomanipulation" = ["examples/third_party_controller/*.json"]
+"humanoidmimicgen.locomanipulation.controllers" = ["*.json"]
 "humanoidmimicgen.locomanipulation.models" = ["assets/**/*"]
 "humanoidmimicgen.wbc" = [
     "**/*.json",

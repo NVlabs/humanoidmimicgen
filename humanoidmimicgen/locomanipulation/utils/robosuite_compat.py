@@ -154,6 +154,6 @@ def install_robosuite_compat():
     _install_null_base()
 
     # Importing this module registers HYBRID_WHOLE_BODY_MINK_IK and WHOLE_BODY_MINK_IK.
-    from humanoidmimicgen.locomanipulation.examples.third_party_controller import mink_controller  # noqa: F401
+    from humanoidmimicgen.locomanipulation.controllers import mink  # noqa: F401
 
     _INSTALLED = True

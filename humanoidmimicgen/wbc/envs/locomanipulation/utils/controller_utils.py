@@ -1,9 +1,7 @@
 from importlib.resources import files
 
 
-_CONTROLLER_ROOT = files("humanoidmimicgen.locomanipulation").joinpath(
-    "examples/third_party_controller"
-)
+_CONTROLLER_ROOT = files("humanoidmimicgen.locomanipulation.controllers")
 
 PLAYBACK_CONTROLLER_CONFIGS = {
     "homie_v2": "default_mink_ik_g1_homie_v2.json",

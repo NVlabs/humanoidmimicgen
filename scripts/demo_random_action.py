@@ -17,7 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from humanoidmimicgen.wbc.main.constants import DEFAULT_BASE_HEIGHT
+from humanoidmimicgen.wbc_constants import DEFAULT_BASE_HEIGHT
 
 
 def parse_args() -> argparse.Namespace:

@@ -1,12 +1,12 @@
+from copy import deepcopy
 import os
-import pathlib
 import sys
 from contextlib import contextmanager
 from typing import Dict, List, Literal, Optional, Tuple
+from xml.etree import ElementTree as ET
 
 import mink
 import mujoco
-import mujoco.viewer
 import numpy as np
 from mink.configuration import Configuration
 from mink.tasks.frame_task import FrameTask
@@ -20,6 +20,7 @@ from robosuite.models.grippers.gripper_model import GripperModel
 from robosuite.models.robots.robot_model import RobotModel
 from robosuite.utils.binding_utils import MjSim
 from robosuite.utils.log_utils import ROBOSUITE_DEFAULT_LOGGER
+from robosuite.utils.mjcf_utils import find_parent
 
 try:
     from mink.tasks.exceptions import TargetNotSet
@@ -650,5 +651,66 @@ class WholeBodyMinkIK(WholeBody):
             initial_qpos_as_posture_target=self.composite_controller_specific_config.get(
                 "initial_qpos_as_posture_target", False
             ),
+            verbose=self.composite_controller_specific_config.get("verbose", False),
+        )
+
+
+@register_composite_controller
+class HybridWholeBodyMinkIK(WholeBodyMinkIK):
+    name = "HYBRID_WHOLE_BODY_MINK_IK"
+
+    def _init_joint_action_policy(self):
+        joint_names: list[str] = []
+        for part_name in self.composite_controller_specific_config["actuation_part_names"]:
+            if part_name in self.part_controllers:
+                joint_names += self.part_controllers[part_name].joint_names
+
+        others_controlled_joint_names: list[str] = []
+        for part_name in self.composite_controller_specific_config.get("external_part_names", []):
+            if part_name in self.part_controllers:
+                others_controlled_joint_names += self.part_controllers[part_name].joint_names
+
+        default_site_names: list[str] = []
+        for arm in ["right", "left"]:
+            if arm in self.part_controller_config:
+                default_site_names.append(self.part_controller_config[arm]["ref_name"])
+
+        root = ET.fromstring(deepcopy(self.robot_model.get_xml()))
+        for joint in root.findall(".//freejoint"):
+            find_parent(root, joint).remove(joint)
+        for joint in root.findall(".//joint"):
+            if joint.get("name") in others_controlled_joint_names:
+                find_parent(root, joint).remove(joint)
+        for motor in root.findall(".//motor"):
+            if motor.get("joint") in others_controlled_joint_names:
+                find_parent(root, motor).remove(motor)
+        for sensor_tag in ("jointpos", "jointvel", "jointactuatorfrc"):
+            for sensor in root.findall(f".//{sensor_tag}"):
+                if sensor.get("joint") in others_controlled_joint_names:
+                    find_parent(root, sensor).remove(sensor)
+
+        spec = mujoco.MjSpec.from_string(ET.tostring(root, encoding="utf-8").decode("utf-8"))
+        robot_model = spec.compile()
+        self.joint_action_policy = IKSolverMink(
+            model=self.sim.model._model,
+            data=self.sim.data._data,
+            site_names=(
+                self.composite_controller_specific_config["ref_name"]
+                if "ref_name" in self.composite_controller_specific_config
+                else default_site_names
+            ),
+            robot_model=robot_model,
+            robot_joint_names=joint_names,
+            input_type=self.composite_controller_specific_config.get("ik_input_type", "absolute"),
+            input_ref_frame=self.composite_controller_specific_config.get(
+                "ik_input_ref_frame", "world"
+            ),
+            input_rotation_repr=self.composite_controller_specific_config.get(
+                "ik_input_rotation_repr", "axis_angle"
+            ),
+            solve_freq=self.composite_controller_specific_config.get("ik_solve_freq", 20),
+            posture_weights=self.composite_controller_specific_config.get("ik_posture_weights", {}),
+            hand_pos_cost=self.composite_controller_specific_config.get("ik_hand_pos_cost", 1.0),
+            hand_ori_cost=self.composite_controller_specific_config.get("ik_hand_ori_cost", 0.5),
             verbose=self.composite_controller_specific_config.get("verbose", False),
         )

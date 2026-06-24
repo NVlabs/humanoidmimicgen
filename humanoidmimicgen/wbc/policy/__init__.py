@@ -6,7 +6,7 @@ import numpy as np
 from pinocchio import rpy
 
 from humanoidmimicgen.wbc.base.policy import Policy
-from humanoidmimicgen.wbc.main.constants import DEFAULT_BASE_HEIGHT
+from humanoidmimicgen.wbc_constants import DEFAULT_BASE_HEIGHT
 
 WBC_VERSIONS = [
     "homie_v2",
