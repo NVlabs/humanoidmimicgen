@@ -41,7 +41,7 @@ class SyncSimPlaybackConfig:
     wbc_model_path: str = "policy/stand.onnx,policy/walk.onnx"
     wbc_policy_class: str = "G1DecoupledWholeBodyPolicy"
     control_frequency: int = 50
-    sim_frequency: int = 400
+    sim_frequency: int = 200
     enable_waist: bool = True
     enable_offscreen: bool = False
     enable_onscreen: bool = True

@@ -2,7 +2,7 @@
 
 HumanoidMimicGen packages humanoid loco-manipulation simulation
 environments, G1 whole-body-controller replay utilities, and the RoboCasa /
-RoboSuite support code needed to run them from this repository.
+RoboSuite compatibility code needed to run them from this repository.
 
 The repository is intentionally focused on simulation and replay. It does not
 include training datasets, generated experiment outputs, or policy checkpoints
@@ -16,8 +16,8 @@ except for the small bundled G1 lower-body ONNX policies used by WBC replay.
   [robocasa/models/assets](robocasa/models/assets).
 - A retained RoboCasa support layer for object placement, scene configs,
   task success checks, and G1 robot registration.
-- A retained RoboSuite support layer for MuJoCo environments, robots,
-  controllers, rendering, and model utilities.
+- A small compatibility layer that adapts public `robosuite==1.5.1` for the
+  retained humanoid tasks and WBC replay path.
 - G1 WBC replay/runtime code under [humanoidmimicgen/wbc](humanoidmimicgen/wbc).
 - Entry-point scripts under [scripts](scripts).
 
@@ -32,7 +32,7 @@ the retained humanoid loco-manipulation tasks.
 | [robocasa/environments/locomanipulation](robocasa/environments/locomanipulation) | Environment classes for retained humanoid loco-manipulation tasks. |
 | [robocasa/models](robocasa/models) | RoboCasa model helpers and bundled MJCF assets used by the retained tasks. |
 | [robocasa/utils/scene](robocasa/utils/scene) | Scene object placement, scene config, and success criteria helpers. |
-| [robosuite](robosuite) | Vendored RoboSuite runtime pieces required by the retained tasks and WBC replay. |
+| [robocasa/utils/robosuite_compat.py](robocasa/utils/robosuite_compat.py) | Import-time patches that keep public RoboSuite compatible with retained G1 replay configs. |
 | [humanoidmimicgen/wbc](humanoidmimicgen/wbc) | G1 WBC policy/runtime code plus robot and policy assets. |
 | [humanoidmimicgen/wbc_goal_playback.py](humanoidmimicgen/wbc_goal_playback.py) | LeRobot dataset playback through stored WBC goals. |
 | [scripts/demo_random_action.py](scripts/demo_random_action.py) | Random upper-body action smoke test in a WBC RoboCasa env. |
@@ -41,13 +41,14 @@ the retained humanoid loco-manipulation tasks.
 | [docs/environments.md](docs/environments.md) | Retained environment inventory. |
 | [docs/wbc_goal_replay.md](docs/wbc_goal_replay.md) | WBC-goal replay details and examples. |
 
-## Why RoboCasa And RoboSuite Are Vendored
+## Why RoboCasa Is Retained Locally
 
-The retained humanoid tasks depend on local RoboCasa and RoboSuite changes for
-G1 robot registration, active-base control, controller configs, MJCF assets,
-and replay-compatible MuJoCo behavior. Keeping those trees in this repository
-makes the environment import and WBC replay paths reproducible without requiring
-a matching upstream checkout.
+The retained humanoid tasks depend on local RoboCasa changes for G1 robot
+registration, controller configs, MJCF assets, object placement, and
+task-success predicates. Public `robosuite==1.5.1` provides the core MuJoCo
+runtime, while `robocasa.utils.robosuite_compat` installs the small controller,
+base, sensor, and timestep compatibility patches needed by the retained replay
+configs.
 
 Only the source surface needed by the retained loco-manipulation and WBC replay
 paths is intended to remain here.
@@ -135,6 +136,7 @@ faster one-demo-per-task smoke.
 
 - MuJoCo `3.2.6`, pinned in [pyproject.toml](pyproject.toml). Newer MuJoCo
   versions can reject retained mesh assets during model compilation.
+- `robosuite==1.5.1`, used as the public RoboSuite runtime.
 - `robosuite-models` for robot models referenced by the retained configs.
 - The `wbc-replay` extra for LeRobot dataset playback and random-action WBC
   smoke tests.

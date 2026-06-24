@@ -1,4 +1,5 @@
 import os
+import importlib
 from typing import Any, Dict, List, Tuple
 
 from gymnasium import spaces
@@ -18,7 +19,15 @@ try:
     import robosuite.macros_private as macros
 except ImportError:
     import robosuite.macros as macros
-macros.SIMULATION_TIMESTEP = 0.005  # 200hz
+_robosuite_macros = importlib.import_module("robosuite.macros")
+
+
+def set_robosuite_simulation_timestep(timestep: float) -> None:
+    macros.SIMULATION_TIMESTEP = timestep
+    _robosuite_macros.SIMULATION_TIMESTEP = timestep
+
+
+set_robosuite_simulation_timestep(float(os.environ.get("HMG_SIMULATION_TIMESTEP", "0.005")))
 
 
 def create_env_robosuite(
@@ -37,6 +46,9 @@ def create_env_robosuite(
     seed=None,
     **kwargs,
 ):
+    if isinstance(render_camera, list):
+        render_camera = render_camera[0] if render_camera else None
+
     env_kwargs = dict(
         env_name=env_name,
         robots=robots,
@@ -401,20 +413,34 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
             obs["floating_base_vel"] = np.zeros(6)
             obs["floating_base_acc"] = np.zeros(6)
 
+        robot = self.env.robots[0]
+        body_qacc = raw_obs.get(
+            "robot0_joint_acc",
+            np.array([self.env.sim.data.qacc[x] for x in robot._ref_joint_vel_indexes]),
+        )
+        left_gripper_qacc = raw_obs.get(
+            "robot0_left_gripper_qacc",
+            np.array(
+                [self.env.sim.data.qacc[x] for x in robot._ref_gripper_joint_vel_indexes["left"]]
+            ),
+        )
+        right_gripper_qacc = raw_obs.get(
+            "robot0_right_gripper_qacc",
+            np.array(
+                [self.env.sim.data.qacc[x] for x in robot._ref_gripper_joint_vel_indexes["right"]]
+            ),
+        )
+
         obs["body_q"] = self.convert_body_q(raw_obs["robot0_joint_pos"])
         obs["body_dq"] = self.convert_body_q(raw_obs["robot0_joint_vel"])
-        obs["body_ddq"] = self.convert_body_q(raw_obs["robot0_joint_acc"])
+        obs["body_ddq"] = self.convert_body_q(body_qacc)
 
         obs["left_hand_q"] = self.convert_gripper_q(raw_obs["robot0_left_gripper_qpos"], "left")
         obs["left_hand_dq"] = self.convert_gripper_q(raw_obs["robot0_left_gripper_qvel"], "left")
-        obs["left_hand_ddq"] = self.convert_gripper_q(raw_obs["robot0_left_gripper_qacc"], "left")
+        obs["left_hand_ddq"] = self.convert_gripper_q(left_gripper_qacc, "left")
         obs["right_hand_q"] = self.convert_gripper_q(raw_obs["robot0_right_gripper_qpos"], "right")
         obs["right_hand_dq"] = self.convert_gripper_q(raw_obs["robot0_right_gripper_qvel"], "right")
-        obs["right_hand_ddq"] = self.convert_gripper_q(
-            raw_obs["robot0_right_gripper_qacc"], "right"
-        )
-
-        robot = self.env.robots[0]
+        obs["right_hand_ddq"] = self.convert_gripper_q(right_gripper_qacc, "right")
         body_tau_idx_list = []
         left_gripper_tau_idx_list = []
         right_gripper_tau_idx_list = []
@@ -459,7 +485,22 @@ class Groot2RoboCasaEnv(RoboCasaEnv):
 
         # Add robot-specific observations
         if hasattr(self.env.robots[0].robot_model, "torso_body"):
-            obs["secondary_imu_quat"] = raw_obs["robot0_torso_link_imu_quat"]
-            obs["secondary_imu_vel"] = raw_obs["robot0_torso_link_imu_vel"]
+            if "robot0_torso_link_imu_quat" in raw_obs and "robot0_torso_link_imu_vel" in raw_obs:
+                obs["secondary_imu_quat"] = raw_obs["robot0_torso_link_imu_quat"]
+                obs["secondary_imu_vel"] = raw_obs["robot0_torso_link_imu_vel"]
+            else:
+                torso_index = self.env.sim.model.body_name2id("robot0_torso_link")
+                torso_vel = np.zeros(6)
+                mujoco.mj_objectVelocity(
+                    self.env.sim.model._model,
+                    self.env.sim.data._data,
+                    mujoco.mjtObj.mjOBJ_BODY,
+                    torso_index,
+                    torso_vel,
+                    1,
+                )
+                torso_vel[:3], torso_vel[3:6] = torso_vel[3:6].copy(), torso_vel[:3].copy()
+                obs["secondary_imu_quat"] = self.env.sim.data.xquat[torso_index]
+                obs["secondary_imu_vel"] = torso_vel
 
         return obs

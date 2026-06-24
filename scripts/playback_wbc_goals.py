@@ -46,8 +46,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--sim-frequency",
         type=int,
-        default=400,
-        help="MuJoCo/WBC simulation frequency in Hz. Defaults to 400.",
+        default=200,
+        help="MuJoCo/WBC simulation frequency in Hz. Defaults to 200.",
     )
     parser.add_argument(
         "--num-episodes",

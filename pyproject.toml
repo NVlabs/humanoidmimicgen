@@ -21,6 +21,7 @@ classifiers = [
 dependencies = [
     "mujoco==3.2.6",
     "numpy==1.26.4",
+    "robosuite==1.5.1",
     "robosuite-models==1.0.0",
 ]
 
@@ -44,15 +45,11 @@ visualization = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["robocasa*", "robosuite*", "humanoidmimicgen*"]
+include = ["robocasa*", "humanoidmimicgen*"]
 
 [tool.setuptools.package-data]
 "robocasa" = ["examples/third_party_controller/*.json"]
 "robocasa.models" = ["assets/**/*"]
-"robosuite.controllers" = ["config/**/*.json"]
-"robosuite.examples" = ["third_party_controller/*.json"]
-"robosuite.models" = ["assets/**/*"]
-"robosuite.renderers" = ["config/**/*"]
 "humanoidmimicgen" = ["configs/wbc/*.yaml"]
 "humanoidmimicgen.wbc" = [
     "**/*.json",

@@ -11,11 +11,9 @@ from robosuite.utils.binding_utils import MjSim
 from robosuite.controllers.composite.composite_controller import (
     register_composite_controller,
 )
-from robosuite.examples.third_party_controller.mink_controller import (
-    WholeBodyMinkIK,
-    IKSolverMink,
-)
 from robosuite.utils.mjcf_utils import find_parent
+
+from robocasa.examples.third_party_controller.mink_solver import IKSolverMink, WholeBodyMinkIK
 
 
 @register_composite_controller

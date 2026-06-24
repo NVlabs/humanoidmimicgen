@@ -23,7 +23,7 @@ def get_env(config, **kwargs):
         update_robosuite_controller_configs,
     )
 
-    robocasa_env.macros.SIMULATION_TIMESTEP = sim_timestep
+    robocasa_env.set_robosuite_simulation_timestep(sim_timestep)
 
     robot_type, _ = get_robot_type_and_model(config.robot, enable_waist_ik=config.enable_waist)
     env_name = f"groot2_{robot_type}/{config.task_name}_{config.robot}_Env"

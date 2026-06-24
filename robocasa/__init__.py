@@ -12,6 +12,10 @@ if "robosuite.macros_private" not in sys.modules:
     macros_private.CACHE_NUMBA = False
     sys.modules["robosuite.macros_private"] = macros_private
 
+from robocasa.utils.robosuite_compat import install_robosuite_compat
+
+install_robosuite_compat()
+
 from robosuite.environments.base import make
 
 from . import models
