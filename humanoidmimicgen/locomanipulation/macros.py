@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Macro settings that can be imported and toggled. Internally, specific parts of the codebase rely on these settings
 for determining core functionality.

@@ -160,6 +160,9 @@ faster one-demo-per-task smoke.
 - `robosuite-models` for robot models referenced by the retained configs.
 - The `wbc-replay` extra for LeRobot dataset playback and random-action WBC
   smoke tests.
+- The bundled lower-body policies. See
+  [docs/wbc_goal_replay.md](docs/wbc_goal_replay.md#lower-body-policy-files) for
+  pinned recovery download, rename, and checksum instructions.
 
 For headless Linux rendering, set:
 
@@ -185,6 +188,9 @@ See [SECURITY.md](SECURITY.md). Do not file public issues for security reports.
 
 ## License
 
-This project is licensed under the Apache License, Version 2.0. See
-[LICENSE](LICENSE) for details. Third-party components retain their own
-licenses as described in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+NVIDIA-authored source code is licensed under the Apache License, Version 2.0.
+See [LICENSE](LICENSE) for details. The bundled lower-body ONNX model weights
+are separately licensed under the
+[NVIDIA Open Model License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt). Third-party
+components retain their own licenses as described in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

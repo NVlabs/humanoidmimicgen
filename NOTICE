@@ -14,3 +14,7 @@ Third-party source code, dependencies, assets, and model files retain
 their own copyright, attribution, and license notices. See
 THIRD_PARTY_NOTICES.md for the third-party notice inventory for this
 repository.
+
+The bundled stand.onnx and walk.onnx model weights are separately licensed:
+Licensed by NVIDIA Corporation under the NVIDIA Open Model License.
+See LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt.

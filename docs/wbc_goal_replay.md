@@ -38,6 +38,34 @@ For headless Linux rendering:
 export MUJOCO_GL=egl
 ```
 
+## Lower-Body Policy Files
+
+The repository already includes the two lower-body ONNX policies required by
+WBC replay, so a normal checkout does not need an additional download. If those
+files are missing or need to be restored, download the byte-identical public
+GR00T Whole-Body Control models and save them under the local runtime names:
+
+```bash
+POLICY_DIR=humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy
+MODEL_BASE=https://github.com/NVlabs/GR00T-WholeBodyControl/raw/4141c34280abb67c82e115342a8720f4a83d750d/decoupled_wbc/sim2mujoco/resources/robots/g1/policy
+
+mkdir -p "$POLICY_DIR"
+curl -fL "$MODEL_BASE/GR00T-WholeBodyControl-Balance.onnx" \
+  -o "$POLICY_DIR/stand.onnx"
+curl -fL "$MODEL_BASE/GR00T-WholeBodyControl-Walk.onnx" \
+  -o "$POLICY_DIR/walk.onnx"
+
+sha256sum -c <<'EOF'
+f645da599d4ca3d29ed273c8f4712620bb680d34977469ca3aeabe5bb9631c18  humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy/stand.onnx
+7c82255b6905ffcc4468fa7f8ddcf7b70db168cf1042107ccab887cb6a8e5407  humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy/walk.onnx
+EOF
+```
+
+The model weights are licensed under the
+[NVIDIA Open Model License](../LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt). See
+[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) for pinned provenance links
+and required attribution.
+
 ## Replay One Dataset
 
 ```bash

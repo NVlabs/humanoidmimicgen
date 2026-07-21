@@ -4,6 +4,10 @@ Thank you for contributing to HumanoidMimicGen. Contributions to this
 repository are accepted under the Apache License, Version 2.0, unless a file
 explicitly states a different license.
 
+NVIDIA maintainers should follow the internal
+[Apache 2.0 legal guidance](https://nvidia.atlassian.net/wiki/display/LEG/Apache+2.0)
+for release decisions.
+
 ## Developer Certificate of Origin
 
 This project uses the Developer Certificate of Origin (DCO) for third-party
@@ -60,8 +64,9 @@ notices. Do not replace third-party notices with NVIDIA notices.
 ## IP Review Process
 
 Before source, binaries, models, assets, datasets, generated outputs, or
-documentation are distributed outside NVIDIA, complete the NVIDIA IP review
-process for the exact release payload.
+documentation are distributed outside NVIDIA, complete the
+[NVIDIA IP Review Process](https://nvidia.atlassian.net/wiki/display/OSS/IP+Review+Process)
+for the exact release payload.
 
 At minimum, reviewers should independently verify that:
 
