@@ -2,7 +2,7 @@
 
 WBC-goal replay renders G1 LeRobot episodes by resetting the simulator to the
 recorded initial MuJoCo state, replaying stored upper-body WBC goals, and using
-the bundled WBC runtime to generate stabilizing lower-body actions.
+the WBC runtime to generate stabilizing lower-body actions.
 
 This path is simulation-only. It does not require ROS or `rclpy`.
 
@@ -27,6 +27,7 @@ as the dataset root.
 mamba create -n humanoidmimicgen python=3.10 -y
 mamba activate humanoidmimicgen
 python -m pip install -e ".[wbc-replay]"
+python -m humanoidmimicgen.download_wbc_policies
 ```
 
 MuJoCo is pinned to `3.2.6`. Keep that pin for replay; newer MuJoCo versions
@@ -40,27 +41,23 @@ export MUJOCO_GL=egl
 
 ## Lower-Body Policy Files
 
-The repository already includes the two lower-body ONNX policies required by
-WBC replay, so a normal checkout does not need an additional download. If those
-files are missing or need to be restored, download the byte-identical public
-GR00T Whole-Body Control models and save them under the local runtime names:
+The lower-body ONNX policies are not distributed with this repository. Download
+the pinned public GR00T Whole-Body Control models into the expected runtime
+locations with:
 
 ```bash
-POLICY_DIR=humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy
-MODEL_BASE=https://github.com/NVlabs/GR00T-WholeBodyControl/raw/4141c34280abb67c82e115342a8720f4a83d750d/decoupled_wbc/sim2mujoco/resources/robots/g1/policy
-
-mkdir -p "$POLICY_DIR"
-curl -fL "$MODEL_BASE/GR00T-WholeBodyControl-Balance.onnx" \
-  -o "$POLICY_DIR/stand.onnx"
-curl -fL "$MODEL_BASE/GR00T-WholeBodyControl-Walk.onnx" \
-  -o "$POLICY_DIR/walk.onnx"
-
-sha256sum -c <<'EOF'
-f645da599d4ca3d29ed273c8f4712620bb680d34977469ca3aeabe5bb9631c18  humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy/stand.onnx
-7c82255b6905ffcc4468fa7f8ddcf7b70db168cf1042107ccab887cb6a8e5407  humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy/walk.onnx
-EOF
+python -m humanoidmimicgen.download_wbc_policies
 ```
 
+The downloader verifies SHA-256 checksums and applies the runtime filenames:
+
+- `GR00T-WholeBodyControl-Balance.onnx` becomes `stand.onnx`
+  (`f645da599d4ca3d29ed273c8f4712620bb680d34977469ca3aeabe5bb9631c18`).
+- `GR00T-WholeBodyControl-Walk.onnx` becomes `walk.onnx`
+  (`7c82255b6905ffcc4468fa7f8ddcf7b70db168cf1042107ccab887cb6a8e5407`).
+
+Both downloads are pinned to upstream commit
+[`4141c34280abb67c82e115342a8720f4a83d750d`](https://github.com/NVlabs/GR00T-WholeBodyControl/tree/4141c34280abb67c82e115342a8720f4a83d750d).
 The model weights are licensed under the
 [NVIDIA Open Model License](../LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt). See
 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) for pinned provenance links

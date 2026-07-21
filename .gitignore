@@ -7,3 +7,6 @@ __pycache__/
 .ruff_cache/
 build/
 dist/
+# WBC model weights are downloaded separately under the NVIDIA Open Model License.
+humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy/stand.onnx
+humanoidmimicgen/wbc/external_dependencies/sim2mujoco/resources/robots/g1/policy/walk.onnx

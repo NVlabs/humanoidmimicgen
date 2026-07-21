@@ -66,8 +66,10 @@ included in a distributed package, container, or release artifact.
 ## Datasets, Model Weights, Robot Assets, and Generated Outputs
 
 Training datasets and generated outputs are not included in this repository
-snapshot. The distributed package does include G1 robot descriptions and
-meshes, plus two lower-body policy weights:
+snapshot. The distributed package includes G1 robot descriptions and meshes.
+It does not include lower-body policy weights. The optional downloader fetches
+the following pinned files directly from GR00T Whole-Body Control for local WBC
+replay:
 
 - `stand.onnx` is byte-identical to
   [`GR00T-WholeBodyControl-Balance.onnx`](https://github.com/NVlabs/GR00T-WholeBodyControl/blob/4141c34280abb67c82e115342a8720f4a83d750d/decoupled_wbc/sim2mujoco/resources/robots/g1/policy/GR00T-WholeBodyControl-Balance.onnx)
@@ -76,7 +78,7 @@ meshes, plus two lower-body policy weights:
   [`GR00T-WholeBodyControl-Walk.onnx`](https://github.com/NVlabs/GR00T-WholeBodyControl/blob/4141c34280abb67c82e115342a8720f4a83d750d/decoupled_wbc/sim2mujoco/resources/robots/g1/policy/GR00T-WholeBodyControl-Walk.onnx)
   (`sha256:7c82255b6905ffcc4468fa7f8ddcf7b70db168cf1042107ccab887cb6a8e5407`).
 
-Both files are model weights licensed under the
+These separately downloaded files are model weights licensed under the
 [NVIDIA Open Model License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt), not under
 the Apache-2.0 source-code license. Required attribution: "Licensed by NVIDIA
 Corporation under the NVIDIA Open Model License".
@@ -92,8 +94,9 @@ a license for binary or model assets from the Apache-2.0 project license.
 NVIDIA-authored project code intended for open source distribution is
 licensed under the Apache License, Version 2.0. The full Apache 2.0 text is
 distributed in [LICENSE](LICENSE), and project-level notices are distributed
-in [NOTICE](NOTICE). The two bundled ONNX model weights are separately licensed
-under the [NVIDIA Open Model License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt).
+in [NOTICE](NOTICE). Optional ONNX model weights downloaded separately for WBC
+replay are not part of this distribution and are licensed under the [NVIDIA
+Open Model License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt).
 
 ## Release Review
 

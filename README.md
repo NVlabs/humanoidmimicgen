@@ -10,8 +10,9 @@ compatibility code needed to run them from this repository.
 - arXiv paper: [HumanoidMimicGen: Data Generation for Loco-Manipulation via Whole-Body Planning](https://arxiv.org/abs/2605.27724)
 
 The repository is intentionally focused on simulation and replay. It does not
-include training datasets, generated experiment outputs, or policy checkpoints
-except for the small bundled G1 lower-body ONNX policies used by WBC replay.
+include training datasets, generated experiment outputs, or policy checkpoints.
+The optional G1 lower-body ONNX policies used by WBC replay are downloaded
+separately from GR00T Whole-Body Control.
 
 If you use HumanoidMimicGen in your work, please cite:
 
@@ -53,7 +54,7 @@ loco-manipulation tasks.
 | [humanoidmimicgen/locomanipulation/models](humanoidmimicgen/locomanipulation/models) | Model helpers and bundled MJCF assets used by the retained tasks. |
 | [humanoidmimicgen/locomanipulation/utils/scene](humanoidmimicgen/locomanipulation/utils/scene) | Scene object placement, scene config, and success criteria helpers. |
 | [humanoidmimicgen/locomanipulation/utils/robosuite_compat.py](humanoidmimicgen/locomanipulation/utils/robosuite_compat.py) | Import-time patches that keep public RoboSuite compatible with retained G1 replay configs. |
-| [humanoidmimicgen/wbc](humanoidmimicgen/wbc) | G1 WBC policy/runtime code plus robot and policy assets. |
+| [humanoidmimicgen/wbc](humanoidmimicgen/wbc) | G1 WBC policy/runtime code plus robot assets and configs. |
 | [humanoidmimicgen/wbc_goal_playback.py](humanoidmimicgen/wbc_goal_playback.py) | LeRobot dataset playback through stored WBC goals. |
 | [scripts/demo_random_action.py](scripts/demo_random_action.py) | Random upper-body action smoke test in a WBC loco-manipulation env. |
 | [scripts/playback_wbc_goals.py](scripts/playback_wbc_goals.py) | Replay one LeRobot dataset and write MP4 output. |
@@ -85,6 +86,7 @@ cd humanoidmimicgen
 mamba create -n humanoidmimicgen python=3.10 -y
 mamba activate humanoidmimicgen
 python -m pip install -e ".[wbc-replay]"
+python -m humanoidmimicgen.download_wbc_policies
 ```
 
 For environment import only, without LeRobot / ONNXRuntime / Torch replay
@@ -160,9 +162,10 @@ faster one-demo-per-task smoke.
 - `robosuite-models` for robot models referenced by the retained configs.
 - The `wbc-replay` extra for LeRobot dataset playback and random-action WBC
   smoke tests.
-- The bundled lower-body policies. See
+- The separately downloaded lower-body policies. See
   [docs/wbc_goal_replay.md](docs/wbc_goal_replay.md#lower-body-policy-files) for
-  pinned recovery download, rename, and checksum instructions.
+  the downloader, pinned source-to-runtime rename mapping, checksums, and model
+  license.
 
 For headless Linux rendering, set:
 
@@ -189,8 +192,9 @@ See [SECURITY.md](SECURITY.md). Do not file public issues for security reports.
 ## License
 
 NVIDIA-authored source code is licensed under the Apache License, Version 2.0.
-See [LICENSE](LICENSE) for details. The bundled lower-body ONNX model weights
-are separately licensed under the
-[NVIDIA Open Model License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt). Third-party
-components retain their own licenses as described in
+See [LICENSE](LICENSE) for details. Optional lower-body ONNX model weights are
+not distributed with this repository; the separately downloaded weights are
+licensed under the [NVIDIA Open Model
+License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt). Third-party components retain
+their own licenses as described in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

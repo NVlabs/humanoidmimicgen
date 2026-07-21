@@ -54,7 +54,6 @@ include = ["humanoidmimicgen*"]
 "humanoidmimicgen.wbc" = [
     "**/*.json",
     "**/*.md",
-    "**/*.onnx",
     "**/*.STL",
     "**/*.stl",
     "**/*.urdf",

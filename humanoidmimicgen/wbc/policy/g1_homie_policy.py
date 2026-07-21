@@ -43,6 +43,12 @@ class G1HomiePolicyV2(Policy):
         self.yaw_cmd = self.config["rpy_cmd"][2]
 
     def load_onnx_policy(self, model_path: str):
+        if not Path(model_path).is_file():
+            raise FileNotFoundError(
+                f"Missing WBC policy: {model_path}\n"
+                "Download the separately licensed policies with:\n"
+                "  python -m humanoidmimicgen.download_wbc_policies"
+            )
         print(f"Loading ONNX policy from {model_path}")
         model = ort.InferenceSession(model_path)
 
