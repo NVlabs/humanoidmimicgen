@@ -1,3 +1,11 @@
+<!--
+SPDX-FileCopyrightText: Copyright (c) 2016-2022 HangZhou YuShu TECHNOLOGY CO.,LTD. ("Unitree Robotics")
+SPDX-License-Identifier: BSD-3-Clause
+-->
+<!--
+SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+SPDX-License-Identifier: Apache-2.0
+-->
 <robot name="g1_29dof_with_hand">
   <mujoco>
     <compiler meshdir="meshes" discardvisual="false"/>

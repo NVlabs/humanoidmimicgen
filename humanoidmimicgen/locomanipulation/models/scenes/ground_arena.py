@@ -19,7 +19,7 @@
 # SOFTWARE.
 #
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-# SPDX-License-Identifier: MIT AND Apache-2.0
+# SPDX-License-Identifier: Apache-2.0
 
 from robosuite.models.arenas import Arena
 from robosuite.utils.mjcf_utils import xml_path_completion

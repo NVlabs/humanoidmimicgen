@@ -1,85 +1,55 @@
-# Contributing
+#### Signing Off Your Work
 
-Thank you for contributing to HumanoidMimicGen. Contributions to this
-repository are accepted under the Apache License, Version 2.0, unless a file
-explicitly states a different license.
+* We require that all contributors "sign-off" on their commits. This certifies that the contribution is your original work, or you have rights to submit it under the same license, or a compatible license.
 
-NVIDIA maintainers should follow the internal
-[Apache 2.0 legal guidance](https://nvidia.atlassian.net/wiki/display/LEG/Apache+2.0)
-for release decisions.
+  * Any contribution which contains commits that are not Signed-Off will not be accepted.
 
-## Developer Certificate of Origin
+* To sign off on a commit you simply use the `--signoff` (or `-s`) option when committing your changes:
+  ```bash
+  $ git commit -s -m "Add cool feature."
+  ```
+  This will append the following to your commit message:
+  ```
+  Signed-off-by: Your Name <your@email.com>
+  ```
 
-This project uses the Developer Certificate of Origin (DCO) for third-party
-contributions. Every third-party contribution must include a `Signed-off-by`
-line in the commit message.
+* Full text of the DCO (https://developercertificate.org/):
 
-You can add the sign-off with:
+  ```
+    Developer Certificate of Origin
+    Version 1.1
 
-```bash
-git commit -s
-```
+    Copyright (C) 2004, 2006 The Linux Foundation and its contributors.
 
-By making a contribution to this project, I certify that:
+    Everyone is permitted to copy and distribute verbatim copies of this
+    license document, but changing it is not allowed.
 
-(a) The contribution was created in whole or in part by me and I
-    have the right to submit it under the open source license
-    indicated in the file; or
 
-(b) The contribution is based upon previous work that, to the best
-    of my knowledge, is covered under an appropriate open source
-    license and I have the right under that license to submit that
-    work with modifications, whether created in whole or in part
-    by me, under the same open source license (unless I am
-    permitted to submit under a different license), as indicated
-    in the file; or
+    Developer's Certificate of Origin 1.1
 
-(c) The contribution was provided directly to me by some other
-    person who certified (a), (b) or (c) and I have not modified
-    it.
+    By making a contribution to this project, I certify that:
 
-(d) I understand and agree that this project and the contribution
-    are public and that a record of the contribution (including all
-    personal information I submit with it, including my sign-off) is
-    maintained indefinitely and may be redistributed consistent with
-    this project or the open source license(s) involved.
+    (a) The contribution was created in whole or in part by me and I
+        have the right to submit it under the open source license
+        indicated in the file; or
 
-The canonical DCO text is published at
-[developercertificate.org](https://developercertificate.org/).
+    (b) The contribution is based upon previous work that, to the best
+        of my knowledge, is covered under an appropriate open source
+        license and I have the right under that license to submit that
+        work with modifications, whether created in whole or in part
+        by me, under the same open source license (unless I am
+        permitted to submit under a different license), as indicated
+        in the file; or
 
-## License Headers
+    (c) The contribution was provided directly to me by some other
+        person who certified (a), (b) or (c) and I have not modified
+        it.
 
-NVIDIA-authored source files contributed to this repository should include
-an Apache-2.0 notice at or near the top of the file. SPDX short identifiers
-may be used for NVIDIA-authored code, for example:
+    (d) I understand and agree that this project and the contribution
+        are public and that a record of the contribution (including all
+        personal information I submit with it, including my sign-off) is
+        maintained indefinitely and may be redistributed consistent with
+        this project or the open source license(s) involved.
+  ```
 
-```text
-SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-SPDX-License-Identifier: Apache-2.0
-```
-
-Third-party code must retain its original copyright, license, and attribution
-notices. Do not replace third-party notices with NVIDIA notices.
-
-## IP Review Process
-
-Before source, binaries, models, assets, datasets, generated outputs, or
-documentation are distributed outside NVIDIA, complete the
-[NVIDIA IP Review Process](https://nvidia.atlassian.net/wiki/display/OSS/IP+Review+Process)
-for the exact release payload.
-
-At minimum, reviewers should independently verify that:
-
-- The code does not contain patentable subject matter for which a patent has
-  not been filed.
-- The code includes the correct copyright headers and license notices.
-- The code does not reveal unannounced NVIDIA features or products.
-- The code does not reveal NVIDIA-proprietary algorithms that should remain
-  confidential.
-- The code does not provide competitors a significant competitive advantage
-  over NVIDIA products or services.
-- The code does not import or include third-party code for which OSRB
-  guidance has not been provided.
-
-Release approval must be recorded through the applicable NVIDIA OSRB/IP
-review process before public distribution.
+Link to DCO: <https://developercertificate.org/>

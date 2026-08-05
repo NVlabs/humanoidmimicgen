@@ -195,6 +195,20 @@ NVIDIA-authored source code is licensed under the Apache License, Version 2.0.
 See [LICENSE](LICENSE) for details. Optional lower-body ONNX model weights are
 not distributed with this repository; the separately downloaded weights are
 licensed under the [NVIDIA Open Model
-License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt). Third-party components retain
-their own licenses as described in
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+License](LICENSES/NVIDIA-OPEN-MODEL-LICENSE.txt).
+
+Third-party components retain their original licenses:
+
+- `humanoidmimicgen/locomanipulation` contains RoboCasa-derived source and
+  assets under MIT; see [LICENSES/ROBOCASA-MIT.txt](LICENSES/ROBOCASA-MIT.txt).
+- `robosuite` is used under MIT; see
+  [LICENSES/ROBOSUITE-MIT.txt](LICENSES/ROBOSUITE-MIT.txt).
+- `robosuite-models` is used under MIT; see
+  [LICENSES/ROBOSUITE-MODELS-MIT.txt](LICENSES/ROBOSUITE-MODELS-MIT.txt).
+- `humanoidmimicgen/wbc/robot_model/model_data/g1` contains Unitree G1 robot
+  descriptions and meshes under BSD-3-Clause; see
+  [LICENSES/UNITREE-BSD-3-CLAUSE.txt](LICENSES/UNITREE-BSD-3-CLAUSE.txt).
+
+See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for provenance,
+attributions, dependency-license references, and the complete distribution
+notice inventory.

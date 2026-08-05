@@ -18,8 +18,8 @@ The retained loco-manipulation support code is derived from RoboCasa source
 code and includes NVIDIA-authored humanoid environment extensions. Third-party
 RoboCasa source retains its original copyright and
 MIT license notice. NVIDIA-authored source files use Apache-2.0 notices.
-Files containing both RoboCasa-derived code and NVIDIA modifications carry
-file-level SPDX notices for both components.
+Files containing both RoboCasa-derived code and NVIDIA modifications preserve
+the upstream MIT notice first and carry a stacked NVIDIA Apache-2.0 header.
 
 ### RoboCasa-Derived Assets
 
@@ -34,18 +34,45 @@ The repository includes assets retained for the humanoid loco-manipulation
 environments and
 WBC-goal replay rendering.
 
+### Unitree G1 Robot Description and Meshes
+
+- Path:
+  - [humanoidmimicgen/wbc/robot_model/model_data/g1](humanoidmimicgen/wbc/robot_model/model_data/g1)
+- Source project: [Unitree Robotics `unitree_ros`](https://github.com/unitreerobotics/unitree_ros/tree/f3772ce54c56ef2d34c6aee8100bc768896c7d19/robots/g1_description)
+- License: BSD-3-Clause
+- License text: [LICENSES/UNITREE-BSD-3-CLAUSE.txt](LICENSES/UNITREE-BSD-3-CLAUSE.txt)
+- Copyright notice: Copyright (c) 2016-2022 HangZhou YuShu TECHNOLOGY CO.,LTD. ("Unitree Robotics")
+
+All 50 distributed STL meshes are byte-identical to files in the cited
+Unitree G1 description snapshot. The distributed URDF is derived from the
+Unitree G1 description and contains project-specific modifications; it retains
+the Unitree attribution and adds a stacked NVIDIA Apache-2.0 modification
+header.
+
 ## Runtime Dependencies
 
 The Python package metadata declares direct runtime dependencies used by the
 distributed project code. This dependency inventory must be verified against
 the exact versions selected for any public release.
 
-| Component | Declared use | License to verify before release |
+| Component | Declared use | License and source |
 | --- | --- | --- |
-| mujoco | MuJoCo simulation bindings | Apache-2.0 |
-| numpy | Numeric arrays | BSD-3-Clause |
+| mujoco | MuJoCo simulation bindings | [Apache-2.0](https://pypi.org/project/mujoco/3.2.6/) |
+| numpy | Numeric arrays | [BSD-3-Clause](https://pypi.org/project/numpy/1.26.4/) |
 | robosuite | Core MuJoCo environment runtime | MIT; see [LICENSES/ROBOSUITE-MIT.txt](LICENSES/ROBOSUITE-MIT.txt) |
 | robosuite-models | G1 and other robosuite robot model registrations | MIT; see [LICENSES/ROBOSUITE-MODELS-MIT.txt](LICENSES/ROBOSUITE-MODELS-MIT.txt) |
+| datasets | LeRobot dataset loading (`wbc-replay`) | [Apache-2.0](https://pypi.org/project/datasets/3.6.0/) |
+| gymnasium | Environment interfaces (`wbc-replay`) | [MIT](https://pypi.org/project/gymnasium/0.29.1/) |
+| lerobot | Dataset schemas (`wbc-replay`) | [MIT](https://pypi.org/project/lerobot/0.1.0/) |
+| loguru | Runtime logging (`wbc-replay`) | [MIT](https://pypi.org/project/loguru/) |
+| onnxruntime | WBC policy inference (`wbc-replay`) | [MIT](https://pypi.org/project/onnxruntime/1.22.1/) |
+| opencv-python | Image processing (`wbc-replay`) | [Apache-2.0](https://pypi.org/project/opencv-python/4.11.0.86/) |
+| pin | Pinocchio Python distribution (`wbc-replay`) | [BSD-3-Clause](https://pypi.org/project/pin/) |
+| PyYAML | Configuration parsing (`wbc-replay`) | [MIT](https://pypi.org/project/PyYAML/6.0.3/) |
+| scipy | Scientific computing (`wbc-replay`) | [BSD-3-Clause](https://pypi.org/project/scipy/1.15.3/) |
+| torch | Tensor execution (`wbc-replay`) | [BSD-3-Clause plus bundled third-party notices](https://github.com/pytorch/pytorch/blob/v2.6.0/LICENSE) |
+| tqdm | Progress reporting (`wbc-replay`) | [MPL-2.0 AND MIT](https://pypi.org/project/tqdm/4.67.1/) |
+| matplotlib | Optional visualization | [Matplotlib License](https://pypi.org/project/matplotlib/) |
 
 The verified local import environment used `robosuite==1.5.1`,
 `robosuite-models==1.0.0`, `mujoco==3.2.6`, and `numpy==1.26.4`, matching
@@ -57,11 +84,9 @@ redistributes a Python environment rather than only declaring package
 dependencies, include the resolved transitive dependency license texts in
 that artifact's license bundle.
 
-The optional `visualization` extra declares `matplotlib` for the
-`humanoidmimicgen.locomanipulation.utils.camera_utils.visualize_2d_projection`
-helper. Verify the
-exact resolved Matplotlib version and license if that optional extra is
-included in a distributed package, container, or release artifact.
+For unpinned or ranged dependencies, preserve the selected distribution's
+license and bundled third-party notices in any binary, container, or vendored
+release artifact.
 
 ## Datasets, Model Weights, Robot Assets, and Generated Outputs
 
@@ -83,11 +108,8 @@ These separately downloaded files are model weights licensed under the
 the Apache-2.0 source-code license. Required attribution: "Licensed by NVIDIA
 Corporation under the NVIDIA Open Model License".
 
-Before public distribution, the exact provenance, copyright owner, and
-distribution authorization for the robot descriptions and meshes must still be
-recorded in the IP review. Add any required third-party attribution and license
-text to this document and `LICENSES/`. This remains a release gate; do not infer
-a license for binary or model assets from the Apache-2.0 project license.
+The distributed robot descriptions and meshes are the Unitree-derived assets
+documented above and are distributed under the preserved BSD-3-Clause terms.
 
 ## Project License
 
