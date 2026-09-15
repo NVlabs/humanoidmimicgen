@@ -211,7 +211,7 @@ If you find HumanoidMimicGen useful in your research, please cite:
 ```bibtex
 @inproceedings{lin2026humanoidmimicgen,
   title={HumanoidMimicGen Data Generation for Loco-Manipulation via Whole-Body Planning and Adaptation},
-  author={Anonymous},
+  author={Kevin Lin and Ajay Mandlekar and Caelan Reed Garrett and Nikita Chernyadev and Yu Fang and Runyu Ding and Yuqi Xie and Justin Tran and Linxi Fan and Yuke Zhu},
   booktitle={10th Annual Conference on Robot Learning},
   year={2026},
   url={https://openreview.net/forum?id=9kXz22fI7a}
