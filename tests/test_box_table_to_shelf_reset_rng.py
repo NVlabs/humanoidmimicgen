@@ -16,7 +16,7 @@ from humanoidmimicgen.locomanipulation.envs.base import (
     RobotPoseRandomizer,
 )
 from humanoidmimicgen.locomanipulation.envs.locomanip_basic import (
-    LMBoxTableToShelfStaticIndustrial,
+    LMBoxTableToShelf,
 )
 from humanoidmimicgen.locomanipulation.envs.locomanip_pnp import (
     LMBoxLift,
@@ -78,7 +78,7 @@ def make_env(monkeypatch, cls, *, seed=0, deterministic=False):
 @pytest.mark.parametrize("seed", [0, 17])
 def test_nondeterministic_reset_uses_static_pose_beside_box(monkeypatch, seed):
     env, events, poses = make_env(
-        monkeypatch, LMBoxTableToShelfStaticIndustrial, seed=seed
+        monkeypatch, LMBoxTableToShelf, seed=seed
     )
     fixed_start = ((0.73, 0.73), (-0.06, 0.06), (0.0, 0.0))
     reference = np.random.default_rng(seed)
@@ -98,7 +98,7 @@ def test_nondeterministic_reset_uses_static_pose_beside_box(monkeypatch, seed):
 
 def test_deterministic_reset_consumes_no_pose_draws(monkeypatch):
     env, events, poses = make_env(
-        monkeypatch, LMBoxTableToShelfStaticIndustrial, deterministic=True
+        monkeypatch, LMBoxTableToShelf, deterministic=True
     )
     initial_state = env.rng.generator.bit_generator.state
     initial_qpos = env.sim.data.qpos.copy()

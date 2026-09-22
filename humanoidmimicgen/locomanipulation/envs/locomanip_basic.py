@@ -49,7 +49,7 @@ def _subtask(object_ref):
     )
 
 
-class LMBoxTableToShelfStaticIndustrial(LMFactoryEnv, HMGConfigHelper):
+class LMBoxTableToShelf(LMFactoryEnv, HMGConfigHelper):
     SCENE_SCALE = SceneScaleConfig(planar_scale=1.0)
     MUJOCO_ARENA_CLS = FactoryArena
 
