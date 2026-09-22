@@ -41,7 +41,7 @@ RETAINED_LOCOMANIPULATION_ENV_NAMES = (
     "LMPushShelfForward",
     "LMDrillLift",
     "LMDrillPnP90",
-    "LMBoxTableToShelf",
+    "LMBoxTableToShelfStaticIndustrial",
     "LMPickDrillFromHolder",
     "LMDrillLiftObstacle",
 )
