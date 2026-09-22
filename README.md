@@ -28,6 +28,7 @@ physics-correct recorded state/action playback.
 - [Quick Start](#quick-start)
 - [Common Examples](#common-examples)
 - [G1 Loco-Manipulation Benchmark](#g1-loco-manipulation-benchmark)
+- [Train and Evaluate a Policy](#train-and-evaluate-a-policy)
 - [Dataset Playback](#dataset-playback)
 - [What's Included](#whats-included)
 - [Citation](#citation)
@@ -169,6 +170,45 @@ contains about 9K demonstrations across these nine tasks, generated with the
 HumanoidMimicGen data-generation algorithm and organized into eight LeRobot
 shards per task.
 
+## Train and Evaluate a Policy
+
+The sample policy training and evaluation scripts provide a minimal end-to-end
+example using the upstream LeRobot Diffusion Policy at the exact tested
+revision:
+
+```bash
+python -m pip install --upgrade \
+  "lerobot @ git+https://github.com/huggingface/lerobot.git@8fff0fde7c79f23a93d845d1a50e985de01f8b8a"
+```
+
+The training input must be a projected LeRobot v3 dataset with a 43-dimensional
+`observation.state`, `observation.images.ego_view`, and a 35-dimensional WBC
+goal `action`. Point the trainer at either one dataset or a directory containing
+all shards for one task. Nested shards are discovered and sorted automatically:
+
+```bash
+python scripts/train_policy_example.py \
+  /path/to/task06_projected_shards \
+  /path/to/task06_dp_long50 \
+  --dataset-repo-id local/hmg_task06_full8 \
+  --job-name task06_dp_long50
+```
+
+This trains the validated 64-step prediction-horizon, 50-step action-chunk
+configuration for 20K updates by default. Evaluate a checkpoint over 20 native
+episodes (seeds 0 through 19) with:
+
+```bash
+python scripts/evaluate_policy_example.py \
+  --checkpoint-dir /path/to/task06_dp_long50/checkpoints/020000 \
+  --task 06_drill_pnp \
+  --num-episodes 20 \
+  --seed 0 \
+  --output /tmp/task06_dp_long50_eval.json
+```
+
+Use `--help` on either script for the complete task and runtime options.
+
 ## Dataset Playback
 
 `scripts/playback_dataset.py` accepts a LeRobot dataset root or source-demo
@@ -198,6 +238,8 @@ Playback fails on state divergence by default (`atol=1e-5`; use
 | [`humanoidmimicgen/locomanipulation`](humanoidmimicgen/locomanipulation) | Nine environments, scene helpers, success predicates, and MJCF assets. |
 | [`humanoidmimicgen/wbc`](humanoidmimicgen/wbc) | G1 WBC implementation, robot description, and configs. |
 | [`scripts/demo_random_action.py`](scripts/demo_random_action.py) | Random-action environment and WBC smoke test, with optional rendering. |
+| [`scripts/train_policy_example.py`](scripts/train_policy_example.py) | Sample policy training entrypoint with automatic shard discovery and the validated LeRobot 64/50 configuration. |
+| [`scripts/evaluate_policy_example.py`](scripts/evaluate_policy_example.py) | Sample native HMG policy evaluation entrypoint for the resulting checkpoints. |
 | [`scripts/playback_dataset.py`](scripts/playback_dataset.py) | Dataset playback CLI with optional MP4 rendering. |
 
 ## Citation
