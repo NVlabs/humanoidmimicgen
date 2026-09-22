@@ -171,8 +171,6 @@ class LMBoxTableToShelf(LMFactoryEnv, HMGConfigHelper):
         super()._reset_internal()
 
         if not self.deterministic_reset:
-            # Preserve legacy reset RNG progression through the overwritten parent pose.
-            RobotPoseRandomizer.set_pose(self, (-0.06, 0.06), (-0.06, 0.06), (-0.52, 0.52))
             RobotPoseRandomizer.set_pose(self, (0.73, 0.73), (-0.06, 0.06), (0.0, 0.0))
 
         self._set_raised_arm_pose()

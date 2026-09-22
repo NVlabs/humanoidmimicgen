@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
-"""Task 07 must retain the discarded pose draws in the ec54d1b reset chain."""
+"""Task 07 uses the dataset-matched static start beside the box."""
 
 from types import SimpleNamespace
 
@@ -76,23 +76,24 @@ def make_env(monkeypatch, cls, *, seed=0, deterministic=False):
 
 
 @pytest.mark.parametrize("seed", [0, 17])
-def test_nondeterministic_reset_retains_legacy_pose_order_and_six_draws(monkeypatch, seed):
-    env, events, poses = make_env(monkeypatch, LMBoxTableToShelf, seed=seed)
-    inherited = ((-0.06, 0.06), (-0.06, 0.06), (-0.52, 0.52))
-    final = ((0.73, 0.73), (-0.06, 0.06), (0.0, 0.0))
+def test_nondeterministic_reset_uses_static_pose_beside_box(monkeypatch, seed):
+    env, events, poses = make_env(
+        monkeypatch, LMBoxTableToShelf, seed=seed
+    )
+    fixed_start = ((0.73, 0.73), (-0.06, 0.06), (0.0, 0.0))
     reference = np.random.default_rng(seed)
-    discarded_pose = [reference.uniform(*bounds) for bounds in inherited]
-    final_pose = [reference.uniform(*bounds) for bounds in final]
+    fixed_pose = [reference.uniform(*bounds) for bounds in fixed_start]
 
     env._reset_internal()
 
-    assert events == ["parent", "scene", inherited, final, "forward"]
-    assert env.rng.ranges == [*inherited, *final]
-    assert len(env.rng.ranges) == 6
+    assert events == ["parent", "scene", fixed_start, "forward"]
+    assert env.rng.ranges == [*fixed_start]
+    assert len(env.rng.ranges) == 3
     assert env.rng.generator.bit_generator.state == reference.bit_generator.state
-    assert len(poses) == 2
-    np.testing.assert_array_equal(poses[0][:2], discarded_pose[:2])
-    np.testing.assert_array_equal(env.sim.data.qpos, [*final_pose[:2], 0.793, 1, 0, 0, 0])
+    assert len(poses) == 1
+    np.testing.assert_array_equal(
+        env.sim.data.qpos, [*fixed_pose[:2], 0.793, 1, 0, 0, 0]
+    )
 
 
 def test_deterministic_reset_consumes_no_pose_draws(monkeypatch):
