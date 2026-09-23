@@ -135,6 +135,23 @@ def load_lerobot_dataset(
     script_config = dataset.meta.info["script_config"]
     assert len(dataset) == start_index, "Dataset length does not match expected length"
 
+    if action_source == "wbc-goal":
+        features = set(dataset.meta.info.get("features", {}))
+        required_features = {
+            "action.eef",
+            "observation.sim.target_upper_body_pose",
+        }
+        missing_features = sorted(required_features - features)
+        if missing_features:
+            missing = ", ".join(missing_features)
+            raise ValueError(
+                "WBC-goal playback is unavailable for this LeRobot dataset; "
+                f"missing required features: {missing}. The published 1K replay "
+                "datasets contain recorded low-level actions but not WBC pose "
+                "goals. Use --action-source recorded, or use a human source-demo "
+                "HDF5 file for --action-source wbc-goal."
+            )
+
     if max_episodes is not None:
         episodes = episodes[:max_episodes]
         print(

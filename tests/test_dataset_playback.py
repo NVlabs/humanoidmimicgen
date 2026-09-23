@@ -2,13 +2,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
+import sys
+from types import SimpleNamespace
 
 import h5py
 import numpy as np
+import pytest
 
 from humanoidmimicgen.dataset_playback import (
     ActionEnv,
     load_hdf5_dataset,
+    load_lerobot_dataset,
     playback_result,
     validate_state,
 )
@@ -163,6 +167,69 @@ def test_load_hdf5_dataset_state_mode_needs_no_action_payload(tmp_path):
     assert set(actions[0]) == {"navigate_cmd", "base_height_command"}
     np.testing.assert_array_equal(actions[0]["navigate_cmd"], np.zeros(3))
     assert actions[0]["base_height_command"] == 0.74
+
+
+def test_load_hdf5_dataset_wbc_goal_mode_reads_goal_payload(tmp_path):
+    path = tmp_path / "demo.hdf5"
+    with h5py.File(path, "w") as handle:
+        data = handle.create_group("data")
+        data.attrs["env_info"] = json.dumps({"seeds": [123]})
+        data.attrs["script_config"] = json.dumps({"task_name": "LMPushButton"})
+        demo = data.create_group("demo_1")
+        demo.attrs["model_file"] = "<mujoco model='source-scene'/>"
+        demo.create_dataset("states", data=np.zeros((3, 4)))
+        demo.create_dataset("actions", data=np.ones((2, 3)))
+        demo.create_dataset("wbc_goal/navigate_cmd", data=np.zeros((2, 3)))
+        demo.create_dataset("wbc_goal/wrist_pose", data=np.full((2, 14), 0.5))
+        demo.create_dataset(
+            "wbc_goal/target_upper_body_pose", data=np.full((2, 31), 0.25)
+        )
+        demo.create_dataset("teleop_cmd/base_height_command", data=np.full(2, 0.74))
+
+    _, frames, _ = load_hdf5_dataset(path, action_source="wbc-goal")
+
+    action = frames["data/demo_1/wbc_goal"][0]
+    assert "recorded_action" not in action
+    np.testing.assert_array_equal(action["wrist_pose"], np.full(14, 0.5))
+    np.testing.assert_array_equal(
+        action["target_upper_body_pose"], np.full(31, 0.25)
+    )
+
+
+def test_lerobot_wbc_goal_mode_explains_missing_goal_fields(tmp_path, monkeypatch):
+    metadata = tmp_path / "meta"
+    metadata.mkdir()
+    (metadata / "episodes.jsonl").write_text(
+        json.dumps({"length": 1, "tasks": ["LMPushButton"]}) + "\n"
+    )
+
+    class FakeLeRobotDataset:
+        def __init__(self, **_kwargs):
+            self.meta = SimpleNamespace(
+                info={
+                    "script_config": {"task_name": "LMPushButton"},
+                    "features": {
+                        "action": {"shape": [43]},
+                        "teleop.navigate_command": {"shape": [3]},
+                    },
+                }
+            )
+
+        def __len__(self):
+            return 1
+
+    monkeypatch.setitem(
+        sys.modules,
+        "humanoidmimicgen.lerobot_dataset",
+        SimpleNamespace(TypedLeRobotDataset=FakeLeRobotDataset),
+    )
+
+    with pytest.raises(ValueError, match="published 1K replay datasets") as error:
+        load_lerobot_dataset(tmp_path, action_source="wbc-goal")
+
+    assert "action.eef" in str(error.value)
+    assert "observation.sim.target_upper_body_pose" in str(error.value)
+    assert "--action-source recorded" in str(error.value)
 
 
 def test_allow_state_divergence_does_not_override_required_task_success():

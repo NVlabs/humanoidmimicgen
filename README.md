@@ -112,6 +112,22 @@ The `state` mode restores every recorded simulator state so the original human
 trajectory can be visualized faithfully. It does not validate action or
 physics fidelity.
 
+Human source-demo HDF5 files also contain the stored wrist and upper-body WBC
+goals needed to regenerate low-level actions. To exercise that path, use:
+
+```bash
+python scripts/playback_dataset.py \
+  /path/to/hmg_source_demo_replay/datasets/02_push_button/demo.hdf5 \
+  --action-source wbc-goal \
+  --allow-state-divergence \
+  --require-task-success \
+  --video-path /tmp/push_button_wbc_goal.mp4
+```
+
+WBC-goal playback is an active simulation and may not reproduce every recorded
+state exactly. `--allow-state-divergence` permits that trajectory difference;
+`--require-task-success` still requires the task predicate to pass.
+
 ### Validate recorded-action physics
 
 For exact action-driven regression, use the public
@@ -139,8 +155,10 @@ policy-training datasets and make no benchmark-performance claim.
 
 Add `--video-path /tmp/push_button_replay.mp4` when you also want an MP4.
 The default `recorded` mode applies the dataset's low-level joint actions and
-checks every resulting MuJoCo state. Use `--action-source wbc-goal` separately
-to test regenerating those actions from the higher-level WBC goals.
+checks every resulting MuJoCo state. The published 1K replay datasets do not
+store end-effector or upper-body WBC pose goals, so they support
+`--action-source recorded` but not `--action-source wbc-goal`. WBC-goal replay
+currently requires the human source-demo HDF5 files described above.
 
 ## G1 Loco-Manipulation Benchmark
 
@@ -269,7 +287,7 @@ HDF5 file and reads the environment identity from its metadata.
 | Mode | Behavior | Use |
 |---|---|---|
 | `recorded` | Restores the initial state, applies recorded actions, and checks each resulting state. | Physics replay (default) |
-| `wbc-goal` | Regenerates low-level actions from recorded WBC goals. | WBC determinism |
+| `wbc-goal` | Regenerates low-level actions from recorded WBC goals stored in human source-demo HDF5 files. | WBC/task-behavior replay |
 | `state` | Restores every recorded state without stepping physics. | Visualization only |
 
 Playback fails on state divergence by default (`atol=1e-5`; use
