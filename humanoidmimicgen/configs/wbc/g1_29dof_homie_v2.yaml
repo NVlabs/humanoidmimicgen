@@ -1,0 +1,3 @@
+HOMIE_CONFIG: "external_dependencies/sim2mujoco/resources/robots/g1/g1_homie.yaml"
+VERSION: "homie_v2_grav_comp_tuned"
+model_path: "policy/stand.onnx,policy/walk.onnx"

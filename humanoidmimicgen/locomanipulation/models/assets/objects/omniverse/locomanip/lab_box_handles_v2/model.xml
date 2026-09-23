@@ -1,0 +1,45 @@
+<mujoco model="lab_box_handles_v2">
+  <default>
+    <default class="visual">
+      <geom group="1" type="mesh" contype="0" conaffinity="0" density="100"/>
+    </default>
+    <default class="collision">
+      <geom group="0" type="mesh" density="100" solimp="0.95 0.98 0.001" solref="0.004 1" rgba="1 1 1 0.25"/>
+    </default>
+  </default>
+  <asset>
+    <mesh file="meshes/handle.obj" name="handle"/>
+    <mesh file="meshes/handle_mirror.obj" name="handle_mirror"/>
+  </asset>
+  <worldbody>
+    <body>
+      <body name="object">
+        <geom name="bottom" type="box" size="0.0975 0.140 0.0025" pos="0 0 0.0025" rgba="0.7 0.7 0.7 1" class="visual"/>
+        <geom name="left_wall" type="box" size="0.0975 0.0025 0.075" pos="0 -0.138 0.075" rgba="0.7 0.7 0.7 1" class="visual"/>
+        <geom name="right_wall" type="box" size="0.0975 0.0025 0.075" pos="0 0.138 0.075" rgba="0.7 0.7 0.7 1" class="visual"/>
+        <geom name="front_wall" type="box" size="0.0025 0.140 0.075" pos="-0.0955 0 0.075" rgba="0.7 0.7 0.7 1" class="visual"/>
+        <geom name="back_wall" type="box" size="0.0025 0.140 0.075" pos="0.0955 0 0.075" rgba="0.7 0.7 0.7 1" class="visual"/>
+        <geom name="bottom_coll" type="box" size="0.0975 0.140 0.0025" pos="0 0 0.0025" rgba="0.7 0.7 0.7 1" class="collision"/>
+        <geom name="left_wall_coll" type="box" size="0.0975 0.0025 0.075" pos="0 -0.138 0.075" rgba="0.7 0.7 0.7 1" class="collision"/>
+        <geom name="right_wall_coll" type="box" size="0.0975 0.0025 0.075" pos="0 0.138 0.075" rgba="0.7 0.7 0.7 1" class="collision"/>
+        <geom name="front_wall_coll" type="box" size="0.0025 0.140 0.075" pos="-0.0955 0 0.075" rgba="0.7 0.7 0.7 1" class="collision"/>
+        <geom name="back_wall_coll" type="box" size="0.0025 0.140 0.075" pos="0.0955 0 0.075" rgba="0.7 0.7 0.7 1" class="collision"/>
+        <body name="handle_1" pos="0 0.205 0.075" quat="0.7071068 0 0.7071068 0">
+          <geom mesh="handle" class="visual" rgba="0.2 0.2 0.2 1.0"/>
+          <geom type="box" pos="-0.059047845301811265 -0.045 0" size="0.008 0.008 0.025" quat="0.5046660647935649 0.504706234998332 -0.4952490447782901 0.49528997874556036" class="collision"/>
+          <geom type="box" pos="0.06188433419671608 -0.045 0" size="0.008 0.008 0.025" quat="0.5046660647935649 0.504706234998332 -0.4952490447782901 0.49528997874556036" class="collision"/>
+          <geom type="box" pos="0.00145 -0.004 0" size="0.073 0.015 0.018" class="collision"/>
+        </body>
+        <body name="handle_2" pos="0 -0.205 0.075" quat="0.7071068 0 0.7071068 0">
+          <geom mesh="handle_mirror" class="visual" rgba="0.2 0.2 0.2 1.0"/>
+          <geom type="box" pos="-0.059047845301811265 0.045 0" size="0.008 0.008 0.025" quat="0.5046660647935649 0.504706234998332 -0.4952490447782901 0.49528997874556036" class="collision"/>
+          <geom type="box" pos="0.06188433419671608 0.045 0" size="0.008 0.008 0.025" quat="0.5046660647935649 0.504706234998332 -0.4952490447782901 0.49528997874556036" class="collision"/>
+          <geom type="box" pos="0.00145 0.004 0" size="0.073 0.015 0.018" class="collision"/>
+        </body>
+      </body>
+      <site name="bottom_site" pos="0 0 0.000556" rgba="1 1 1 0.5" size="0.005"/>
+      <site name="top_site" pos="0 0 0.101" rgba="1 1 1 0.5" size="0.005"/>
+      <site name="horizontal_radius_site" pos="0.122875 0.164772 0" rgba="1 1 1 0.5" size="0.005"/>
+    </body>
+  </worldbody>
+</mujoco>
