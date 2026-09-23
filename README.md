@@ -181,18 +181,26 @@ python -m pip install --upgrade \
   "lerobot @ git+https://github.com/huggingface/lerobot.git@8fff0fde7c79f23a93d845d1a50e985de01f8b8a"
 ```
 
-The training input must be a projected LeRobot v3 dataset with a 43-dimensional
-`observation.state`, `observation.images.ego_view`, and a 35-dimensional WBC
-goal `action`. Point the trainer at either one dataset or a directory containing
-all shards for one task. Nested shards are discovered and sorted automatically:
+Choose one task from the public benchmark. The training script downloads all
+eight shards for that task from
+[`linkenv/humanoidmimicgen-g1-benchmark`](https://huggingface.co/datasets/linkenv/humanoidmimicgen-g1-benchmark),
+converts them to LeRobot v3, and projects them to the model's 43-dimensional
+`observation.state`, `observation.images.ego_view`, and 35-dimensional WBC-goal
+`action` contract. Downloads and prepared shards are cached under
+`~/.cache/humanoidmimicgen/policy_data` by default.
+
+For example, train Task06 using all eight released shards:
 
 ```bash
 python scripts/train_policy_example.py \
-  /path/to/task06_projected_shards \
-  /path/to/task06_dp_long50 \
-  --dataset-repo-id local/hmg_task06_full8 \
-  --job-name task06_dp_long50
+  --task 06_drill_pnp \
+  --output-dir ./outputs/task06_dp_long50
 ```
+
+There is no dataset path or Hugging Face repo ID to discover. The script uses
+the pinned public dataset above and creates the local LeRobot IDs automatically
+(for example, `local/hmg_06_drill_pnp_shard_000`). Use `--data-dir` only to
+place the download/preparation cache somewhere other than its default location.
 
 This trains the validated 64-step prediction-horizon, 50-step action-chunk
 configuration for 20K updates by default. Evaluate a checkpoint over 20 native
@@ -200,7 +208,7 @@ episodes (seeds 0 through 19) with:
 
 ```bash
 python scripts/evaluate_policy_example.py \
-  --checkpoint-dir /path/to/task06_dp_long50/checkpoints/020000 \
+  --checkpoint-dir ./outputs/task06_dp_long50/checkpoints/020000 \
   --task 06_drill_pnp \
   --num-episodes 20 \
   --seed 0 \
