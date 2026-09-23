@@ -16,7 +16,7 @@
 
 # HumanoidMimicGen
 
-HumanoidMimicGen ([CoRL 2026](https://2026.corl.org/)) generates humanoid
+HumanoidMimicGen generates humanoid
 loco-manipulation data by adapting contact-rich whole-body skills from source
 demonstrations to new scenes. This release packages the project's nine G1
 simulation environments, MuJoCo assets, whole-body controller (WBC), and
